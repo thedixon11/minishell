@@ -57,7 +57,7 @@ char  *env_var_manager(t_data *data, char *str, int *i)
 
   //une fois la env_var extraite, on va checker si elle existe bien
   //dans notre environnement, et si oui, on va l'expand
-  xpansion_result = env_var_checker(data->env, var_env);
+  xpansion_result = env_var_checker(data->env, var_env, i);
 
   return (xpansion_result);
 }

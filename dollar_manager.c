@@ -1,14 +1,21 @@
-char  *dollar_manager(t_data *data, char *str, int *i)
+char  *dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 {
   char  *result;
-  //si ce qui suit le $ est un digit ou un quote (single ou double), alors
-  //le $ est annule et efface
-  if (ft_isdigit(str[*i + 1] == 1 || str[*i + 1] == '"' || str[*i + 1] == ''')
+  //si ce qui suit le $ un quote (single ou double), alors
+  //le $ est annule et efface SEULEMENT SI ON EST PAS EN QUOTE MODE
+  if (q_mode == NO && (str[*i + 1] == '"' || str[*i + 1] == '''))
+  {
+    *i += 1;
+     return (NULL);
+  }
+
+  //si ce qui suit le $ est un digit, alors le $ est annule et efface
+  esle if (ft_isdigit(str[*i + 1] == 1)
   {
     *i += 1;
     return (NULL);
   }
-
+  
 //si ce qui suit le $ est un ?, alors on doit expandre le code d'erreur
 //de sortie la commande d'avant
   else if (str[*i + 1] == '?')
