@@ -40,4 +40,5 @@ char  *value_manager(t_data *data, char *value)
       free (temp);
     }
   }
+  return (first_block);
 }
