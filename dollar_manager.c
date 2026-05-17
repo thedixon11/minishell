@@ -1,12 +1,15 @@
+#include "minishell_xpansion.h"
+
 char  *dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 {
   // i peut soit etre i_content soit i_quote, en depend de la situation
   // str peut soit etre content, soit inside_quote en depend de la situation
 
   char  *result;
+
   //si ce qui suit le $ un quote (single ou double), alors
   //le $ est annule et efface SEULEMENT SI ON EST PAS EN QUOTE MODE
-  if (q_mode == NO && (str[*i + 1] == '"' || str[*i + 1] == '''))
+  if (q_mode == Q_NONE && (str[*i + 1] == '"' || str[*i + 1] == '\''))
   {
     *i += 1;
      return (NULL);

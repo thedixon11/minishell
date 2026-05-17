@@ -1,3 +1,4 @@
+#include "minishell_xpansion.h"
 
 char  *env_var_checker(t_env *env, char *var_env)
 {
@@ -30,8 +31,8 @@ char  *extract_env_var(char *str, int *i)
   int len;
   char  *var_env;
 
-  // str peut etre soit content soit inside_quote
-  // i peut etre soit i_content soit i_quote
+  // str peut etre soit value soit inside_quote
+  // i peut etre soit i_value soit i_quote
 
   //pour extraire la env_var, on doit determiner la fin de celle-ci
   //toute env_var ne peut conternir que des lettres, digits et underscore
@@ -55,8 +56,8 @@ char  *extract_env_var(char *str, int *i)
 
 char  *env_var_manager(t_data *data, char *str, int *i)
 {
-  // i peut soit etre i_content, soit i_quote en depend de la situation
-  // str peut soit etre content, soit inside_quote en depend de la situation
+  // i peut soit etre i_value, soit i_quote en depend de la situation
+  // str peut soit etre value, soit inside_quote en depend de la situation
 
   char  *xpansion_result;
   char  *var_env;
@@ -68,6 +69,6 @@ char  *env_var_manager(t_data *data, char *str, int *i)
   //une fois la env_var extraite, on va checker si elle existe bien
   //dans notre environnement, et si oui, on va l'expand
   xpansion_result = env_var_checker(data->env, var_env);
-
+  free(var_env);
   return (xpansion_result);
 }
