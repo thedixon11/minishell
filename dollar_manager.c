@@ -1,5 +1,8 @@
 char  *dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 {
+  // i peut soit etre i_content soit i_quote, en depend de la situation
+  // str peut soit etre content, soit inside_quote en depend de la situation
+
   char  *result;
   //si ce qui suit le $ un quote (single ou double), alors
   //le $ est annule et efface SEULEMENT SI ON EST PAS EN QUOTE MODE
@@ -12,7 +15,7 @@ char  *dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
   //si ce qui suit le $ est un digit, alors le $ est annule et efface
   esle if (ft_isdigit(str[*i + 1] == 1)
   {
-    *i += 1;
+    *i += 2;
     return (NULL);
   }
   
@@ -39,6 +42,7 @@ char  *dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
     result = ft_calloc(3, sizeof(char));
     result[0] = '$';
     result[1] = str[*i + 1];
+    *i += 2;
     return (result);
   }
 }
