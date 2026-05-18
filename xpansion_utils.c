@@ -14,8 +14,8 @@ t_bool is_it_dollar_or_quote(char c, t_quote q_mode)
 
 char  *second_block_not_dollar_or_quote(char *str, int *i, t_quote q_mode)
 {
-  // str peut etre soit value soit inside_quote
-  // i peut etre soit i_value soit i_quote
+  //NOTE: str peut etre soit value soit inside_quote
+  //i peut etre soit i_value soit i_quote
 
   int end;
   int len;

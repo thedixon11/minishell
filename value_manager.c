@@ -2,7 +2,7 @@
 
 char  *value_manager(t_data *data, char *value)
 {
-  // le traitement des valeurs commencent ici.  
+  //NOTE: le traitement des valeurs commencent ici.  
   // l'idee est de chaque fois fusionner le deuxieme block avec le premier block. le premier block
   // deviens la fusion de l'ancien premier et de l'ancien deuxieme .
 
@@ -12,11 +12,11 @@ char  *value_manager(t_data *data, char *value)
   char  *second_block;
   char  *temp;
 
-  // on set l'index de value a zero et le premier first block est mis a "zero"
+  //NOTE: on set l'index de value a zero et le premier first block est mis a "zero"
   i_value= 0;
   first_block = ft_strdup("");
 
-  // un block peut avoir 3 types dans l'etage de value :
+  //NOTE: un block peut avoir 3 types dans l'etage de value :
   // 1) normal (not dollar or quote)
   // 2) etre un dollar case
   // 3) etre un quote case
@@ -31,7 +31,7 @@ char  *value_manager(t_data *data, char *value)
     else if (value[i_value] == '"' || value[i_value] == '\'')
       second_block = quote_manager(data, value, &i_value, value[i_value]);
 
-    // si le block n'est pas NULL, alors on fusionne le second block avec le premier
+    //NOTE: si le block n'est pas NULL, alors on fusionne le second block avec le premier
     if (second_block != NULL)
     {
       temp = first_block;
