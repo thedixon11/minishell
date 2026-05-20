@@ -22,6 +22,7 @@ void  write_on_fd(t_line *heredoc)
 			errors_exit(data, QUIT_HEREDOC, 0, 0);
 	}
   free(line);
+  close(heredoc->pipe_fd[1]);
 }
 
 void create_heredoc_fd(t_line *heredoc)
