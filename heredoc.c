@@ -21,7 +21,7 @@ void  write_on_fd(t_line *heredoc)
 		if (line == NULL)
 			errors_exit(data, QUIT_HEREDOC, 0, 0);
 	}
-free(line);
+  free(line);
 }
 
 void create_heredoc_fd(t_line *heredoc)
