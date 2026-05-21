@@ -2,6 +2,24 @@
 
 //TODO: pas du tout bien structurer, faut encore BEAUCOUP travailler dessus !
 
+int patch_input()
+
+void  child_process(t_data *data, t_line *line_cmd, t_env *env)
+{
+  int input;
+  int output;
+  t_list  *current;
+
+  input = 0;
+  output = 0;
+  current = line_cmd;
+  while (current != NULL)
+  {
+
+  }
+
+}
+
 void	parent_process(t_data *data, int current_cmd)
 {
 	if (current_cmd > 0)
@@ -22,7 +40,7 @@ void	parent_process(t_data *data, int current_cmd)
 	data->y++;
 }
 
-void	execute_cmds(t_data *data, t_line *line_cmd, t_env * env)
+void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 {
 	int	pid;
   int current_cmd;
