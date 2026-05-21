@@ -33,14 +33,14 @@ void create_heredoc_fd(t_line *heredoc)
   heredoc->pipe_fd = pipe_fd;
 }
 
-void  heredoc(t_data *data, t_line *line_cmd, t_env *env)
+void  heredoc_exec(t_line *line_cmd)
 {
   t_line  *current;
 
   current = line_cmd;
   while (current != NULL)
   {
-    if (current->type == L_HEREDOC)
+    if (current->type == T_HEREDOC)
     {
       create_heredoc_fd(current);
       write_on_fd(current);

@@ -4,5 +4,45 @@
 #ifndef MINISHELL_XECUTION_H
 # define MINISHELL_XECUTION_H
 
+typedef struct s_line
+{
+  t_type  type;
+  char  *content;
+  int heredoc_fd;
+  int cmd_nb;
+  struct s_line  *prev;
+  struct s_line  *prev;
+} t_line;
+
+typedef struct s_env
+{
+  char  *name;
+  char  *content;
+  struct s_env  *prev;
+  struct s_env  *next;
+} t_env;
+
+typedef struct s_data
+{
+  t_env  *env;
+  t_line  *line;
+  int max_cmd;
+  int *pipe_fd;
+  int old_read_fd;
+} t_data;
+
+typedef enum e_type
+{
+  T_INPUT,
+  T_OUTPUT,
+  T_HEREDOC,
+  T_PIPE,
+  T_COMMAND,
+} t_type;
+
+//heredoc exec function
+void  heredoc_exec(t_data *data, t_line *line_cmd, t_env *env);
+
+
 #endif
 
