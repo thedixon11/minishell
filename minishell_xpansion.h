@@ -6,13 +6,13 @@ typedef enum e_quote
   Q_NONE,
   Q_SINGLE,
   Q_DOUBLE
-} t_quote
+} t_quote;
 
 typedef enum e_bool
 {
   B_FALSE,
   B_TRUE
-} t_bool
+} t_bool;
 
 //dollar manager function
 char  *dollar_manager(t_data *data, char *str, int *i, t_quote q_mode);
