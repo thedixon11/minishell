@@ -14,7 +14,7 @@ t_token	*to_token(char *line)
 		{
 			handle_quote(&state);
 		}
-		if (is_operator(state.str[state.i] == 1))
+		if (is_operator(state.str[state.i]) == 1)
 		{
 		}
 	}
@@ -28,12 +28,6 @@ void	handle_quote(t_state *state)
 	start = state->i + 1;
 	state->i = start;
 	while (state->str[state->i] != state->quote)
-	{
-		if (state->str[state->i] == state->quote)
-		{
-
-		}
-		else 
 			state->i++;
-	}
+	
 }
