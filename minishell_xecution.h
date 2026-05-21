@@ -11,7 +11,7 @@ typedef struct s_line
   int heredoc_fd;
   int cmd_nb;
   struct s_line  *prev;
-  struct s_line  *prev;
+  struct s_line  *next;
 } t_line;
 
 typedef struct s_env
