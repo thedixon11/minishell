@@ -8,7 +8,7 @@ typedef struct s_line
 {
   t_type  type;
   char  *content;
-  int heredoc_fd;
+  int fd;
   int cmd_nb;
   struct s_line  *prev;
   struct s_line  *next;
@@ -36,7 +36,8 @@ typedef enum e_type
   T_INPUT,
   T_OUTPUT,
   T_HEREDOC,
-  T_PIPE,
+  T_PIPE_IN,
+  T_PIPE_OUT,
   T_COMMAND,
 } t_type;
 

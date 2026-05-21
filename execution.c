@@ -2,26 +2,24 @@
 
 //TODO: pas du tout bien structurer, faut encore BEAUCOUP travailler dessus !
 
-int patch_input(t_data *data, t_line *line_cmd, t_env *env)
+int patch_input(t_data *data, t_line *line_cmd, t_env *env, t_line *current)
 {
-  
+  dup2(current->fd, STDIN_FILENO);
 }
 
 void  child_process(t_data *data, t_line *line_cmd, t_env *env, int current_cmd)
 {
-  int input;
-  int output;
   t_line  *current;
 
-  input = 0;
-  output = 0;
   current = line_cmd;
-  while (current->cmd_nb == current_cmd) 
+  close(data->pipe_fd[0]);
+  while (current->cmd_nb == current_cmd || current != NULL) 
   {
-    if (current->type == T_INPUT)
-      patch_input(data, line_cmd, env);
+    if (current->type == T_PIPE_IN || current->type == T_INPUT)
+      patch_input(data, line_cmd, env, current);
     if (current->type == T_OUTPUT)
-      patch_output(data, line_cmd, env)
+      patch_output(data, line_cmd, env);
+    current = current->next;
   }
 
 
