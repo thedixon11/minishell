@@ -45,6 +45,21 @@ void	parent_process(t_data *data, int current_cmd)
 	data->y++;
 }
 
+void  organize_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
+{
+  t_line  *current;
+
+  current = line_cmd;
+  while(current->cmd_nb != current_cmd && current != NULL)
+    current = current->next;
+  while (current->cmd_nb == current_cmd)
+  {
+    if (current->type == T_PIPE_IN)
+      current->fd = data->old_read_fd;
+    if (current->type == T_INPUT)
+  }
+}
+
 void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 {
 	int	pid;
@@ -55,6 +70,7 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 	{
 		if (pipe(data->pipe_fd) == -1)
 				errors_exit(data, PIPE_ERR, 0, 0);
+    organize_fd_in_line_cmd(data, line_cmd);
 		pid = fork();
 		if (pid == -1)
 			errors_exit(data, FORK_ERR, 0, 0);

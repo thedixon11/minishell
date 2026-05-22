@@ -29,6 +29,7 @@ typedef struct s_data
   int max_cmd;
   int *pipe_fd;
   int old_read_fd;
+  int *heredoc_pipe_fds;
 } t_data;
 
 typedef enum e_type

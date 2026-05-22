@@ -2,7 +2,7 @@
 
 //TODO: pas du tout bien structurer, faut encore BEAUCOUP travailler dessus !
 
-void  write_on_fd(t_line *heredoc)
+void  write_on_fd(t_data *data, t_line *heredoc)
 {
   char	*line;
 	int		limiter_len;
@@ -14,26 +14,28 @@ void  write_on_fd(t_line *heredoc)
 		errors_exit(data, QUIT_HEREDOC, 0, 0);
 	while (ft_strncmp(line, heredoc->limiter, limiter_len) != 0)
 	{
+    //TODO: il faut rajouter l'expansion de la line ici !!!
 		len_of_line = ft_strlen(line);
-		write(heredoc->pipe_fd[1], line, len_of_line);
+		write(data->heredoc_pipe_fds[1], line, len_of_line);
 		free(line);
 		line = get_next_line(STDIN_FILENO, heredoc->limiter, limiter_len);
 		if (line == NULL)
 			errors_exit(data, QUIT_HEREDOC, 0, 0);
 	}
   free(line);
-  close(heredoc->pipe_fd[1]);
+  close(data->heredoc_pipe_fds[1]);
 }
 
-void create_heredoc_fd(t_line *heredoc)
+void create_heredoc_fd(t_data *data, t_line *heredoc)
 {
-  int *pipe_fd[2];
+  int *heredoc_pipe_fds[2];
 
-  pipe(pipe_fd);
-  heredoc->pipe_fd = pipe_fd;
+  pipe(heredoc_pipe_fds);
+  data->heredoc_pipe_fds = heredoc_pipe_fds;
+  heredoc->fd = heredoc_pipe_fds[0];
 }
 
-void  heredoc_exec(t_line *line_cmd)
+void  heredoc_exec(t_data *data, t_line *line_cmd)
 {
   t_line  *current;
 
@@ -42,8 +44,8 @@ void  heredoc_exec(t_line *line_cmd)
   {
     if (current->type == T_HEREDOC)
     {
-      create_heredoc_fd(current);
-      write_on_fd(current);
+      create_heredoc_fd(data, current);
+      write_on_fd(data, current);
     }
     current = current->next;
   }
