@@ -2,26 +2,25 @@
 
 //TODO: pas du tout bien structurer, faut encore BEAUCOUP travailler dessus !
 
-int patch_input(t_data *data, t_line *line_cmd, t_env *env, t_line *current)
-{
-  dup2(current->fd, STDIN_FILENO);
-}
 
 void  child_process(t_data *data, t_line *line_cmd, t_env *env, int current_cmd)
 {
   t_line  *current;
+  t_cmd *cmd_data;
 
   current = line_cmd;
   close(data->pipe_fd[0]);
-  while (current->cmd_nb == current_cmd || current != NULL) 
+  while (current->cmb_nb != current_cmd && current != NULL)
+    current = current->next;
+  while (current->cmd_nb == current_cmd && current != NULL)
   {
-    if (current->type == T_PIPE_IN || current->type == T_INPUT)
-      patch_input(data, line_cmd, env, current);
-    if (current->type == T_OUTPUT)
-      patch_output(data, line_cmd, env);
+    if (current->type == T_PIPE_IN || current->type == T_INPUT || current->type == T_HEREDOC)
+      dup2(current->fd, STDIN_FILENO);
+    else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC || current->type == T_PIPE_IN)
+      dup2(current->fd, STDOUT_FILENO);
     current = current->next;
   }
-
+  
 
 }
 
@@ -45,18 +44,30 @@ void	parent_process(t_data *data, int current_cmd)
 	data->y++;
 }
 
-void  organize_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
+void  open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
 {
   t_line  *current;
 
   current = line_cmd;
   while(current->cmd_nb != current_cmd && current != NULL)
     current = current->next;
-  while (current->cmd_nb == current_cmd)
+  while (current->cmd_nb == current_cmd && current != NULL)
   {
     if (current->type == T_PIPE_IN)
       current->fd = data->old_read_fd;
-    if (current->type == T_INPUT)
+    else if (current->type == T_INPUT)
+      current->fd = open(current->content, O_RDONLY);
+    else if (current->type == T_HEREDOC)
+      current->fd = data->heredoc_pipe_fds[0];
+    else if(current->type == T_OUTPUT_APPEND)
+      current->fd = open(current->content, O_WRONLY | O_CREAT
+				| O_APPEND, 0644);
+    else if(current->type == T_OUTPUT_TRUNC)
+		  outfile = open(data->argv[y + 1], O_WRONLY
+				| O_CREAT | O_TRUNC, 0644);
+    else if (current->type == T_PIPE_OUT)
+      current->fd = data->pipe_fd[1];
+    current = current->next;
   }
 }
 
@@ -70,7 +81,7 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 	{
 		if (pipe(data->pipe_fd) == -1)
 				errors_exit(data, PIPE_ERR, 0, 0);
-    organize_fd_in_line_cmd(data, line_cmd);
+    open_fd_in_line_cmd(data, line_cmd);
 		pid = fork();
 		if (pid == -1)
 			errors_exit(data, FORK_ERR, 0, 0);

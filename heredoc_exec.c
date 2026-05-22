@@ -32,7 +32,6 @@ void create_heredoc_fd(t_data *data, t_line *heredoc)
 
   pipe(heredoc_pipe_fds);
   data->heredoc_pipe_fds = heredoc_pipe_fds;
-  heredoc->fd = heredoc_pipe_fds[0];
 }
 
 void  heredoc_exec(t_data *data, t_line *line_cmd)

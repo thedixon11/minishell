@@ -4,6 +4,13 @@
 #ifndef MINISHELL_XECUTION_H
 # define MINISHELL_XECUTION_H
 
+typedef sruct s_cmd
+{
+  char  *prog_name;
+  char  *prog_fullname;
+  char  *args;
+} t_cmd;
+
 typedef struct s_line
 {
   t_type  type;
@@ -35,7 +42,8 @@ typedef struct s_data
 typedef enum e_type
 {
   T_INPUT,
-  T_OUTPUT,
+  T_OUTPUT_TRUNC,
+  T_OUTPUT_APPEND,
   T_HEREDOC,
   T_PIPE_IN,
   T_PIPE_OUT,
