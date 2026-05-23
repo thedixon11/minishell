@@ -4,11 +4,12 @@
 #ifndef MINISHELL_XECUTION_H
 # define MINISHELL_XECUTION_H
 
-typedef sruct s_cmd
+typedef struct s_cmd
 {
-  char  *prog_name;
   char  *prog_fullname;
-  char  *args;
+  char  **args_array;
+  char  **path_array;
+  char  **env;
 } t_cmd;
 
 typedef struct s_line
@@ -37,6 +38,7 @@ typedef struct s_data
   int *pipe_fd;
   int old_read_fd;
   int *heredoc_pipe_fds;
+  char  **cmd_array;
 } t_data;
 
 typedef enum e_type

@@ -1,6 +1,7 @@
 #include "minishell_xecution.h"
 
 //TODO: pas du tout bien structurer, faut encore BEAUCOUP travailler dessus !
+//IL FAUT QUE JIMPLEMENTE L'EXPANSION SA MERE
 
 void  write_on_fd(t_data *data, t_line *heredoc)
 {
