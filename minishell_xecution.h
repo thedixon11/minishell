@@ -16,6 +16,7 @@ typedef struct s_line
 {
   t_type  type;
   char  *content;
+  char  **cmd_content;
   int fd;
   int cmd_nb;
   struct s_line  *prev;
@@ -38,7 +39,6 @@ typedef struct s_data
   int *pipe_fd;
   int old_read_fd;
   int *heredoc_pipe_fds;
-  char  **cmd_array;
 } t_data;
 
 typedef enum e_type
