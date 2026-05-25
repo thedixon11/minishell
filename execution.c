@@ -35,7 +35,7 @@ void  child_process(t_data *data, t_line *line_cmd, int current_cmd)
     current = current->next;
 
   //TODO: a continuer preparation de l'execution et utiliser execve et free
-  cmd_data = execve_preparation(data, current->cmd_content);
+  cmd_data = execve_preparation(data, current->content);
   
 
 }
