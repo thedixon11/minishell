@@ -69,7 +69,7 @@ char  *quote_manager(t_data *data, char *value, int *i_value, char quote)
   inside_quote = extract_quote(value, i_value, quote);
 
   //NOTE: si l'on est dans des single quotes, alors il n'y a pas 
-  // d'expansion, alors on peut retourner la string tel quelle
+  //d'expansion, alors on peut retourner la string tel quelle
   if (quote == '\'')
     quote_result = ft_strdup(inside_quote);
 

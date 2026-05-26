@@ -4,6 +4,9 @@
 
 char  *go_until_dollar(char *content, int *start)
 {
+  //NOTE: cette fonction permet de crer un bloc jusqu'au prochain dollar.
+  //il prend en compte les doubles quotes et ne va pas expandre dans les 
+  //double quotes. Cette fonction s'utilise avant de split le content.
   int end;
   char  quote;
   char  *second_block;
@@ -12,8 +15,14 @@ char  *go_until_dollar(char *content, int *start)
   quote = 'a';
   while (content[end] != '$' && content[end] != 0)
   {
+    //NOTE: tant qu'on est pas sur un $, single or double quote, on avance dans
+    //la string
     while (content[end] != '$' && content[end] != '"' && content[end] != '\'')
       end++;
+
+    //NOTE: si on tombe sur une entree de quote, on va avancer jusqu'a la 
+    //fermeture de quote. sa permet de skip les potentielles expansion s'y
+    //trouvant.
     if (content[end] == '"' || content[end] == '\'')
     {
       quote = content[end];
@@ -30,6 +39,8 @@ char  *go_until_dollar(char *content, int *start)
 
 char  *go_until_quote(char *content, int *start)
 {
+  //NOTE: cette fonction permet de creer un bloc qui va jusqu'au prochain quote
+
   int end;
   char  *second_block;
 
@@ -41,8 +52,10 @@ char  *go_until_quote(char *content, int *start)
   return (second_block);
 }
 
-char  *expand_in_quote(t_data *data, char *content)
+char  *expand_in_quote(t_data *data, char *row)
 {
+  //NOTE: cette fonction va expandre la current ligne du double tableau dans 
+  //les quotes, apres avoir split le contenu de base
   char  *first_block;
   char  *second_block;
   char  quote;
@@ -51,14 +64,25 @@ char  *expand_in_quote(t_data *data, char *content)
   quote = 'a';
   i = 0;
   first_block = ft_strdup("");
-  while (content[i] != 0)
+  while (row[i] != 0)
   {
-    if (content[i] != '"' && content[i] != '\'')
-      second_block = go_until_quote(content, &i);
-    else if (content[i] == '"')
-      second_block = quote_manager(data, content, &i, content[i]);
-    else if (content[i] == '\'')
-      second_block = quote_manager(data, content, &i, content[i]);
+    //NOTE: si le row[i] n'est pas un quote, alors on va creer
+    //un bloc qui va jusqu'au prochain quote
+    if (row[i] != '"' && row[i] != '\'')
+      second_block = go_until_quote(row, &i);
+
+    //NOTE: si le row[i] est un double quote, alors on va expandre ce 
+      //qu'il y a dedans
+    else if (row[i] == '"')
+      second_block = quote_manager(data, row, &i, row[i]);
+
+      //NOTE: si le row[i] est un single quote, on n'expand pas ce 
+      //qu'il y a dedans (la fonction va retirer les quotes)
+    else if (row[i] == '\'')
+      second_block = quote_manager(data, row, &i, row[i]);
+
+    //NOTE: meme principe, on va fusionner l'ancien bloc avec 
+    //le nouveau
     if (second_block != NULL)
     {
       temp = first_block;
@@ -89,9 +113,12 @@ char  *expand_off_quote(t_data *data, char *content)
     if (content[i] != '$' && content[i] != 0)
       second_block = go_until_dollar(content, &i);
 
-    //NOTE: si le content[i] est un $, la fonction va traiter le dollar
+    //NOTE: si le content[i] est un $, la fonction va traiter le dollar,
+      //et en faire un bloc
     else if (content[i] == '$')
       second_block = dollar_manager(data, content, &i, Q_NONE);
+
+    //NOTE: ici on va fusionner le block precedant avec le bloc recent
     if (second_block != NULL)
     {
       temp = first_block;
@@ -99,8 +126,8 @@ char  *expand_off_quote(t_data *data, char *content)
       free(second_block);
       free (temp);
     }
-    return (first_block);
   }
+  return (first_block);
 }
 
 char  **val_manager(char *content)
