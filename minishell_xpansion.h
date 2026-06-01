@@ -5,7 +5,8 @@ typedef enum e_quote
 {
   Q_NONE,
   Q_SINGLE,
-  Q_DOUBLE
+  Q_DOUBLE,
+  Q_HEREDOC,
 } t_quote;
 
 typedef enum e_bool
