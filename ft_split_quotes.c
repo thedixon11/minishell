@@ -1,5 +1,7 @@
 #include "minishell_xecution.h"
 
+//NOTE : ce fichier est obsolete (il est utilise nul part)
+
 static size_t	ft_len(char const *s, char c, size_t start)
 {
 	size_t	end;

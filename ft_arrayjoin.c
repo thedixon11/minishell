@@ -1,5 +1,7 @@
 #include "minishell_xecution.h"
 
+//NOTE: ce fichier est obsolete (il est utilise nulle part)
+
 int  fill_array(char **new_array, char *array, int ynew)
 {
   int y;

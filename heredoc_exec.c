@@ -9,17 +9,17 @@ void  write_on_fd(t_data *data, t_line *heredoc)
 	int		limiter_len;
 	int		len_of_line;
 
-	limiter_len = ft_strlen(heredoc->limiter);
-	line = get_next_line(STDIN_FILENO, heredoc->limiter, limiter_len);
+	limiter_len = ft_strlen(heredoc->content);
+	line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 	if (line == NULL)
 		errors_exit(data, QUIT_HEREDOC, 0, 0);
-	while (ft_strncmp(line, heredoc->limiter, limiter_len) != 0)
+	while (ft_strncmp(line, heredoc->content, limiter_len) != 0)
 	{
     //TODO: il faut rajouter l'expansion de la line ici !!!
 		len_of_line = ft_strlen(line);
 		write(data->heredoc_pipe_fds[1], line, len_of_line);
 		free(line);
-		line = get_next_line(STDIN_FILENO, heredoc->limiter, limiter_len);
+		line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 		if (line == NULL)
 			errors_exit(data, QUIT_HEREDOC, 0, 0);
 	}
