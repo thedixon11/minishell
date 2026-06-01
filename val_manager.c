@@ -58,10 +58,8 @@ char  *expand_in_quote(t_data *data, char *row)
   //les quotes, apres avoir split le contenu de base
   char  *first_block;
   char  *second_block;
-  char  quote;
   int i;
 
-  quote = 'a';
   i = 0;
   first_block = ft_strdup("");
   while (row[i] != 0)
@@ -71,14 +69,9 @@ char  *expand_in_quote(t_data *data, char *row)
     if (row[i] != '"' && row[i] != '\'')
       second_block = go_until_quote(row, &i);
 
-    //NOTE: si le row[i] est un double quote, alors on va expandre ce 
+    //NOTE: si le row[i] est un double or single quote, alors on va expandre ce 
       //qu'il y a dedans
-    else if (row[i] == '"')
-      second_block = quote_manager(data, row, &i, row[i]);
-
-      //NOTE: si le row[i] est un single quote, on n'expand pas ce 
-      //qu'il y a dedans (la fonction va retirer les quotes)
-    else if (row[i] == '\'')
+    else if (row[i] == '"' || row[i] == '\'')
       second_block = quote_manager(data, row, &i, row[i]);
 
     //NOTE: meme principe, on va fusionner l'ancien bloc avec 
@@ -101,10 +94,8 @@ char  *expand_off_quote(t_data *data, char *content)
   char  *first_block;
   char  *second_block;
   int i;
-  char  quote;
 
   i = 0;
-  quote = 'a';
   first_block = ft_strdup("");
   while (content[i] != 0)
   {
