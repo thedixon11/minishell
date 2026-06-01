@@ -113,5 +113,5 @@ char	**ft_split_quotes(char const *s, char c)
 	if (tab == NULL)
 		return (NULL);
 	tab = xtab(s, c, tab);
-	return (tab);
+  return (tab);
 }

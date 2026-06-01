@@ -86,9 +86,9 @@ t_cmd *execve_preparation(t_data *data, char *cmd_content)
   if (!cmd_data)
     return (NULL);
 
-  //NOTE: le tableau des args sera deja fait par Alex et est 
-  //stocker dans la node de la cmd
-  cmd_data->args_array = prepare_args_array(cmd_content);
+  //NOTE: je recois le contenu de la commande sur une ligne, avec tous les quotes inclus.
+  //je dois la traiter pour en creer un double tableau pour l'execve
+  cmd_data->args_array = val_manager(cmd_content);
 
   //NOTE: l'env est converti au debut du programme par ALEX de array a linked list
   //et est stocker dans data 
