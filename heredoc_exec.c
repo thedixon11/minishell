@@ -1,10 +1,9 @@
 #include "minishell_xecution.h"
 
-//TODO: pas du tout bien structurer, faut encore BEAUCOUP travailler dessus !
-// IL FAUT QUE JIMPLEMENTE L'EXPANSION SA MERE
-
 char  *go_until_dollar_hdoc(char *line, int *start)
 {
+  //NOTE: la fonction qui va creer le block jusqu'au dollar
+  //
   int end;
 
   end = *start;
@@ -14,8 +13,10 @@ char  *go_until_dollar_hdoc(char *line, int *start)
   return (second_block);
 }
 
-char  *expand_line(char *line, t_bool xpand_or_not)
+char  *expand_line_hdoc(char *line, t_bool xpand_or_not)
 {
+  //NOTE: la fonction qui va expand la line lue dans gnl avant de l'ecrire sur le fd
+  //
   char  *first_block;
   char  *second_block;
   int y;
@@ -43,26 +44,36 @@ return (first_block);
 
 void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 {
+  //NOTE: la fonction qui va ecrire sur le fd du heredoc
+
   char  *line;
   char  *line_xpanded;
 	int		limiter_len;
 	int		len_of_line;
 
-	limiter_len = ft_strlen(heredoc->content);
+	limiter_len = ft_strlen(heredoc->content) + 1;
+
+  //WARNING: faut faire attention a bien inclure le gnl qui prend en compte 
+  // un delimiter dans la libft !!!
 	line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
-	if (line_xpanded == NULL)
+	if (line == NULL)
 		errors_exit(data, QUIT_HEREDOC, 0, 0);
-  line_xpanded = expand_line(line, xpand_or_not);
+
+  line_xpanded = expand_line_hdoc(line, xpand_or_not);
 	while (ft_strncmp(line_xpanded, heredoc->content, limiter_len) != 0)
 	{
 		len_of_line = ft_strlen(line_xpanded);
 		write(data->heredoc_pipe_fds[1], line_xpanded, len_of_line);
 		free(line);
     free(line_xpanded);
+
+    //WARNING: faut faire attention a bien inclure le gnl qui prend en compte 
+    // un delimiter dans la libft !!!
 		line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 		if (line == NULL)
 			errors_exit(data, QUIT_HEREDOC, 0, 0);
-    line_xpanded = expand_line(line, xpand_or_not);
+
+    line_xpanded = expand_line_hdoc(line, xpand_or_not);
 	}
   free(line);
   free (line_xpanded);
@@ -71,6 +82,10 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 
 void create_heredoc_fd(t_data *data, t_line *heredoc)
 {
+  //NOTE: pour creer un fd pour le heredoc, on ne peut pas utiliser des fonctions 
+  //tels que open, vu qu'on a pas de fichier. On va pour ca creer un pipe, cad un 
+  //buffer dans lequel on va y ecrire le contenu dedans et qui va gener le fd necessaire.
+
   int *heredoc_pipe_fds[2];
 
   pipe(heredoc_pipe_fds);
@@ -79,6 +94,10 @@ void create_heredoc_fd(t_data *data, t_line *heredoc)
 
 void  heredoc_exec(t_data *data, t_line *line_cmd)
 {
+  //NOTE: ici commence l'execution de tous les heredocs. on doit :
+  //1) creer un fd pour le heredoc;
+  //2) ecrire sur ce fd;
+
   t_line  *current;
 
   current = line_cmd;
