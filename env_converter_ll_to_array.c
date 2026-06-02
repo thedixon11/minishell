@@ -14,14 +14,20 @@ char	*rebuild_value(t_env *current)
 	return (rebuild_value);
 }
 
+// NOTE: before executing the command, it's necessary to convert the 
+// environment from linked list to array, because execve need it in this
+// format. That's the job of env_converter_ll_to_array. To do that,
+// we need:
+// 1) count how many env_var exists in the environment;
+// 2) have to rebuild the values 
+// (we have to join name, '=' and content together)
+
 char	**env_converter_ll_to_array(t_env *env)
 {
 	t_env	*current;
 	int		y;
 	char	**converted_env;
 
-	// NOTE: on a besoin de reconvertir l'environnement qui est en linked list en array
-	// NOTE: permiere etape : compter combien de values se trouvent dans l'env
 	y = 0;
 	current = env;
 	while (current != NULL)
@@ -29,7 +35,6 @@ char	**env_converter_ll_to_array(t_env *env)
 		current = current->next;
 		y++;
 	}
-	// NOTE: on cree le double tableau.
 	converted_env = ft_calloc(y + 1, sizeof(char *));
 	if (!converted_env)
 		return (NULL);

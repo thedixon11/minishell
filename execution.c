@@ -1,6 +1,17 @@
 #include "minishell_xecution.h"
 
-//TODO: pas du tout bien structurer, faut encore BEAUCOUP travailler dessus !
+// NOTE: The child process has three missions:
+// 1) patch the input/output rediderctions using dup2.
+// 2) preparing the material to execute the command;
+// 3) execute the command;
+//
+// NOTE: To know which redirection (input/output) will be the one to be used,
+// we'll dup2 in serie following the line_cmd order. The last dup2 will define 
+// intput/output.
+//
+// NOTE: The child READ FD is useless, we can directly close it.
+//
+// TODO: We have to free and close everything after the execve
 
 void  child_process(t_data *data, t_line *line_cmd, int current_cmd)
 {
@@ -9,16 +20,10 @@ void  child_process(t_data *data, t_line *line_cmd, int current_cmd)
 
   current = line_cmd;
 
-  //NOTE: le READ FD de l'enfant ne sert a rien on doit de toute facon le patcher
   close(data->pipe_fd[0]);
 
-//NOTE: il faut aller vers la premiere node de la cmd dans laquelle on est
   while (current->cmb_nb != current_cmd && current != NULL)
     current = current->next;
-
-  //NOTE: une fois arriver sur la premier node de la cmd correspondante, on va 
-  //patcher dans l'ordre les input et les outputs avec dup2. Les derniers dup2 seront
-  //nos input et outputs de l'execution
   while (current->cmd_nb == current_cmd && current != NULL)
   {
     if (current->type == T_PIPE_IN || current->type == T_INPUT || current->type == T_HEREDOC)
@@ -27,46 +32,47 @@ void  child_process(t_data *data, t_line *line_cmd, int current_cmd)
       dup2(current->fd, STDOUT_FILENO);
     current = current->next;
   }
-
-  //NOTE: une fois qu'on a patcher, on reviens au debut de la ligne de cmd et 
-  //l'on va sur la node de type cmd qui va nous servir a la preparation de l'execution
   current = line_cmd;
   while (current->type != T_COMMAND && current->cmd_nb == current_cmd)
     current = current->next;
-
-  //TODO: a continuer preparation de l'execution et utiliser execve et free
   cmd_data = execve_preparation(data, current->content);
-  
-
 }
+
+// NOTE: the only main mission of the parent_process is to store the 
+// READ_FD to give it to the input pipe redicerction of the next child;
+//
+// TODO: have to check again that is the do_i_wait business ...;
 
 void	parent_process(t_data *data, int current_cmd)
 {
-    //NOTE: la seule mission du parent est de recuperer le READ FD pour le redonner au 
-    //prochain enfant
-
 	if (current_cmd > 0)
 		close(data->old_read_fd);
 	if (current_cmd <= data->max_cmd)
 	{
 		data->old_read_fd = data->pipe_fd[0];
-
-    //NOTE: je dois revoir a quoi sert ce if
 		if (data->do_i_wait == 1)
 		{
 			wait(NULL);
 			data->do_i_wait = 0;
 		}
-
 		close(data->pipe_fd[1]);
 	}
 	data->y++;
 }
 
+// NOTE: The function open_fd_in_line_cmd will open all fds, depending on what
+// do we have for elements in the command. We will add the fds in the node.
+// It will be useful at the moment (in the child) we'll dup2 in serie.
+// Here the elements needs to have a fd (if it exists):
+// a) T_PIPE_IN -> old_read_fd
+// b) T_PIPE_OUT -> pipe_fd[1];
+// c) INPUT REDIRECTION -> open an input file
+// d) OUTPUT REDIRECTION TRUNCATE -> open an output file;
+// e) OUTPUT REDIRECTION APPEND -> open an output file;
+// f) HEREDOC -> create a fd with pipe function
+
 void  open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
 {
-  //NOTE: ici on va remplir dans les nodes les fds correspondant
-    //on va open les files input, output, etc.
   t_line  *current;
 
   current = line_cmd;
@@ -99,6 +105,11 @@ void  open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
 // 3) fork;
 // 4a) execute cmd with the child;
 // 4b) store the read fd to send it to the next children;
+//
+// NOTE: The choice was made to open all fds in the parent, before
+// forking. The only thing done in the children is all the in-out patching
+//
+// TODO: Have to rebuild all about wait and waitpid functions;
 
 void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 {
@@ -110,11 +121,7 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 	{
 		if (pipe(data->pipe_fd) == -1)
 				errors_exit(data, PIPE_ERR, 0, 0);
-   //NOTE: le choix est fait d'ouvrir tout les fds dans le parent avant de fork
-   //au lieu de le faire dans l'enfant. Ce qui sera fait dans l'enfant sont juste
-   //les dup2
     open_fd_in_line_cmd(data, line_cmd);
-
 		pid = fork();
 		if (pid == -1)
 			errors_exit(data, FORK_ERR, 0, 0);
@@ -123,7 +130,6 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 		if (pid > 0)
 			parent_process(data, current_cmd);
 	}
-    //TODO: faudra remanager comment utiliser wait et waitpid
 	while (wait(NULL) > 0)
 		;
 
