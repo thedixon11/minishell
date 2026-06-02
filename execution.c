@@ -92,6 +92,14 @@ void  open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
   }
 }
 
+// NOTE: With execute_cmds, we'll execute all cmds. For each cmds, we'll 
+// create a child, that will execute it. Here are the steps :
+// 1) create a pipe and store it in data;
+// 2) open all fds of the line_cmd;
+// 3) fork;
+// 4a) execute cmd with the child;
+// 4b) store the read fd to send it to the next children;
+
 void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 {
 	int	pid;
@@ -122,6 +130,10 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 	if (data->old_read_fd >= 0)
 		close(data->old_read_fd);
 }
+
+// NOTE: execution process start here. There is two steps:
+// 1) execution of all heredocs;
+// 2) execution of the commands;
 
 void  *execution(t_data *data, t_line *line_cmd, t_env *env)
 {
