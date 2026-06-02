@@ -6,7 +6,7 @@ char  *rebuild_value(t_env *current)
   // on strjoin le nom de la value avec '=';
   // on strjoin value + '=' avec le contenu de la value
 
-  char  *temp;
+	char	*temp;
   char  *rebuild_value;
 
   temp = ft_strjoin(current->name, "=");
