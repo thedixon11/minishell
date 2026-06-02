@@ -1,51 +1,52 @@
 #include "minishell_xpansion.h"
 
-char  *dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
+// NOTE: It's the entry point to deal with dollars. Managing the dollars depends
+//	on which value is right after it. There is 5 possiblities :
+//	1) a quote (single or double), and we are treating out of quotes (Q_NONE);
+//		>> dollar and quote are deleted;
+//	2) a digit;
+//		>> dollar and digit are deleted;
+//	3) an '?';
+//		>> have to expand the last number error;
+//	4) an alpha or an underscore;
+//		>> possibly an env_val -> go to env_var_manager;
+//	5) everything else (can also be a quote, if we're treating inside quote) 
+//
+// NOTE: the value i can be either i_content or i_quote depending situation.
+//	the value str can be either content or inside_quote depending situation.
+
+// TODO: have to create the function to get the code number error 
+
+char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 {
-  //NOTE: i peut soit etre i_content soit i_quote, en depend de la situation
-  // str peut soit etre content, soit inside_quote en depend de la situation
+	char	*result;
 
-  char  *result;
-
-  //NOTE: si ce qui suit le $ un quote (single ou double), alors
-  //le $ est annule et efface SEULEMENT SI ON EST PAS EN QUOTE MODE
-  if (q_mode == Q_NONE && (str[*i + 1] == '"' || str[*i + 1] == '\''))
-  {
-    *i += 1;
-     return (NULL);
-  }
-
-  //NOTE: si ce qui suit le $ est un digit, alors le $ est annule et efface
-  esle if (ft_isdigit(str[*i + 1] == 1)
-  {
-    *i += 2;
-    return (NULL);
-  }
-  
-  //NOTE: si ce qui suit le $ est un ?, alors on doit expandre le code d'erreur
-  //de sortie la commande d'avant
-  else if (str[*i + 1] == '?')
-  {
-    result = find_exit_error();//TODO: when possible, add $? functionality
-    return (result);
-  }
-
-  //NOTE: si ce qui suit le $ est soit une lettre soit un underscore,
-  // alors on doit checker si c'est une env var et si oui expandre
-  else if (ft_isalpha(str[*i + 1]) == 1 || str[*i + 1] == '_')
-  {
-    result = env_var_manager(data, str, i);
-    return (result);
-  }
-
-  //NOTE: si ce qui suit le $ est autre chose,
-  // on considere le $ et le char qui le suit comme normaux (pas un cas special)
-  else
-  {
-    result = ft_calloc(3, sizeof(char));
-    result[0] = '$';
-    result[1] = str[*i + 1];
-    *i += 2;
-    return (result);
+	if (q_mode == Q_NONE && (str[*i + 1] == '"' || str[*i + 1] == '\''))
+	{
+		*i += 1;
+		return (NULL);
+	}
+	esle if (ft_isdigit(str[*i + 1] == 1)
+	{
+		*i += 2;
+		return (NULL);
+	}
+	else if (str[*i + 1] == '?')
+	{
+		result = find_exit_error();
+		return (result);
+	}
+	else if (ft_isalpha(str[*i + 1]) == 1 || str[*i + 1] == '_')
+	{
+		result = env_var_manager(data, str, i);
+		return (result);
+	}
+	else
+	{
+		result = ft_calloc(3, sizeof(char));
+		result[0] = '$';
+		result[1] = str[*i + 1];
+		*i += 2;
+		return (result);
   }
 }
