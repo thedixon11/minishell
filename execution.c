@@ -69,7 +69,7 @@ void	parent_process(t_data *data, int current_cmd)
 // c) INPUT REDIRECTION -> open an input file
 // d) OUTPUT REDIRECTION TRUNCATE -> open an output file;
 // e) OUTPUT REDIRECTION APPEND -> open an output file;
-// f) HEREDOC -> create a fd with pipe function
+// f) HEREDOC -> create a fd with pipe function 
 
 void  open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
 {
@@ -104,7 +104,7 @@ void  open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
 // 2) open all fds of the line_cmd;
 // 3) fork;
 // 4a) execute cmd with the child;
-// 4b) store the read fd to send it to the next children;
+// 4b) store the read fd to send it to the next children; 
 //
 // NOTE: The choice was made to open all fds in the parent, before
 // forking. The only thing done in the children is all the in-out patching
