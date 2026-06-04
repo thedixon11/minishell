@@ -1,5 +1,6 @@
 #ifndef MINISHELL_XPANSION_H
 # define MINISHELL_XPANSION_H
+# include "./libft/libft.h"
 
 typedef enum e_quote
 {
@@ -45,7 +46,7 @@ typedef enum e_type
 } t_type;
 
 //value manager functions
-char  **val_manager(char *content);
+void  val_manager(t_data *data, t_line *line_cmd);
 char  *expand_off_quote(t_data *data, char *content);
 char  *expand_in_quote(t_data *data, char *row);
 char  *go_until_quote(char *content, int *start);

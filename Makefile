@@ -1,4 +1,4 @@
-NAME = minishell
+NAME = xpansion
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -6,7 +6,11 @@ OBJ_DIR = obj
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRCS = 
+SRCS = main.c \
+			 val_manager.c \
+			 dollar_manager.c \
+			 quote_manager.c \
+			 env_var_manager.c
 
 SRCS := $(addprefix $(SRC_DIR)/,$(SRCS))
 OBJS := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
