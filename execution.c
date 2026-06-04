@@ -35,7 +35,7 @@ void	child_process(t_data *data, t_line *line_cmd, int current_cmd)
 	current = line_cmd;
 	while (current->type != T_COMMAND && current->cmd_nb == current_cmd)
 		current = current->next;
-	cmd_data = execve_preparation(data, current->content);
+	cmd_data = execve_preparation(data, current->content_xpand);
 }
 
 // NOTE: the only main mission of the parent_process is to store the
@@ -121,7 +121,7 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 	{
 		if (pipe(data->pipe_fd) == -1)
 			errors_exit(data, PIPE_ERR, 0, 0);
-		open_fd_in_line_cmd(data, line_cmd);
+		open_fd_in_line_cmd(data, line_cmd, current_cmd);
 		pid = fork();
 		if (pid == -1)
 			errors_exit(data, FORK_ERR, 0, 0);
@@ -138,12 +138,14 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 
 // NOTE: execution process start here. There is two steps:
 // 1) execution of all heredocs;
+// 2) check all input and output redirections (not pipe)
 // 2) execution of the commands;
 
 void	*execution(t_data *data, t_line *line_cmd, t_env *env)
 {
 	heredoc_exec(line_cmd);
-	execute_cmds(data, line_cmd, env);
+	if (check_in_out_redir(line_cmd) == 0)
+		execute_cmds(data, line_cmd, env);
 	close_all_fd();
 	free_all();
 }

@@ -76,8 +76,7 @@ char	*create_prog_fullname(char **path_array, char *prog_name)
 // NOTE: Before executing the command, we have to prepare the material
 // to use execve. For that, we need :
 // a) complete programm name;
-// b) array with args (original is in a str, I have to manage it
-//   with val_manager);
+// b) array with args (is treated and created while expansion)
 // c) array with all cmds path (original is in a str, have to convert it
 //  to an array, and without the "PATH=");
 // d) environment converted from linked list to array;
@@ -87,7 +86,7 @@ char	*create_prog_fullname(char **path_array, char *prog_name)
 // Then I have to check if the programm exists and is executable or not
 // (directly or by see if it's in the PATH)
 
-t_cmd	*execve_preparation(t_data *data, char *cmd_content)
+t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 {
 	t_cmd	*cmd_data;
 	t_env	*current;
@@ -96,7 +95,7 @@ t_cmd	*execve_preparation(t_data *data, char *cmd_content)
 	cmd_data = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd_data)
 		return (NULL);
-	cmd_data->args_array = val_manager(cmd_content);
+	cmd_data->args_array = cmd_content;
 	cmd_data->env = env_converter_ll_to_array(data->env);
 	while (current != NULL)
 	{
