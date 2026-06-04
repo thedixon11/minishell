@@ -122,25 +122,33 @@ char	*expand_off_quote(t_data *data, char *content)
 // manage with val_manager. For each content node, there is 3 steps :
 //	1) we have to expand all content that is outside of quotes;
 //	2) we have to split the content (spaces are the separators)
-//	3) we have to expend inside wuotes of all the lines of splitted_content;
+//	3) we have to expend inside quotes of all the lines of splitted_content;
 
-char	**val_manager(char *content)
+void	val_manager(t_data *data, t_line *line_cmd)
 {
 	char	*temp;
-	char	**splitted_content;
 	int		y;
+	t_line	*current;
 
 	y = 0;
-	temp = expand_off_quote(content);
-	splitted_content = ft_split(temp, " ");
-	free(temp);
-	while (splitted_content[y] != NULL)
+	current = line_cmd;
+	while (current != NULL)
 	{
-		temp = ft_strdup(splitted_content[y]);
-		free(splitted_content[y]);
-		splitted_content[y] = expand_in_quote(temp);
-		free(temp);
-		y++;
+		if (current->type == T_INPUT && current->type == T_OUTPUT_TRUNC
+			&& current->type == T_OUTPUT_APPEND && current->type == T_COMMAND)
+		{
+			temp = expand_off_quote(current->content);
+			current->content_xpand = ft_split(temp, " ");
+			free(temp);
+			while (current->content_xpand[y] != NULL)
+			{
+				temp = ft_strdup(current->content_xpand[y]);
+				free(current->content_xpand[y]);
+				current->content_xpand[y] = expand_in_quote(temp);
+				free(temp);
+				y++;
+			}
+		}
+		current = current->next;
 	}
-	return (splitted_content);
 }
