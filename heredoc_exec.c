@@ -89,33 +89,35 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 // don't have a file to open. We need to do it by creating a pipe, which 
 // we'll write on it and creates us also a READ FD.
 //
-// BUG: we cannot store the heredoc in the data, we have to store it 
-// in the line_cmd node of the heredoc ! may we have multiple heredoc !!
+// NOTE: We have to store the fds in two places :
+// 1) the WR_FD and RD_FD in data to use it in write_on_fd;
+// 2) the RD_FD in the corresponding heredoc node;
 
 void create_heredoc_fd(t_data *data, t_line *heredoc)
 {
   int *heredoc_pipe_fds[2];
 
-  pipe(heredoc_pipe_fds);
-  data->heredoc_pipe_fds = heredoc_pipe_fds;
+	pipe(heredoc_pipe_fds);
+	data->heredoc_pipe_fds = heredoc_pipe_fds;
+	heredoc->fd = heredoc_pipe_fds[0];
 }
 
 // NOTE: Here starts the heredocs executions. There is two steps per heredoc :
 // 1) create a pipe for each heredoc(that creates fds);
 // 2) write on that buffer, and store the read fd;
 
-void  heredoc_exec(t_data *data, t_line *line_cmd)
+void	heredoc_exec(t_data *data, t_line *line_cmd)
 {
-  t_line  *current;
+	t_line	*current;
 
-  current = line_cmd;
-  while (current != NULL)
-  {
-    if (current->type == T_HEREDOC)
-    {
-      create_heredoc_fd(data, current);
-      write_on_fd(data, current);
-    }
-    current = current->next;
-  }
+	current = line_cmd;
+	while (current != NULL)
+	{
+		if (current->type == T_HEREDOC)
+		{
+			create_heredoc_fd(data, current);
+			write_on_fd(data, current);
+		}
+		current = current->next;
+	}
 }

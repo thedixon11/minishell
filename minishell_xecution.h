@@ -19,6 +19,7 @@ typedef struct s_line
 {
   t_type  type;
   char  *content;
+  char	**content_expd;
   int fd;
   int cmd_nb;
   struct s_line  *prev;

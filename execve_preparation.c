@@ -99,7 +99,6 @@ t_cmd	*execve_preparation(t_data *data, char *cmd_content)
 	cmd_data->args_array = val_manager(cmd_content);
 	cmd_data->env = env_converter_ll_to_array(data->env);
 	while (current != NULL)
-		;
 	{
 		if (ft_strncmp(current->name, "PATH", 5) == 0)
 			cmd_data->path_array = create_path_array(current->content);
