@@ -15,6 +15,35 @@ typedef enum e_bool
   B_TRUE
 } t_bool;
 
+typedef struct s_env
+{
+  char  *name;
+  char  *content;
+  struct  s_env *prev;
+  struct  s_env *next;
+} t_env;
+
+typedef struct s_data
+{
+  t_env *env;
+  t_line  *line;
+  int max_cmd;
+  int *pipe_fd;
+  int old_read_fd;
+  int *heredoc_pipe_fds;
+} t_data;
+
+typedef enum e_type
+{
+  T_INPUT,
+  T_OUTPUT_TRUNC,
+  T_OUTPUT_APPEND,
+  T_HEREDOC,
+  T_PIPE_IN,
+  T_PIPE_OUT,
+  T_COMMAND
+} t_type;
+
 //value manager functions
 char  **val_manager(char *content);
 char  *expand_off_quote(t_data *data, char *content);
