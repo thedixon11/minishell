@@ -10,12 +10,12 @@
 //		>> have to expand the last number error;
 //	4) an alpha or an underscore;
 //		>> possibly an env_val -> go to env_var_manager;
-//	5) everything else (can also be a quote, if we're treating inside quote) 
+//	5) everything else (can also be a quote, if we're treating inside quote)
 //
 // NOTE: the value i can be either i_content or i_quote depending situation.
 //	the value str can be either content or inside_quote depending situation.
 
-// TODO: have to create the function to get the code number error 
+// TODO: have to create the function to get the code number error
 
 char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 {
@@ -26,14 +26,16 @@ char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 		*i += 1;
 		return (NULL);
 	}
-	esle if (ft_isdigit(str[*i + 1] == 1)
+	else if (ft_isdigit(str[*i + 1] == 1))
 	{
 		*i += 2;
 		return (NULL);
 	}
 	else if (str[*i + 1] == '?')
 	{
-		result = find_exit_error();
+		//result = find_exit_error();
+		result = ft_calloc(2, sizeof(char));
+		result[0] = 8;
 		return (result);
 	}
 	else if (ft_isalpha(str[*i + 1]) == 1 || str[*i + 1] == '_')

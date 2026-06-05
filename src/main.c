@@ -63,7 +63,7 @@ t_line  *create_cmd_line(void)
   return (node1);
 }
 
-t_data  *create_data(char **envp)
+t_data  *create_data(void)
 {
   t_data  *data;
 
@@ -73,16 +73,14 @@ t_data  *create_data(char **envp)
   return (data);
 }
 
-int main(int argc, char **argv, char **envp)
+int main(void)
 {
   t_data  *data;
   t_line  *current;
   int y;
 
-  (void) argc;
-  (void) argv;
   y = 0;
-  data = create_data(envp);
+  data = create_data();
   val_manager(data, data->line);
   current = data->line;
   while (current != NULL)

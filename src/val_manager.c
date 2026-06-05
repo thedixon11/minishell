@@ -62,6 +62,7 @@ char	*expand_in_quote(t_data *data, char *row)
 {
 	char	*first_block;
 	char	*second_block;
+	char	*temp;
 	int		i;
 
 	i = 0;
@@ -97,6 +98,7 @@ char	*expand_off_quote(t_data *data, char *content)
 {
 	char	*first_block;
 	char	*second_block;
+	char	*temp;
 	int		i;
 
 	i = 0;
@@ -134,17 +136,17 @@ void	val_manager(t_data *data, t_line *line_cmd)
 	current = line_cmd;
 	while (current != NULL)
 	{
-		if (current->type == T_INPUT && current->type == T_OUTPUT_TRUNC
-			&& current->type == T_OUTPUT_APPEND && current->type == T_COMMAND)
+		if (current->type == T_INPUT || current->type == T_OUTPUT_TRUNC
+			|| current->type == T_OUTPUT_APPEND || current->type == T_COMMAND)
 		{
-			temp = expand_off_quote(current->content);
-			current->content_xpand = ft_split(temp, " ");
+			temp = expand_off_quote(data, current->content);
+			current->content_xpand = ft_split(temp, ' ');
 			free(temp);
 			while (current->content_xpand[y] != NULL)
 			{
 				temp = ft_strdup(current->content_xpand[y]);
 				free(current->content_xpand[y]);
-				current->content_xpand[y] = expand_in_quote(temp);
+				current->content_xpand[y] = expand_in_quote(data, temp);
 				free(temp);
 				y++;
 			}
