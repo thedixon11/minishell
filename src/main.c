@@ -1,4 +1,36 @@
 #include "minishell_xpansion.h"
+
+void	free_all(t_data *data)
+{
+	t_env	*del_env;
+	t_line	*del_line;
+
+	del_env = data->env;
+	while (del_env->next != NULL)
+	{
+		free(del_env->name);
+		free(del_env->content);
+		del_env = del_env->next;
+		free(del_env->prev);
+	}
+	free(del_env->name);
+	free(del_env->content);
+	free(del_env);
+
+	del_line = data->line;
+	while (del_line->next != NULL)
+	{
+		free(del_line->content);
+		ft_free_tab(del_line->content_xpand);
+		del_line = del_line->next;
+		free(del_line->prev);
+	}
+	free(del_line->content);
+	ft_free_tab(del_line->content_xpand);
+	free(del_line);
+	free(data);
+}
+
 void  print_content(char **content)
 {
   int y;
@@ -39,7 +71,7 @@ t_env *create_env(void)
   node3->name = ft_strdup("BARA");
   node3->content = ft_strdup("t file1");
   node4->name = ft_strdup("SHIT");
-  node3->content = ft_strdup(" file2");
+  node4->content = ft_strdup("");
   return (node1);
 }
 
@@ -55,7 +87,7 @@ t_line  *create_cmd_line(void)
   node2->next = NULL;
 
   node1->type = T_INPUT;
-  node1->content = ft_strdup("file2\"$SHIT\"");
+  node1->content = ft_strdup("file2 \"$SHIT\"");
   node1->cmd_nb = 0;
   node2->type = T_COMMAND;
   node2->content = ft_strdup("$CA$PI\"$BARA\"");
@@ -88,6 +120,7 @@ int main(void)
     print_content(current->content_xpand);
     current = current->next;
   }
+	free_all(data);
   return (0);
 }
 

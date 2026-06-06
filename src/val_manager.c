@@ -136,6 +136,7 @@ void	val_manager(t_data *data, t_line *line_cmd)
 	current = line_cmd;
 	while (current != NULL)
 	{
+		y = 0;
 		if (current->type == T_INPUT || current->type == T_OUTPUT_TRUNC
 			|| current->type == T_OUTPUT_APPEND || current->type == T_COMMAND)
 		{
