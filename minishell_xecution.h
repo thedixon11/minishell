@@ -4,6 +4,18 @@
 #ifndef MINISHELL_XECUTION_H
 # define MINISHELL_XECUTION_H
 
+//NOTE: cet enum enumere les differents types de nodes possible dans la liste chainee de la cmd
+typedef enum e_type
+{
+  T_INPUT,
+  T_OUTPUT_TRUNC,
+  T_OUTPUT_APPEND,
+  T_HEREDOC,
+  T_PIPE_IN,
+  T_PIPE_OUT,
+  T_COMMAND,
+} t_type;
+
 //NOTE: la struct t_cmd est creer uniquement dans l'execve preparation
 typedef struct s_cmd
 {
@@ -41,28 +53,40 @@ typedef struct s_data
 {
   t_env  *env;
   t_line  *line;
-  int max_cmd;
+  int max_cmd_nb;
   int *pipe_fd;
   int old_read_fd;
   int *heredoc_pipe_fds;
 } t_data;
 
+// execution functions
+void	*execution(t_data *data, t_line *line_cmd, t_env *env);
+void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env);
+void	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb);
+void	parent_process(t_data *data, int current_cmd_nb);
+void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb);
 
-//NOTE: cet enum enumere les differents types de nodes possible dans la liste chainee de la cmd
-typedef enum e_type
-{
-  T_INPUT,
-  T_OUTPUT_TRUNC,
-  T_OUTPUT_APPEND,
-  T_HEREDOC,
-  T_PIPE_IN,
-  T_PIPE_OUT,
-  T_COMMAND,
-} t_type;
+//heredoc functions
 
-//heredoc exec function
-void  heredoc_exec(t_data *data, t_line *line_cmd, t_env *env);
+void	heredoc_exec(t_data *data, t_line *line_cmd);
+void create_heredoc_fd(t_data *data, t_line *heredoc);
+void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not);
+char  *expand_line_hdoc(char *line, t_bool xpand_or_not);
+char  *go_until_dollar_hdoc(char *line, int *start);
 
+//check in and out redirections
+int	check_in_out_redir(t_line *cmd_line);
+
+// environment convertert from linked list to env_converter_ll_to_array
+char	**env_converter_ll_to_array(t_env *env);
+char	*rebuild_value(t_env *current);
+
+// preparation of material before execve
+
+t_cmd	*execve_preparation(t_data *data, char **cmd_content);
+char	*create_prog_fullname(char **path_array, char *prog_name);
+char	**create_path_array(t_env *env);
+int	is_binary_existing_and_executable(char *path_to_check);
 
 #endif
 

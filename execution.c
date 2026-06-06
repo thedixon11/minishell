@@ -13,16 +13,16 @@
 //
 // TODO: We have to free and close everything after the execve
 
-void	child_process(t_data *data, t_line *line_cmd, int current_cmd)
+void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb)
 {
 	t_line	*current;
 	t_cmd	*cmd_data;
 
 	current = line_cmd;
 	close(data->pipe_fd[0]);
-	while (current->cmb_nb != current_cmd && current != NULL)
+	while (current->cmb_nb != current_cmd_nb && current != NULL)
 		current = current->next;
-	while (current->cmd_nb == current_cmd && current != NULL)
+	while (current->cmd_nb == current_cmd_nb && current != NULL)
 	{
 		if (current->type == T_PIPE_IN || current->type == T_INPUT
 			|| current->type == T_HEREDOC)
@@ -43,11 +43,11 @@ void	child_process(t_data *data, t_line *line_cmd, int current_cmd)
 //
 // TODO: have to check again that is the do_i_wait business ...;
 
-void	parent_process(t_data *data, int current_cmd)
+void	parent_process(t_data *data, int current_cmd_nb)
 {
-	if (current_cmd > 0)
+	if (current_cmd_nb > 0)
 		close(data->old_read_fd);
-	if (current_cmd <= data->max_cmd)
+	if (current_cmd_nb <= data->max_cmd)
 	{
 		data->old_read_fd = data->pipe_fd[0];
 		if (data->do_i_wait == 1)
@@ -71,14 +71,14 @@ void	parent_process(t_data *data, int current_cmd)
 // e) OUTPUT REDIRECTION APPEND -> open an output file;
 // f) HEREDOC -> create a fd with pipe function
 
-void	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
+void	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
 {
 	t_line	*current;
 
 	current = line_cmd;
-	while (current->cmd_nb != current_cmd && current != NULL)
+	while (current->cmd_nb != current_cmd_nb && current != NULL)
 		current = current->next;
-	while (current->cmd_nb == current_cmd && current != NULL)
+	while (current->cmd_nb == current_cmd_nb && current != NULL)
 	{
 		if (current->type == T_PIPE_IN)
 			current->fd = data->old_read_fd;
@@ -114,21 +114,22 @@ void	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd)
 void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 {
 	int	pid;
-	int	current_cmd;
+	int	current_cmd_nb;
 
-	current_cmd = 0;
-	while (current_cmd <= data->max_cmd)
+	current_cmd_nb = 0;
+	while (current_cmd_nb <= data->max_cmd_nb)
 	{
 		if (pipe(data->pipe_fd) == -1)
 			errors_exit(data, PIPE_ERR, 0, 0);
-		open_fd_in_line_cmd(data, line_cmd, current_cmd);
+		open_fd_in_line_cmd(data, line_cmd, current_cmd_nb);
 		pid = fork();
 		if (pid == -1)
 			errors_exit(data, FORK_ERR, 0, 0);
 		if (pid == 0)
-			child_process(data, line_cmd, env, current_cmd);
+			child_process(data, line_cmd, env, current_cmd_nb);
 		if (pid > 0)
-			parent_process(data, current_cmd);
+			parent_process(data, current_cmd_nb);
+		current_cmd_nb++;
 	}
 	while (wait(NULL) > 0)
 		;
