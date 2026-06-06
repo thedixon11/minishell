@@ -19,7 +19,7 @@ char	*env_var_checker(t_env *env, char *var_env)
 	current = env;
 	while (current != NULL)
 	{
-		if (ft_strncpy(var_env, current->name, len) == 0)
+		if (ft_strncmp(var_env, current->name, len) == 0)
 		{
 			xpansion_result = ft_strdup(current->content);
 			return (xpansion_result);

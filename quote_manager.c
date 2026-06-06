@@ -1,5 +1,6 @@
 #include "minishell_xpansion.h"
 
+/*
 // NOTE: is_it_dollar_or_quote will check if the value is a
 // single quote, double quote or a dollar. It's an utils for function
 // second_block_not_dollar_or_quote (for quote_expansion).
@@ -14,7 +15,7 @@ t_bool	is_it_dollar_or_quote(char c, t_quote q_mode)
 		return (B_TRUE);
 	else
 		return (B_FALSE);
-}
+}*/
 
 // NOTE: second_block_not_dollar_or_quote will create a block from i until
 // the next dollar or quote (single or double). It's an utils for function
@@ -23,19 +24,19 @@ t_bool	is_it_dollar_or_quote(char c, t_quote q_mode)
 // NOTE: str may be either value or inside_quote
 // i may be either i_value or i_quote
 
-char	*second_block_not_dollar_or_quote(char *str, int *i, t_quote q_mode)
+char	*second_block_not_dollar(char *str, int *start)
 {
 	int		end;
 	int		len;
 	char	*second_block;
 
-	end = *i;
+	end = *start;
 	len = 0;
-	while (is_it_dollar_or_quote(str[end], q_mode) == B_FALSE && str[end] != 0)
+	while (str[end] != '$' && str[end] != 0)
 		end++;
-	len = end - *i;
-	second_block = ft_substr(str, *i, len);
-	*i = end;
+	len = end - *start;
+	second_block = ft_substr(str, *start, len);
+	*start = end;
 	return (second_block);
 }
 
@@ -57,11 +58,9 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 	while (inside_quote[i_quote] != 0)
 	{
 		if (inside_quote[i_quote] != '$')
-			second_block = second_block_not_dollar(inside_quote, &i_quote,
-					Q_DOUBLE);
+			second_block = second_block_not_dollar(inside_quote, &i_quote);
 		else if (inside_quote[i_quote] == '$')
-			second_block = dollar_manager(data, inside_quote, &i_quote,
-					Q_DOUBLE);
+			second_block = dollar_manager(data, inside_quote, &i_quote, Q_DOUBLE);
 		if (second_block != NULL)
 		{
 			temp = first_block;
@@ -87,7 +86,7 @@ char	*extract_quote(char *value, int *i_value, char quote)
 	while (value[end] != quote)
 		end++;
 	len = end - *i_value;
-	inside_quote = ft_substr(content, *i_value, len);
+	inside_quote = ft_substr(value, *i_value, len);
 	*i_value = end + 1;
 	return (inside_quote);
 }
@@ -108,8 +107,10 @@ char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 	inside_quote = extract_quote(value, i_value, quote);
 	if (quote == '\'')
 		quote_result = ft_strdup(inside_quote);
-	else if (quote == '"')
+	else if (quote == '\"')
 		quote_result = quote_expansion(data, inside_quote);
+	else
+		return (NULL);
 	free(inside_quote);
 	return (quote_result);
 }
