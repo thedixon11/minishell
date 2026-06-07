@@ -15,7 +15,8 @@ char  *go_until_dollar_hdoc(char *line, int *start)
 }
 
 // NOTE: expand_line_hdoc will expand the STDIN_FILENO input content
-// before writing it in the READ FD
+// before writing it in the READ FD if xpand_or_not is TRUE. Otherwise, it
+// will just strdup the line.
 
 char  *expand_line_hdoc(char *line, t_bool xpand_or_not)
 {
@@ -24,7 +25,7 @@ char  *expand_line_hdoc(char *line, t_bool xpand_or_not)
   int y;
 
   i = 0;
-  if (xpand_or_not == B_TRUE)
+  if (xpand_or_not == B_FALSE)
     return (ft_strdup(line));
   first_block = ft_strdup("");
   while (line[i] != 0)
@@ -48,9 +49,6 @@ return (first_block);
 // using the WRITING FD of the heredoc pipe. Before writing on the fd, we have
 // to expend the content inside.
 //
-// TODO: have to check if delimier have quotes or not. If yes, no expansions,
-// otherwise there will have expansion.
-//
 // WARNING: We have to put the corrrect gnl in the libft !! The one that
 // can manage a delimiter.
 
@@ -73,7 +71,7 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		len_of_line = ft_strlen(line_xpanded);
 		write(data->heredoc_pipe_fds[1], line_xpanded, len_of_line);
 		free(line);
-    free(line_xpanded);
+		free(line_xpanded);
 		line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 		if (line == NULL)
 			errors_exit(data, QUIT_HEREDOC, 0, 0);
@@ -116,7 +114,10 @@ void	heredoc_exec(t_data *data, t_line *line_cmd)
 		if (current->type == T_HEREDOC)
 		{
 			create_heredoc_fd(data, current);
-			write_on_fd(data, current);
+			if (ft_strchr(current->content, '\'') == NULL) // TODO: gros a corriger faut inclure tout les quotes batard que je suis
+				write_on_fd(data, current, B_TRUE);
+			else	
+				write_on_fd(data, current, B_FALSE);
 		}
 		current = current->next;
 	}
