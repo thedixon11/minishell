@@ -2,14 +2,16 @@
 
 // TODO: have to add the fact he will just check the nodes of the right number cmd
 
-int	check_in_out_redir(t_line *cmd_line)
+t_bool check_in_out_redir(t_line *line_cmd, int current_cmd_nb)
 {
 	t_line	*current;
 	int	y;
 
 	y = 0;
-	current = cmd_line;
-	while (current != NULL)
+	current = line_cmd;
+  while (current->cmd_nb != current_cmd_nb)
+    current = current->next;
+	while (current->cmd_nb == current_cmd_nb && current != NULL)
 	{
 		y = 0;
 		if (current->type == T_INPUT || current->type == T_OUTPUT_APPEND
@@ -19,8 +21,8 @@ int	check_in_out_redir(t_line *cmd_line)
 				y++;
 		}
 		if (y > 1)
-			return (1);
+			return (B_FALSE);
 		current = current->next;
 	}
-	return (0);
+	return (B_TRUE);
 }

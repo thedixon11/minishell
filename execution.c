@@ -39,7 +39,7 @@ void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb)
 }
 
 // NOTE: the only main mission of the parent_process is to store the
-// READ_FD to give it to the input pipe redicerction of the next child;
+// READ_FD to give it to the input pipe redirerction of the next child;
 //
 // TODO: have to check again that is the do_i_wait business ...;
 
@@ -71,7 +71,7 @@ void	parent_process(t_data *data, int current_cmd_nb)
 // e) OUTPUT REDIRECTION APPEND -> open an output file;
 // f) HEREDOC -> create a fd with pipe function
 
-void	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
+t_bool	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
 {
 	t_line	*current;
 
@@ -94,8 +94,20 @@ void	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
 					0644);
 		else if (current->type == T_PIPE_OUT)
 			current->fd = data->pipe_fd[1];
+    if (current->fd < 0)
+      return (B_FALSE);
 		current = current->next;
 	}
+  return (B_TRUE);
+}
+
+t_bool  check_and_prepare_before_pipe(t_line *line_cmd, int current_cmd_nb)
+{
+    if (check_in_out_redir(line_cmd, current_cmd_nb) == B_FALSE)
+      return (B_FALSE);
+    if (open_fd_in_line_cmd(data, line_cmd, current_cmd_nb) == B_FALSE)
+      return (B_FASLE);
+    return (B_TRUE);
 }
 
 // NOTE: With execute_cmds, we'll execute all cmds. For each cmds, we'll
@@ -110,7 +122,14 @@ void	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
 // forking. The only thing done in the children is all the in-out patching
 //
 // TODO: Have to rebuild all about wait and waitpid functions;
-
+//
+// TODO: If there is an error in the input/output redirections ,
+// we have to close all the fds of the cmd number before going on
+// and the old_read_fd. But we have to secure that the next pipe node
+// will not be open
+//
+// TODO: BIG QUESTION : do i have to create a pipe if the cmd is invalid ?
+//
 void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 {
 	int	pid;
@@ -119,22 +138,32 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 	current_cmd_nb = 0;
 	while (current_cmd_nb <= data->max_cmd_nb)
 	{
-		if (pipe(data->pipe_fd) == -1)
+    if (check_and_prepare_before_pipe(line_cmd, current_cmd_nb) == B_TRUE)
+    {
+      if (pipe(data->pipe_fd) == -1)
 			errors_exit(data, PIPE_ERR, 0, 0);
-		open_fd_in_line_cmd(data, line_cmd, current_cmd_nb);
-		pid = fork();
-		if (pid == -1)
-			errors_exit(data, FORK_ERR, 0, 0);
-		if (pid == 0)
-			child_process(data, line_cmd, env, current_cmd_nb);
-		if (pid > 0)
-			parent_process(data, current_cmd_nb);
+		  pid = fork();
+		  if (pid == -1)
+		  	errors_exit(data, FORK_ERR, 0, 0);
+		  if (pid == 0)
+		  	child_process(data, line_cmd, env, current_cmd_nb);
+		  if (pid > 0)
+		  	parent_process(data, current_cmd_nb);
+	  }
+    else
+    {
+      if (data->old_read_fd >= 0)
+      {
+        close (data->old_read_fd);
+        data->old_read_fd = -1;
+      }
+    } 
 		current_cmd_nb++;
-	}
+  }
 	while (wait(NULL) > 0)
-		;
+		  ;
 	if (data->old_read_fd >= 0)
-		close(data->old_read_fd);
+	  close(data->old_read_fd);
 }
 
 // NOTE: execution process start here. There is two steps:
@@ -145,8 +174,7 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 void	*execution(t_data *data, t_line *line_cmd, t_env *env)
 {
 	heredoc_exec(line_cmd);
-	if (check_in_out_redir(line_cmd) == 0)
-		execute_cmds(data, line_cmd, env);
+	execute_cmds(data, line_cmd, env);
 	close_all_fd();
 	free_all();
 }

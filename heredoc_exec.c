@@ -102,11 +102,13 @@ void create_heredoc_fd(t_data *data, t_line *heredoc)
 
 // NOTE: Here starts the heredocs executions. There is two steps per heredoc :
 // 1) create a pipe for each heredoc(that creates fds);
+// 2) if the delimiter has quotes, have to manage them;
 // 2) write on that buffer, and store the read fd;
 
 void	heredoc_exec(t_data *data, t_line *line_cmd)
 {
 	t_line	*current;
+  char  *temp;
 
 	current = line_cmd;
 	while (current != NULL)
@@ -114,10 +116,14 @@ void	heredoc_exec(t_data *data, t_line *line_cmd)
 		if (current->type == T_HEREDOC)
 		{
 			create_heredoc_fd(data, current);
-			if (ft_strchr(current->content, '\'') == NULL) // TODO: gros a corriger faut inclure tout les quotes batard que je suis
+			if (ft_strchr(current->content, '\'' && ft_strchr(current->content, '\"'') == NULL)
 				write_on_fd(data, current, B_TRUE);
-			else	
+			else
+      {
+        temp = current->content;
+        current->content = delimiter_manager(current->content);
 				write_on_fd(data, current, B_FALSE);
+      }
 		}
 		current = current->next;
 	}
