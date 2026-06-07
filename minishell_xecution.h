@@ -4,6 +4,20 @@
 #ifndef MINISHELL_XECUTION_H
 # define MINISHELL_XECUTION_H
 
+typedef enum e_quote
+{
+  Q_NONE,
+  Q_SINGLE,
+  Q_DOUBLE,
+  Q_HEREDOC
+} t_quote;
+
+typedef enum e_bool
+{
+  B_FALSE,
+  B_TRUE
+} t_bool;
+
 //NOTE: cet enum enumere les differents types de nodes possible dans la liste chainee de la cmd
 typedef enum e_type
 {
@@ -15,15 +29,6 @@ typedef enum e_type
   T_PIPE_OUT,
   T_COMMAND,
 } t_type;
-
-//NOTE: la struct t_cmd est creer uniquement dans l'execve preparation
-typedef struct s_cmd
-{
-  char  *prog_fullname;
-  char  **args_array;
-  char  **path_array;
-  char  **env;
-} t_cmd;
 
 //NOTE: la struct t_line est utilisee pour la liste chainee de la cmd.
 // chaque node est un element de la cmd (soit cmd, pipe in, pipe out, heredoc, ...)
@@ -46,6 +51,15 @@ typedef struct s_env
   struct s_env  *prev;
   struct s_env  *next;
 } t_env;
+
+//NOTE: la struct t_cmd est creer uniquement dans l'execve preparation
+typedef struct s_cmd
+{
+  char  *prog_fullname;
+  char  **args_array;
+  char  **path_array;
+  char  **env;
+} t_cmd;
 
 //NOTE: la struct t_data est creer au tout debut du programme.
 // elle va contenir des donnees utilisees globalement dans le prog.
