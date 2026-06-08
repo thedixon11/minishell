@@ -1,9 +1,10 @@
 #include "minishell_xecution.h"
 
 // NOTE: The child process has three missions:
-// 1) patch the input/output rediderctions using dup2.
-// 2) preparing the material to execute the command;
-// 3) execute the command;
+// 1) check if all in/ot redirections are valid or not;
+// 2) patch the input/output rediderctions using dup2.
+// 3) preparing the material to execute the command;
+// 4) execute the command;
 //
 // NOTE: To know which redirection (input/output) will be the one to be used,
 // we'll dup2 in serie following the line_cmd order. The last dup2 will define
@@ -20,22 +21,26 @@ void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb)
 
 	current = line_cmd;
 	close(data->pipe_fd[0]);
-	while (current->cmb_nb != current_cmd_nb && current != NULL)
-		current = current->next;
-	while (current->cmd_nb == current_cmd_nb && current != NULL)
-	{
-		if (current->type == T_PIPE_IN || current->type == T_INPUT
-			|| current->type == T_HEREDOC)
-			dup2(current->fd, STDIN_FILENO);
-		else if (current->type == T_OUTPUT_APPEND
-			|| current->type == T_OUTPUT_TRUNC || current->type == T_PIPE_IN)
-			dup2(current->fd, STDOUT_FILENO);
-		current = current->next;
-	}
-	current = line_cmd;
-	while (current->type != T_COMMAND && current->cmd_nb == current_cmd)
-		current = current->next;
-	cmd_data = execve_preparation(data, current->content_xpand);
+  if (check_and_prepare_fds(t_line *line_cmd, int current_cmd_nb) == B_TRUE)
+  {
+	  while (current->cmb_nb != current_cmd_nb && current != NULL)
+		  current = current->next;
+	  while (current->cmd_nb == current_cmd_nb && current != NULL)
+	  {
+	  	if (current->type == T_PIPE_IN || current->type == T_INPUT
+	  		|| current->type == T_HEREDOC)
+	  		dup2(current->fd, STDIN_FILENO);
+	  	else if (current->type == T_OUTPUT_APPEND
+	  		|| current->type == T_OUTPUT_TRUNC || current->type == T_PIPE_IN)
+	  		dup2(current->fd, STDOUT_FILENO);
+	  	current = current->next;
+	  }
+	  current = line_cmd;
+	  while (current->type != T_COMMAND && current->cmd_nb == current_cmd)
+		  current = current->next;
+	  cmd_data = execve_preparation(data, current->content_xpand);
+  }
+  // TODO: here, have to write function that close all fds
 }
 
 // NOTE: the only main mission of the parent_process is to store the
@@ -101,7 +106,7 @@ t_bool	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
   return (B_TRUE);
 }
 
-t_bool  check_and_prepare_before_pipe(t_line *line_cmd, int current_cmd_nb)
+t_bool  check_and_prepare_fds(t_line *line_cmd, int current_cmd_nb)
 {
     if (check_in_out_redir(line_cmd, current_cmd_nb) == B_FALSE)
       return (B_FALSE);
@@ -129,6 +134,7 @@ t_bool  check_and_prepare_before_pipe(t_line *line_cmd, int current_cmd_nb)
 // will not be open
 //
 // TODO: BIG QUESTION : do i have to create a pipe if the cmd is invalid ?
+// answer : yes !
 //
 void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 {
@@ -136,28 +142,19 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 	int	current_cmd_nb;
 
 	current_cmd_nb = 0;
+  do_i_execute = B_FALSE;
 	while (current_cmd_nb <= data->max_cmd_nb)
 	{
-    if (check_and_prepare_before_pipe(line_cmd, current_cmd_nb) == B_TRUE)
-    {
-      if (pipe(data->pipe_fd) == -1)
-			errors_exit(data, PIPE_ERR, 0, 0);
-		  pid = fork();
-		  if (pid == -1)
-		  	errors_exit(data, FORK_ERR, 0, 0);
-		  if (pid == 0)
-		  	child_process(data, line_cmd, env, current_cmd_nb);
-		  if (pid > 0)
-		  	parent_process(data, current_cmd_nb);
+    if (pipe(data->pipe_fd) == -1)
+	    errors_exit(data, PIPE_ERR, 0, 0);
+		pid = fork();
+		if (pid == -1)
+		  errors_exit(data, FORK_ERR, 0, 0);
+    else if (pid == 0)
+		  child_process(data, line_cmd, env, current_cmd_nb);
+    else if (pid > 0)
+		  parent_process(data, current_cmd_nb);
 	  }
-    else
-    {
-      if (data->old_read_fd >= 0)
-      {
-        close (data->old_read_fd);
-        data->old_read_fd = -1;
-      }
-    } 
 		current_cmd_nb++;
   }
 	while (wait(NULL) > 0)
