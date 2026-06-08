@@ -33,8 +33,8 @@ void	handle_quote(t_state *state)
 
 	handle_word(state);
 	state->quote = state->str[state->i];
-	start = state->i + 1;
-	state->i = start;
+	start = state->i;
+	state->i = start + 1;
 	while (state->str[state->i] != state->quote && state->str[state->i] != '\0') 
 			state->i++;
 	if (state->quote != '\0' && state->str[state->i] == '\0')
@@ -42,11 +42,10 @@ void	handle_quote(t_state *state)
 		printf("Erreur : Quote pas fermee bordel\n");
 		return ;
 	}
-	str = strndup(state->str + start, state-> i - start);
-	state->i++;
+	str = strndup(state->str + start, state-> i - start + 1);
 	state->current = new_node(str, WORD);
 	add_node(state->current, state);
-	state->start = state->i;
+	state->start = state->i + 1;
 }
 
 void	handle_operator(t_state *state)
@@ -65,17 +64,13 @@ void	handle_operator(t_state *state)
 		str = strndup(state->str + state->i, 1);
 	state->current = new_node(str, type);
 	add_node(state->current, state);
-	state->i++;
-	while (state->str[state->i] == ' ')
-		state->i++;
-	state->start = state->i;
+	state->start = state->i + 1;
 }
 
 void	handle_word(t_state *state)
 {
 	char	*str;
-	//  while (state->str[state->i] == ' ')
-	//   	state->i++;
+
 	if (state->start != state->i)
 	{
 		str = strndup(state->str + state->start, state->i - state->start);
