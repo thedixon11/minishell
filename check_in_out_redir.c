@@ -12,7 +12,7 @@
 // c) INPUT REDIRECTION -> open an input file
 // d) OUTPUT REDIRECTION TRUNCATE -> open an output file;
 // e) OUTPUT REDIRECTION APPEND -> open an output file;
-// f) HEREDOC -> create a fd with pipe function
+// f) HEREDOC -> create a fd with pipe function 
 
 t_bool	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
 {

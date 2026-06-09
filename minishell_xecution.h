@@ -103,5 +103,13 @@ char	*create_prog_fullname(char **path_array, char *prog_name);
 char	**create_path_array(t_env *env);
 int	is_binary_existing_and_executable(char *path_to_check);
 
+// execution utils
+
+void	free_and_close_life(t_data *data, t_line *line_cmd);
+void	close_all_fd(t_line *line_cmd);
+void	free_line_cmd(t_line *line_cmd);
+void	free_env(t_env *env);
+void	free_cmd_data(t_cmd *cmd_data);
+
 #endif
 

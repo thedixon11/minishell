@@ -12,7 +12,7 @@
 //
 // NOTE: The child READ FD is useless, we can directly close it.
 //
-// TODO: We have to free and close everything after the execve
+// TODO: have to see how to exit correctly the child
 
 void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb)
 {
@@ -41,7 +41,8 @@ void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb)
 			current = current->next;
 		cmd_data = execve_preparation(data, current->content_xpand);
 	}
-	// TODO: here, have to write function that close all fds
+	free_and_close_life(data, line_cmd);
+	exit(0);
 }
 
 // NOTE: the only main mission of the parent_process is to store the
@@ -121,5 +122,5 @@ void	*execution(t_data *data, t_line *line_cmd, t_env *env)
 	heredoc_exec(line_cmd);
 	execute_cmds(data, line_cmd, env);
 	close_all_fd();
-	free_all();
+	free_and_close_life(data, t_line *line_cmd)
 }
