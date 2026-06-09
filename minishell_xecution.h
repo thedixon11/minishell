@@ -76,7 +76,6 @@ typedef struct s_data
 // execution functions
 void	*execution(t_data *data, t_line *line_cmd, t_env *env);
 void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env);
-void	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb);
 void	parent_process(t_data *data, int current_cmd_nb);
 void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb);
 
@@ -89,7 +88,9 @@ char  *expand_line_hdoc(char *line, t_bool xpand_or_not);
 char  *go_until_dollar_hdoc(char *line, int *start);
 
 //check in and out redirections
-int	check_in_out_redir(t_line *cmd_line);
+t_bool	check_and_prepare_fds(t_line *line_cmd, int current_cmd_nb);
+t_bool check_in_out_one_file(t_line *line_cmd, int current_cmd_nb);
+t_bool	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb);
 
 // environment convertert from linked list to env_converter_ll_to_array
 char	**env_converter_ll_to_array(t_env *env);
