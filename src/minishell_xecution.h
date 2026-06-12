@@ -3,6 +3,19 @@
 
 #ifndef MINISHELL_XECUTION_H
 # define MINISHELL_XECUTION_H
+# include "../libft/libft.h"
+
+# define MALLOC_ERR "Malloc failed"
+# define CMD_ERR "Command not found or not executable"
+# define PIPE_ERR "Pipe failed"
+# define FORK_ERR "Fork failed"
+# define OPEN_ERR "Open file failed"
+# define DUP2_ERR "Dup2 failed"
+# define ARGC_ERR "Missing arguments"
+# define ARGC2_ERR "Args quote wrong or args tab malloc failed"
+# define FILE_ERR "File error"
+# define EXECVE_ERR "Execve failed"
+# define QUIT_HEREDOC "Process quit during here_doc"
 
 typedef enum e_quote
 {
@@ -88,7 +101,7 @@ char  *expand_line_hdoc(char *line, t_bool xpand_or_not);
 char  *go_until_dollar_hdoc(char *line, int *start);
 
 //check in and out redirections
-t_bool	check_and_prepare_fds(t_line *line_cmd, int current_cmd_nb);
+t_bool	check_and_prepare_fds(t_data *data, t_line *line_cmd, int current_cmd_nb);
 t_bool check_in_out_one_file(t_line *line_cmd, int current_cmd_nb);
 t_bool	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb);
 

@@ -33,7 +33,7 @@ t_bool	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
 			current->fd = open(current->content, O_WRONLY | O_CREAT | O_APPEND,
 					0644);
 		else if (current->type == T_OUTPUT_TRUNC)
-			outfile = open(data->argv[y + 1], O_WRONLY | O_CREAT | O_TRUNC,
+			current->fd = open(current->content, O_WRONLY | O_CREAT | O_TRUNC,
 					0644);
 		else if (current->type == T_PIPE_OUT)
 			current->fd = data->pipe_fd[1];
@@ -70,11 +70,11 @@ t_bool check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
 	return (B_TRUE);
 }
 
-t_bool	check_and_prepare_fds(t_line *line_cmd, int current_cmd_nb)
+t_bool	check_and_prepare_fds(t_data *data, t_line *line_cmd, int current_cmd_nb)
 {
 	if (check_in_out_one_file(line_cmd, current_cmd_nb) == B_FALSE)
 		return (B_FALSE);
 	if (open_fd_in_line_cmd(data, line_cmd, current_cmd_nb) == B_FALSE)
-		return (B_FASLE);
+		return (B_FALSE);
 	return (B_TRUE);
 }

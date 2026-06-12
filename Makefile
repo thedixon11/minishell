@@ -6,7 +6,7 @@ OBJ_DIR = obj
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRCS = t_line_list.c \
+SRCS = minishell_lists.c \
 			check_in_out_redir.c \
 			env_converter_ll_to_array.c \
 			execution.c \

@@ -86,7 +86,7 @@ void	parent_process(t_data *data, int current_cmd_nb)
 // will not be open
 //
 //
-void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
+void	execute_cmds(t_data *data, t_line *line_cmd)
 {
 	int	pid;
 	int	current_cmd_nb;
@@ -100,16 +100,16 @@ void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env)
 		if (pid == -1)
 			errors_exit(data, FORK_ERR, 0, 0);
 		else if (pid == 0)
-			child_process(data, line_cmd, env, current_cmd_nb);
+			child_process(data, line_cmd, current_cmd_nb);
 		else if (pid > 0)
 			parent_process(data, current_cmd_nb);
 	}
 	current_cmd_nb++;
-}
-while	(wait(NULL) > 0)
-	;
-if (data->old_read_fd >= 0)
-	close(data->old_read_fd);
+
+	while	(wait(NULL) > 0)
+		;
+	if (data->old_read_fd >= 0)
+		close(data->old_read_fd);
 }
 
 // NOTE: execution process start here. There is two steps:
@@ -119,8 +119,8 @@ if (data->old_read_fd >= 0)
 
 void	*execution(t_data *data, t_line *line_cmd, t_env *env)
 {
-	heredoc_exec(line_cmd);
+	heredoc_exec(data, line_cmd);
 	execute_cmds(data, line_cmd, env);
-	close_all_fd();
-	free_and_close_life(data, t_line *line_cmd)
+	close_all_fd(line_cmd);
+	free_and_close_life(data, line_cmd);
 }
