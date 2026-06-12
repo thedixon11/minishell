@@ -1,4 +1,4 @@
-NAME = xpansion
+NAME = xcution
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -6,11 +6,14 @@ OBJ_DIR = obj
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRCS = main.c \
-			 val_manager.c \
-			 dollar_manager.c \
-			 quote_manager.c \
-			 env_var_manager.c
+SRCS = t_line_list.c \
+			check_in_out_redir.c \
+			env_converter_ll_to_array.c \
+			execution.c \
+			execution_utils.c \
+			execve_preparation.c \
+			heredoc_exec.c \
+			heredoc_exec_utils.c
 
 SRCS := $(addprefix $(SRC_DIR)/,$(SRCS))
 OBJS := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
