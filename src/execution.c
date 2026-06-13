@@ -1,4 +1,5 @@
 #include "minishell_xecution.h"
+#include <unistd.h>
 
 // NOTE: The child process has four missions:
 // 1) check if all in/ot redirections are valid or not;
@@ -14,14 +15,14 @@
 //
 // TODO: have to see how to exit correctly the child
 
-void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb)
+void	child_process(t_data *data, int current_cmd_nb)
 {
 	t_line	*current;
 	t_cmd	*cmd_data;
 
-	current = line_cmd;
+	current = data->line_cmd;
 	close(data->pipe_fd[0]);
-	if (check_and_prepare_fds(line_cmd, current_cmd_nb) == B_TRUE)
+if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
 	{
 		while (current->cmb_nb != current_cmd_nb && current != NULL)
 			current = current->next;
@@ -36,12 +37,13 @@ void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb)
 				dup2(current->fd, STDOUT_FILENO);
 			current = current->next;
 		}
-		current = line_cmd;
+		current = data->line_cmd;
 		while (current->type != T_COMMAND && current->cmd_nb == current_cmd)
 			current = current->next;
 		cmd_data = execve_preparation(data, current->content_xpand);
+		execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env);
 	}
-	free_and_close_life(data, line_cmd);
+	free_and_close_life(data);
 	exit(0);
 }
 
@@ -64,7 +66,6 @@ void	parent_process(t_data *data, int current_cmd_nb)
 		}
 		close(data->pipe_fd[1]);
 	}
-	data->y++;
 }
 
 
@@ -86,7 +87,7 @@ void	parent_process(t_data *data, int current_cmd_nb)
 // will not be open
 //
 //
-void	execute_cmds(t_data *data, t_line *line_cmd)
+void	execute_cmds(t_data *data)
 {
 	int	pid;
 	int	current_cmd_nb;
@@ -95,12 +96,12 @@ void	execute_cmds(t_data *data, t_line *line_cmd)
 	while (current_cmd_nb <= data->max_cmd_nb)
 	{
 		if (pipe(data->pipe_fd) == -1)
-			errors_exit(data, PIPE_ERR, 0, 0);
+			exit(10);
 		pid = fork();
 		if (pid == -1)
-			errors_exit(data, FORK_ERR, 0, 0);
+			exit(10);
 		else if (pid == 0)
-			child_process(data, line_cmd, current_cmd_nb);
+			child_process(data, current_cmd_nb);
 		else if (pid > 0)
 			parent_process(data, current_cmd_nb);
 	}
@@ -117,10 +118,9 @@ void	execute_cmds(t_data *data, t_line *line_cmd)
 // 2) check all input and output redirections (not pipe)
 // 2) execution of the commands;
 
-void	*execution(t_data *data, t_line *line_cmd, t_env *env)
+void	*execution(t_data *data)
 {
-	heredoc_exec(data, line_cmd);
-	execute_cmds(data, line_cmd, env);
-	close_all_fd(line_cmd);
-	free_and_close_life(data, line_cmd);
+	heredoc_exec(data);
+	execute_cmds(data);
+	free_and_close_life(data);
 }

@@ -14,11 +14,11 @@
 // e) OUTPUT REDIRECTION APPEND -> open an output file;
 // f) HEREDOC -> create a fd with pipe function 
 
-t_bool	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb)
+t_bool	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
 {
 	t_line	*current;
 
-	current = line_cmd;
+	current = data->line_cmd;
 	while (current->cmd_nb != current_cmd_nb && current != NULL)
 		current = current->next;
 	while (current->cmd_nb == current_cmd_nb && current != NULL)
@@ -70,11 +70,11 @@ t_bool check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
 	return (B_TRUE);
 }
 
-t_bool	check_and_prepare_fds(t_data *data, t_line *line_cmd, int current_cmd_nb)
+t_bool	check_and_prepare_fds(t_data *data, int current_cmd_nb)
 {
-	if (check_in_out_one_file(line_cmd, current_cmd_nb) == B_FALSE)
+	if (check_in_out_one_file(data->line_cmd, current_cmd_nb) == B_FALSE)
 		return (B_FALSE);
-	if (open_fd_in_line_cmd(data, line_cmd, current_cmd_nb) == B_FALSE)
+	if (open_fd_in_line_cmd(data, current_cmd_nb) == B_FALSE)
 		return (B_FALSE);
 	return (B_TRUE);
 }

@@ -105,12 +105,12 @@ void create_heredoc_fd(t_data *data, t_line *heredoc)
 // 2) if the delimiter has quotes, have to manage them;
 // 2) write on that buffer, and store the read fd;
 
-void	heredoc_exec(t_data *data, t_line *line_cmd)
+void	heredoc_exec(t_data *data)
 {
 	t_line	*current;
   char  *temp;
 
-	current = line_cmd;
+	current = data->line_cmd;
 	while (current != NULL)
 	{
 		if (current->type == T_HEREDOC)

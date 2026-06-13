@@ -235,7 +235,7 @@ static t_data	*data_creation(t_env *env, t_line *line_cmd)
 	if (!data)
 		return (NULL);
 	data->env = env;
-	data->line = line_cmd;
+	data->line_cmd = line_cmd;
 	data->max_cmd_nb = 1;
 	return (data);	
 }

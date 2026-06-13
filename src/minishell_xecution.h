@@ -79,7 +79,7 @@ typedef struct s_cmd
 typedef struct s_data
 {
   t_env  *env;
-  t_line  *line;
+  t_line  *line_cmd;
   int max_cmd_nb;
   int *pipe_fd;
   int old_read_fd;
@@ -87,23 +87,23 @@ typedef struct s_data
 } t_data;
 
 // execution functions
-void	*execution(t_data *data, t_line *line_cmd, t_env *env);
-void	execute_cmds(t_data *data, t_line *line_cmd, t_env *env);
+void	*execution(t_data *data);
+void	execute_cmds(t_data *data);
 void	parent_process(t_data *data, int current_cmd_nb);
-void	child_process(t_data *data, t_line *line_cmd, int current_cmd_nb);
+void	child_process(t_data *data, int current_cmd_nb);
 
 //heredoc functions
 
-void	heredoc_exec(t_data *data, t_line *line_cmd);
+void	heredoc_exec(t_data *data);
 void create_heredoc_fd(t_data *data, t_line *heredoc);
 void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not);
 char  *expand_line_hdoc(char *line, t_bool xpand_or_not);
 char  *go_until_dollar_hdoc(char *line, int *start);
 
 //check in and out redirections
-t_bool	check_and_prepare_fds(t_data *data, t_line *line_cmd, int current_cmd_nb);
+t_bool	check_and_prepare_fds(t_data *data, int current_cmd_nb);
 t_bool check_in_out_one_file(t_line *line_cmd, int current_cmd_nb);
-t_bool	open_fd_in_line_cmd(t_data *data, t_line *line_cmd, int current_cmd_nb);
+t_bool	open_fd_in_line_cmd(t_data *data, int current_cmd_nb);
 
 // environment convertert from linked list to env_converter_ll_to_array
 char	**env_converter_ll_to_array(t_env *env);
@@ -118,7 +118,7 @@ int	is_binary_existing_and_executable(char *path_to_check);
 
 // execution utils
 
-void	free_and_close_life(t_data *data, t_line *line_cmd);
+void	free_and_close_life(t_data *data);
 void	close_all_fd(t_line *line_cmd);
 void	free_line_cmd(t_line *line_cmd);
 void	free_env(t_env *env);

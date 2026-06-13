@@ -69,10 +69,10 @@ void	close_all_fd(t_line *line_cmd)
 	}
 }
 
-void	free_and_close_life(t_data *data, t_line *line_cmd)
+void	free_and_close_life(t_data *data)
 {
-	close_all_fd(line_cmd);
-	free_line_cmd(line_cmd);
+	close_all_fd(data->line_cmd);
+	free_line_cmd(data->line_cmd);
 	free_env(data->env);
 	free(data);
 }
