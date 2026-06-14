@@ -24,7 +24,7 @@ void	child_process(t_data *data, int current_cmd_nb)
 	close(data->pipe_fd[0]);
 if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
 	{
-		while (current->cmb_nb != current_cmd_nb && current != NULL)
+		while (current->cmd_nb != current_cmd_nb && current != NULL)
 			current = current->next;
 		while (current->cmd_nb == current_cmd_nb && current != NULL)
 		{
@@ -38,7 +38,7 @@ if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
 			current = current->next;
 		}
 		current = data->line_cmd;
-		while (current->type != T_COMMAND && current->cmd_nb == current_cmd)
+		while (current->type != T_COMMAND && current->cmd_nb == current_cmd_nb)
 			current = current->next;
 		cmd_data = execve_preparation(data, current->content_xpand);
 		execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env);
@@ -56,7 +56,7 @@ void	parent_process(t_data *data, int current_cmd_nb)
 {
 	if (current_cmd_nb > 0)
 		close(data->old_read_fd);
-	if (current_cmd_nb <= data->max_cmd)
+	if (current_cmd_nb <= data->max_cmd_nb)
 	{
 		data->old_read_fd = data->pipe_fd[0];
 		if (data->do_i_wait == 1)
@@ -118,7 +118,7 @@ void	execute_cmds(t_data *data)
 // 2) check all input and output redirections (not pipe)
 // 2) execution of the commands;
 
-void	*execution(t_data *data)
+void	execution(t_data *data)
 {
 	heredoc_exec(data);
 	execute_cmds(data);

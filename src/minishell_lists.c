@@ -270,7 +270,7 @@ int	main(int argc, char **argv, char **envp)
 
 
 	data = data_creation(env_list, line_list);
-	execution(data, line_list, env_list);
+	execution(data);
 	free_line_list(line_list);
 	free_env_list(env_list);
 

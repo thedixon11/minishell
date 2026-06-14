@@ -84,21 +84,26 @@ typedef struct s_data
   int *pipe_fd;
   int old_read_fd;
   int *heredoc_pipe_fds;
+  int do_i_wait;
 } t_data;
 
 // execution functions
-void	*execution(t_data *data);
+void	execution(t_data *data);
 void	execute_cmds(t_data *data);
 void	parent_process(t_data *data, int current_cmd_nb);
 void	child_process(t_data *data, int current_cmd_nb);
 
 //heredoc functions
-
 void	heredoc_exec(t_data *data);
 void create_heredoc_fd(t_data *data, t_line *heredoc);
 void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not);
-char  *expand_line_hdoc(char *line, t_bool xpand_or_not);
+char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not);
 char  *go_until_dollar_hdoc(char *line, int *start);
+
+//heredoc utils
+char  *delimiter_manager_hdoc(char *old_del);
+char  *go_until_quote_hdoc(char *old_del, int *i);
+char  *extract_quote_hdoc(char *old_del, int *i, char quote);
 
 //check in and out redirections
 t_bool	check_and_prepare_fds(t_data *data, int current_cmd_nb);
@@ -113,7 +118,7 @@ char	*rebuild_value(t_env *current);
 
 t_cmd	*execve_preparation(t_data *data, char **cmd_content);
 char	*create_prog_fullname(char **path_array, char *prog_name);
-char	**create_path_array(t_env *env);
+char	**create_path_array(char *path_to_split);
 int	is_binary_existing_and_executable(char *path_to_check);
 
 // execution utils

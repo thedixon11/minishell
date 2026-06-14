@@ -3,7 +3,7 @@
 // NOTE: here we check if the programm exists and is executable
 // with the function access
 
-int	is_binary_existing_and_executable(char *path_to_check)
+int	is_prog_existing_and_executable(char *path_to_check)
 {
 	if (access(path_to_check, F_OK) != 0)
 		return (-1);
@@ -16,29 +16,14 @@ int	is_binary_existing_and_executable(char *path_to_check)
 // is in the environment, with ':' as separators and removing the
 // "PATH=" at the beginning.
 
-char	**create_path_array(t_env *env)
+char	**create_path_array(char *path_to_split)
 {
-	char	*path_to_split;
-	size_t	y;
+	char  **path_array;
 
-	y = 0;
-	while (cmd_data->env[y] != NULL)
-	{
-		if (ft_strncmp(data->env[y], "PATH", 4) == 0)
-		{
-			path_to_split = ft_strrm(data->env[y], 4);
-			if (path_to_split == NULL)
-				errors_exit(data, MALLOC_ERR, 0, 0);
-			cmd_data->path_array = ft_split(path_to_split, ':');
-			if (cmd_data->path_array == NULL)
-				errors_exit(data, MALLOC_ERR, 0, 0);
-			free(path_to_split);
-			return ;
-		}
-		y++;
-	}
-	cmd_data->path_array = NULL;
-	return (data);
+	path_array = ft_split(path_to_split, ':');
+	if (!path_array)
+  	exit(10);
+	return (path_array);
 }
 
 // NOTE: In the situation the programm can't be a relative/absolute,
@@ -55,12 +40,12 @@ char	*create_prog_fullname(char **path_array, char *prog_name)
 	y = 0;
 	temp = ft_strjoin("/", prog_name);
 	if (temp == NULL)
-		errors_exit(data, MALLOC_ERR, 0, 0);
+		exit(10);
 	while (path_array[y] != NULL)
 	{
 		prog_fullname = ft_strjoin(path_array[y], temp);
 		if (prog_fullname == NULL)
-			errors_exit(data, MALLOC_ERR, 0, 0);
+			exit(10);
 		if (is_binary_existing_and_executable(prog_fullname) == 0)
 		{
 			free(temp);

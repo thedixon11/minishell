@@ -4,12 +4,12 @@ void	free_cmd_data(t_cmd *cmd_data)
 {
 	if (cmd_data->prog_fullname != NULL)
 		free(cmd_data->prog_fullname);
-	if (cmd_data->args_array !- NULL)
-		free_tab(cmd_data->args_array);
+	if (cmd_data->args_array != NULL)
+		ft_free_tab(cmd_data->args_array);
 	if (cmd_data->path_array != NULL)
-		free_tab (cmd_data->path_array)
+		ft_free_tab (cmd_data->path_array);
 	if (cmd_data->env != NULL)
-		free_tab(cmd_data->env);
+		ft_free_tab(cmd_data->env);
 }
 
 void	free_env(t_env *env)
@@ -59,12 +59,10 @@ void	close_all_fd(t_line *line_cmd)
 	t_line	*current;
 
 	current = line_cmd;
-	while (current->cmd_nb != current_cmd_nb)
-		current = current->next;
 	while (current != NULL)
 	{
 		if (current->fd > -1)
-			close(current->fd)
+			close(current->fd);
 		current = current->next;
 	}
 }

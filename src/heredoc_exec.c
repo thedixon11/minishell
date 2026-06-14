@@ -18,11 +18,12 @@ char  *go_until_dollar_hdoc(char *line, int *start)
 // before writing it in the READ FD if xpand_or_not is TRUE. Otherwise, it
 // will just strdup the line.
 
-char  *expand_line_hdoc(char *line, t_bool xpand_or_not)
+char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 {
   char  *first_block;
   char  *second_block;
-  int y;
+  char  *temp;
+  int i;
 
   i = 0;
   if (xpand_or_not == B_FALSE)
@@ -63,9 +64,9 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	limiter_len = ft_strlen(heredoc->content) + 1;
 	line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 	if (line == NULL)
-		errors_exit(data, QUIT_HEREDOC, 0, 0);
+		exit(10);
 
-  line_xpanded = expand_line_hdoc(line, xpand_or_not);
+  line_xpanded = expand_line_hdoc(data, line, xpand_or_not);
 	while (ft_strncmp(line_xpanded, heredoc->content, limiter_len) != 0)
 	{
 		len_of_line = ft_strlen(line_xpanded);
@@ -74,9 +75,9 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		free(line_xpanded);
 		line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 		if (line == NULL)
-			errors_exit(data, QUIT_HEREDOC, 0, 0);
+			exit(10);
 
-    line_xpanded = expand_line_hdoc(line, xpand_or_not);
+    line_xpanded = expand_line_hdoc(data, line, xpand_or_not);
 	}
   free(line);
   free (line_xpanded);
@@ -93,7 +94,7 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 
 void create_heredoc_fd(t_data *data, t_line *heredoc)
 {
-  int *heredoc_pipe_fds[2];
+  int heredoc_pipe_fds[2];
 
 	pipe(heredoc_pipe_fds);
 	data->heredoc_pipe_fds = heredoc_pipe_fds;
@@ -116,12 +117,13 @@ void	heredoc_exec(t_data *data)
 		if (current->type == T_HEREDOC)
 		{
 			create_heredoc_fd(data, current);
-			if (ft_strchr(current->content, '\'' && ft_strchr(current->content, '\"'') == NULL)
-				write_on_fd(data, current, B_TRUE);
+			if (ft_strchr(current->content, '\'') && ft_strchr(current->content, '"') == NULL)
+			  write_on_fd(data, current, B_TRUE);
 			else
       {
-        temp = current->content;
-        current->content = delimiter_manager(current->content);
+        temp = ft_strdup(current->content);
+        current->content = delimiter_manager_hdoc(temp);
+        free(temp);
 				write_on_fd(data, current, B_FALSE);
       }
 		}
