@@ -1,12 +1,14 @@
 NAME = xcution
 
-SRC_DIR = src
-OBJ_DIR = obj
+XPAND_DIR = src_xpand
+EXEC_DIR = src_exec
+XPAND_OBJ_DIR = obj_xpand
+EXEC_OBJ_DIR = obj_exec
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRCS = minishell_lists.c \
+EXEC = minishell_lists.c \
 			check_in_out_redir.c \
 			env_converter_ll_to_array.c \
 			execution.c \
@@ -15,32 +17,43 @@ SRCS = minishell_lists.c \
 			heredoc_exec.c \
 			heredoc_exec_utils.c
 
-SRCS := $(addprefix $(SRC_DIR)/,$(SRCS))
-OBJS := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+XPAND = val_manager.c \
+				quote_manager.c \
+				env_var_manager.c \
+				dollar_manager.c
+
+XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
+EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
+OBJS_XPAND := $(patsubst $(XPAND_DIR)/%.c,$(XPAND_OBJ_DIR)/%.o,$(XPAND))
+OBJS_EXEC := $(patsubst $(EXEC_DIR)/%.c,$(EXEC_OBJ_DIR)/%.o,$(EXEC))
 
 CC = cc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -g 
-INCLUDE = -Iinclude -I$(LIBFT_DIR)/include
+CFLAGS = -Wall -Wextra -Werror -g
+INCLUDE = -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(LIBFT_DIR)/include
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+$(EXEC_OBJ_DIR)/%.o: $(EXEC_DIR)/%.c
+	@mkdir -p $(EXEC_OBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
+$(XPAND_OBJ_DIR)/%.o: $(XPAND_DIR)/%.c
+	@mkdir -p $(XPAND_OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
-	$(RM) -r $(OBJ_DIR)
+	$(RM) -r $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	$(RM) $(NAME) $(NAME_BONUS)
+	$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
