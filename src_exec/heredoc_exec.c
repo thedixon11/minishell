@@ -1,11 +1,12 @@
-#include "minishell_xecution.h"
+#include "../minishell_general.h"
 
 // NOTE: go_until_dollar_hdoc will create a block until the 
 // next dollar. It's an util of expand_line_hdoc.
 
 char  *go_until_dollar_hdoc(char *line, int *start)
 {
-  int end;
+	int	end;
+	char	*second_block;
 
   end = *start;
   while (line[end] != '$' && line[end] != 0)

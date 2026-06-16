@@ -1,4 +1,4 @@
-#include "minishell_xpansion.h"
+#include "../minishell_general.h"
 
 // NOTE: It's the entry point to deal with dollars. Managing the dollars depends
 //	on which value is right after it. There is 5 possiblities :

@@ -1,4 +1,4 @@
-#include "minishell_xpansion.h"
+#include "../minishell_general.h"
 
 // NOTE: With env_var_checker, we'll check if the env_var is in the
 // environement or not.If not, we return NULL.

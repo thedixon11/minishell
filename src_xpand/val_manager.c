@@ -1,4 +1,4 @@
-#include "minishell_xpansion.h"
+#include "../minishell_general.h"
 
 // NOTE: the function go_until_dollar will create a block from start until
 // next dollar. It is an util of expand_off_quote. If there is quotes, it

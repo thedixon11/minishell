@@ -1,4 +1,4 @@
-#include "minishell_xecution.h"
+#include "../minishell_general.h"
 
 // TODO: have to add the fact he will just check the nodes of the right number cmd
 

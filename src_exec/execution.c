@@ -1,5 +1,4 @@
-#include "minishell_xecution.h"
-#include <unistd.h>
+#include "../minishell_general.h"
 
 // NOTE: The child process has four missions:
 // 1) check if all in/ot redirections are valid or not;

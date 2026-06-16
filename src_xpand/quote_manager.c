@@ -1,4 +1,4 @@
-#include "minishell_xpansion.h"
+#include "../minishell_general.h"
 
 /*
 // NOTE: is_it_dollar_or_quote will check if the value is a
