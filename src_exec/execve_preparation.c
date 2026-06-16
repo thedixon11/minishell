@@ -46,7 +46,7 @@ char	*create_prog_fullname(char **path_array, char *prog_name)
 		prog_fullname = ft_strjoin(path_array[y], temp);
 		if (prog_fullname == NULL)
 			exit(10);
-		if (is_binary_existing_and_executable(prog_fullname) == 0)
+		if (is_prog_existing_and_executable(prog_fullname) == 0)
 		{
 			free(temp);
 			return (prog_fullname);

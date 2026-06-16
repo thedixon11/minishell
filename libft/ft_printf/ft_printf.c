@@ -37,11 +37,9 @@ static int	ft_run(const char *str, va_list ap, size_t count)
 
 int	ft_printf(const char *str, ...)
 {
-	size_t	i;
 	va_list	ap;
 	int		count;
 
-	i = 0;
 	count = 0;
 	if (!str)
 		return (-1);

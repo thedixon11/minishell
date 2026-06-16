@@ -95,11 +95,8 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 
 void create_heredoc_fd(t_data *data, t_line *heredoc)
 {
-  int heredoc_pipe_fds[2];
-
-	pipe(heredoc_pipe_fds);
-	data->heredoc_pipe_fds = heredoc_pipe_fds;
-	heredoc->fd = heredoc_pipe_fds[0];
+	pipe(data->heredoc_pipe_fds);
+	heredoc->fd = data->heredoc_pipe_fds[0];
 }
 
 // NOTE: Here starts the heredocs executions. There is two steps per heredoc :
