@@ -17,14 +17,15 @@ void	free_env(t_env *env)
 	t_env	*current;
 
 	current = env;
-	while (env->next != NULL)
+	while (current->next != NULL)
 	{
 		if (current->name != NULL)
 			free(current->name);
 		if (current->content != NULL)
 			free(current->content);
 		current = current->next;
-		free(current->prev);
+    if (current->prev != NULL)
+		  free(current->prev);
 	}
 	if (current->name != NULL)
 		free(current->name);

@@ -37,7 +37,7 @@ t_bool	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
 					0644);
 		else if (current->type == T_PIPE_OUT)
 			current->fd = data->pipe_fd[1];
-		if (current->fd < 0)
+		if (current->fd < 0 && current->type != T_COMMAND)
 			return (B_FALSE);
 		current = current->next;
 	}
@@ -54,7 +54,7 @@ t_bool check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
 	current = line_cmd;
   while (current->cmd_nb != current_cmd_nb)
     current = current->next;
-	while (current->cmd_nb == current_cmd_nb && current != NULL)
+	while (current->cmd_nb == current_cmd_nb && current->next != NULL)
 	{
 		y = 0;
 		if (current->type == T_INPUT || current->type == T_OUTPUT_APPEND
@@ -67,6 +67,15 @@ t_bool check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
 			return (B_FALSE);
 		current = current->next;
 	}
+  y = 0;
+		if (current->type == T_INPUT || current->type == T_OUTPUT_APPEND
+			|| current->type == T_OUTPUT_TRUNC)
+		{
+			while (current->content_xpand[y] != NULL)
+				y++;
+		}
+		if (y > 1)
+			return (B_FALSE);
 	return (B_TRUE);
 }
 

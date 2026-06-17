@@ -15,7 +15,7 @@ char	*go_until_dollar(char *content, int *start)
 	while (content[end] != '$' && content[end] != 0)
 	{
 		while (content[end] != '$' && content[end] != '"'
-			&& content[end] != '\'')
+			&& content[end] != '\'' && content[end] != 0)
 			end++;
 		if (content[end] == '"' || content[end] == '\'')
 		{
@@ -126,14 +126,14 @@ char	*expand_off_quote(t_data *data, char *content)
 //	2) we have to split the content (spaces are the separators)
 //	3) we have to expend inside quotes of all the lines of splitted_content;
 
-void	val_manager(t_data *data, t_line *line_cmd)
+void	val_manager(t_data *data)
 {
 	char	*temp;
 	int		y;
 	t_line	*current;
 
 	y = 0;
-	current = line_cmd;
+	current = data->line_cmd;
 	while (current != NULL)
 	{
 		y = 0;

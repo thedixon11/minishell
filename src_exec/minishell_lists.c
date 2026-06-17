@@ -270,9 +270,10 @@ int	main(int argc, char **argv, char **envp)
 
 
 	data = data_creation(env_list, line_list);
+  data->do_i_wait = 1;
 	execution(data);
-	free_line_list(line_list);
-	free_env_list(env_list);
+	//free_line_list(line_list);
+	//free_env_list(env_list);
 
 	printf("\n");
 	return (0);

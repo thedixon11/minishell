@@ -65,7 +65,7 @@ typedef struct s_data
   t_env  *env;
   t_line  *line_cmd;
   int max_cmd_nb;
-  int *pipe_fd;
+  int pipe_fd[2];
   int old_read_fd;
   int *heredoc_pipe_fds;
   int do_i_wait;

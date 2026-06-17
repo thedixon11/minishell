@@ -32,7 +32,7 @@ if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
 				dup2(current->fd, STDIN_FILENO);
 			else if (current->type == T_OUTPUT_APPEND
 				|| current->type == T_OUTPUT_TRUNC
-				|| current->type == T_PIPE_IN)
+				|| current->type == T_PIPE_OUT)
 				dup2(current->fd, STDOUT_FILENO);
 			current = current->next;
 		}
@@ -103,8 +103,8 @@ void	execute_cmds(t_data *data)
 			child_process(data, current_cmd_nb);
 		else if (pid > 0)
 			parent_process(data, current_cmd_nb);
-	}
 	current_cmd_nb++;
+  }
 
 	while	(wait(NULL) > 0)
 		;
@@ -119,6 +119,7 @@ void	execute_cmds(t_data *data)
 
 void	execution(t_data *data)
 {
+  val_manager(data);
 	heredoc_exec(data);
 	execute_cmds(data);
 	free_and_close_life(data);

@@ -2,7 +2,7 @@
 # define MINISHELL_XPANSION_H
 
 //value manager functions
-void  val_manager(t_data *data, t_line *line_cmd);
+void  val_manager(t_data *data);
 char  *expand_off_quote(t_data *data, char *content);
 char  *expand_in_quote(t_data *data, char *row);
 char  *go_until_quote(char *content, int *start);
