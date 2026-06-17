@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include "minishell_xecution.h"
 
 // NOTE: The child process has four missions:
 // 1) check if all in/ot redirections are valid or not;
@@ -23,9 +24,9 @@ void	child_process(t_data *data, int current_cmd_nb)
 	close(data->pipe_fd[0]);
 if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
 	{
-		while (current->cmd_nb != current_cmd_nb && current != NULL)
+		while (current != NULL && current->cmd_nb != current_cmd_nb)
 			current = current->next;
-		while (current->cmd_nb == current_cmd_nb && current != NULL)
+		while (current != NULL && current->cmd_nb == current_cmd_nb)
 		{
 			if (current->type == T_PIPE_IN || current->type == T_INPUT
 				|| current->type == T_HEREDOC)
@@ -37,12 +38,13 @@ if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
 			current = current->next;
 		}
 		current = data->line_cmd;
-		while (current->type != T_COMMAND && current->cmd_nb == current_cmd_nb)
+		while (current->type != T_COMMAND || current->cmd_nb != current_cmd_nb)
 			current = current->next;
 		cmd_data = execve_preparation(data, current->content_xpand);
-		execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env);
+	  free_and_close_life(data);
+		if (execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env) == -1)
+	    free_and_close_life(data);
 	}
-	free_and_close_life(data);
 	exit(0);
 }
 
@@ -58,11 +60,7 @@ void	parent_process(t_data *data, int current_cmd_nb)
 	if (current_cmd_nb <= data->max_cmd_nb)
 	{
 		data->old_read_fd = data->pipe_fd[0];
-		if (data->do_i_wait == 1)
-		{
-			wait(NULL);
-			data->do_i_wait = 0;
-		}
+		wait(NULL);
 		close(data->pipe_fd[1]);
 	}
 }

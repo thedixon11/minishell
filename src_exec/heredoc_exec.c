@@ -9,7 +9,7 @@ char  *go_until_dollar_hdoc(char *line, int *start)
 	char	*second_block;
 
   end = *start;
-  while (line[end] != '$' && line[end] != 0)
+  while (line[end] != 0 && line[end] != '$')
     end++;
   second_block = ft_substr(line, *start, end - (*start));
   return (second_block);
@@ -32,9 +32,9 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
   first_block = ft_strdup("");
   while (line[i] != 0)
   {
-    if (line[i] != '$' && line[i] != 0)
+    if (line[i] != 0 && line[i] != '$')
       second_block = go_until_dollar_hdoc(line, &i);
-    else if (line[i] == '$' && line[i] != 0)
+    else if (line[i] != 0 && line[i] == '$')
       second_block = dollar_manager(data, line, &i, Q_HEREDOC);
     if (second_block != NULL)
     {

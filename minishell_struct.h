@@ -68,7 +68,6 @@ typedef struct s_data
   int pipe_fd[2];
   int old_read_fd;
   int *heredoc_pipe_fds;
-  int do_i_wait;
 } t_data;
 
 #endif /*MINISHELL_STRUCT_H*/

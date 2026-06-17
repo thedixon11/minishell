@@ -32,7 +32,7 @@ char	*second_block_not_dollar(char *str, int *start)
 
 	end = *start;
 	len = 0;
-	while (str[end] != '$' && str[end] != 0)
+	while (str[end] != 0 && str[end] != '$')
 		end++;
 	len = end - *start;
 	second_block = ft_substr(str, *start, len);

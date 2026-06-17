@@ -12,10 +12,10 @@ char	*go_until_dollar(char *content, int *start)
 
 	end = *start;
 	quote = 'a';
-	while (content[end] != '$' && content[end] != 0)
+	while (content[end] != 0 && content[end] != '$')
 	{
-		while (content[end] != '$' && content[end] != '"'
-			&& content[end] != '\'' && content[end] != 0)
+		while (content[end] != 0 && content[end] != '"'
+			&& content[end] != '\'' && content[end] != '$')
 			end++;
 		if (content[end] == '"' || content[end] == '\'')
 		{
@@ -40,7 +40,7 @@ char	*go_until_quote(char *content, int *start)
 	char	*second_block;
 
 	end = *start;
-	while (content[end] != '"' && content[end] != '\'' && content[end] != 0)
+	while (content[end] != 0 && content[end] != '\'' && content[end] != '"')
 		end++;
 	second_block = ft_substr(content, *start, end - (*start));
 	*start = end;
@@ -105,7 +105,7 @@ char	*expand_off_quote(t_data *data, char *content)
 	first_block = ft_strdup("");
 	while (content[i] != 0)
 	{
-		if (content[i] != '$' && content[i] != 0)
+		if (content[i] != 0 && content[i] != '$')
 			second_block = go_until_dollar(content, &i);
 		else if (content[i] == '$')
 			second_block = dollar_manager(data, content, &i, Q_NONE);

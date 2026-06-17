@@ -80,7 +80,7 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 	cmd_data = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd_data)
 		return (NULL);
-	cmd_data->args_array = cmd_content;
+	cmd_data->args_array = ft_arraydup(cmd_content);
 	cmd_data->env = env_converter_ll_to_array(data->env);
 	while (current != NULL)
 	{
