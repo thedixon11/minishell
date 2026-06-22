@@ -56,32 +56,26 @@ static t_line	*append_line(t_line *head, t_line *node)
 /*
 ** Builds the linked list that represents:
 **
-**   << EOF cat > outfile1 | sleep 5 | ls
+**   < infile1  cat  |  wc -l  > outfile1
 **
-**   "EOF"      → T_HEREDOC      (delimiter, cmd_nb 0 — type encodes "<<")
-**   "cat"      → T_COMMAND      (cmd_nb 0, no arguments)
-**   "outfile1" → T_OUTPUT_TRUNC (cmd_nb 0 — type encodes ">")
+**   "infile1"  → T_INPUT        (type encodes "<", no operator node needed)
+**   "cat"      → T_COMMAND      (cmd_nb 0)
 **   "|"        → T_PIPE_OUT     (cmd 0 writes into the pipe)
 **   "|"        → T_PIPE_IN      (cmd 1 reads from the pipe)
-**   "sleep 5"  → T_COMMAND      (cmd_nb 1)
-**   "|"        → T_PIPE_OUT     (cmd 1 writes into the pipe)
-**   "|"        → T_PIPE_IN      (cmd 2 reads from the pipe)
-**   "ls"       → T_COMMAND      (cmd_nb 2)
+**   "wc -l"    → T_COMMAND      (cmd_nb 1)
+**   "outfile1" → T_OUTPUT_TRUNC (type encodes ">", no operator node needed)
 */
 t_line	*build_line_list(void)
 {
 	t_line	*head;
 
 	head = NULL;
-	head = append_line(head, new_line_node(T_HEREDOC,      "EOF",      0));
-	head = append_line(head, new_line_node(T_COMMAND,      "cat",      0));
-	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "outfile1", 0));
-	head = append_line(head, new_line_node(T_PIPE_OUT,     "|",        0));
-	head = append_line(head, new_line_node(T_PIPE_IN,      "|",        1));
-	head = append_line(head, new_line_node(T_COMMAND,      "sleep 5",  1));
-	head = append_line(head, new_line_node(T_PIPE_OUT,     "|",        1));
-	head = append_line(head, new_line_node(T_PIPE_IN,      "|",        2));
-	head = append_line(head, new_line_node(T_COMMAND,      "ls",       2));
+	head = append_line(head, new_line_node(T_INPUT,        "infile1", 0));
+	head = append_line(head, new_line_node(T_COMMAND,      "cat",     0));
+	head = append_line(head, new_line_node(T_PIPE_OUT,     "|",       0));
+	head = append_line(head, new_line_node(T_PIPE_IN,      "|",       1));
+	head = append_line(head, new_line_node(T_COMMAND,      "wc -l",   1));
+	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "outfile1",1));
 	return (head);
 }
 
@@ -242,7 +236,7 @@ static t_data	*data_creation(t_env *env, t_line *line_cmd)
 		return (NULL);
 	data->env = env;
 	data->line_cmd = line_cmd;
-	data->max_cmd_nb = 2;
+	data->max_cmd_nb = 1;
 	return (data);	
 }
 
@@ -261,7 +255,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 
 	/* ── command list ───────────────────────────────────────────────────── */
-	printf("\n=== COMMAND LIST : << EOF cat > outfile1 | sleep 5 | ls ===\n\n");
+	printf("\n=== COMMAND LIST : < infile1 cat | wc -l > outfile1 ===\n\n");
 	line_list = build_line_list();
 	if (!line_list)
 		return (fprintf(stderr, "Error: malloc failure (line list)\n"), 1);

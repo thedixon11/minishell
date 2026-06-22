@@ -60,7 +60,7 @@ void	parent_process(t_data *data, int current_cmd_nb)
 	if (current_cmd_nb <= data->max_cmd_nb)
 	{
 		data->old_read_fd = data->pipe_fd[0];
-		wait(NULL);
+		//wait(NULL); NOTE: faut voir si ce wait il est pertinent ou pas
 		close(data->pipe_fd[1]);
 	}
 }

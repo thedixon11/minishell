@@ -67,7 +67,7 @@ typedef struct s_data
   int max_cmd_nb;
   int pipe_fd[2];
   int old_read_fd;
-  int *heredoc_pipe_fds;
+  int heredoc_pipe_fds[2];
 } t_data;
 
 #endif /*MINISHELL_STRUCT_H*/

@@ -12,6 +12,7 @@ char  *go_until_dollar_hdoc(char *line, int *start)
   while (line[end] != 0 && line[end] != '$')
     end++;
   second_block = ft_substr(line, *start, end - (*start));
+  *start = end;
   return (second_block);
 }
 
@@ -62,7 +63,7 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	int		limiter_len;
 	int		len_of_line;
 
-	limiter_len = ft_strlen(heredoc->content) + 1;
+	limiter_len = ft_strlen(heredoc->content);
 	line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 	if (line == NULL)
 		exit(10);
@@ -95,8 +96,12 @@ void  write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 
 void create_heredoc_fd(t_data *data, t_line *heredoc)
 {
+  char  *temp;
+
 	pipe(data->heredoc_pipe_fds);
 	heredoc->fd = data->heredoc_pipe_fds[0];
+  temp = ft_strdup(heredoc->content);
+  heredoc->content 
 }
 
 // NOTE: Here starts the heredocs executions. There is two steps per heredoc :
@@ -115,7 +120,7 @@ void	heredoc_exec(t_data *data)
 		if (current->type == T_HEREDOC)
 		{
 			create_heredoc_fd(data, current);
-			if (ft_strchr(current->content, '\'') && ft_strchr(current->content, '"') == NULL)
+			if (ft_strchr(current->content, '\'') == NULL && ft_strchr(current->content, '"') == NULL)
 			  write_on_fd(data, current, B_TRUE);
 			else
       {
