@@ -56,20 +56,30 @@ static t_line	*append_line(t_line *head, t_line *node)
 /*
 ** Builds the linked list that represents:
 **
-**   << EOF cat > outfile1
+**   << EOF < infile1 cat > capibara >> outfile1
 **
-**   "EOF"      → T_HEREDOC      (delimiter, cmd_nb 0 — type encodes "<<")
-**   "cat"      → T_COMMAND      (cmd_nb 0, no arguments)
-**   "outfile1" → T_OUTPUT_TRUNC (cmd_nb 0 — type encodes ">")
+**   "EOF"      → T_HEREDOC       (delimiter — type encodes "<<")
+**   "infile1"  → T_INPUT         (type encodes "<")
+**   "cat"      → T_COMMAND       (no arguments)
+**   "capibara" → T_OUTPUT_TRUNC  (type encodes ">")
+**   "outfile1" → T_OUTPUT_APPEND (type encodes ">>")
+**
+**   All cmd_nb 0 — single command, no pipes.
+**
+**   NOTE: multiple input redirections — the LAST one wins at execution time.
+**   Here << EOF is overridden by < infile1 since it comes after.
+**   Same logic for outputs: > capibara is overridden by >> outfile1.
 */
 t_line	*build_line_list(void)
 {
 	t_line	*head;
 
 	head = NULL;
-	head = append_line(head, new_line_node(T_HEREDOC,      "EOF",      0));
-	head = append_line(head, new_line_node(T_COMMAND,      "cat",      0));
-	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "outfile1", 0));
+	head = append_line(head, new_line_node(T_HEREDOC,       "EOF",      0));
+	head = append_line(head, new_line_node(T_INPUT,         "infile1",  0));
+	head = append_line(head, new_line_node(T_COMMAND,       "cat",      0));
+	head = append_line(head, new_line_node(T_OUTPUT_TRUNC,  "capibara", 0));
+	head = append_line(head, new_line_node(T_OUTPUT_APPEND, "outfile1", 0));
 	return (head);
 }
 
@@ -249,7 +259,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 
 	/* ── command list ───────────────────────────────────────────────────── */
-	printf("\n=== COMMAND LIST : << EOF cat > outfile1 ===\n\n");
+	printf("\n=== COMMAND LIST : << EOF < infile1 cat > capibara >> outfile1 ===\n\n");
 	line_list = build_line_list();
 	if (!line_list)
 		return (fprintf(stderr, "Error: malloc failure (line list)\n"), 1);

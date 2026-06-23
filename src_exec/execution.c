@@ -1,6 +1,21 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
 
+void  first_dup2_pipes(t_line *start, int current_cmd_nb)
+{
+  t_line  *current;
+
+  current = start;
+  while (current != NULL && current->cmd_nb == current_cmd_nb)
+  {
+    if (current->type == T_PIPE_IN)
+			dup2(current->fd, STDIN_FILENO);
+    else if (current->type == T_PIPE_OUT)
+			dup2(current->fd, STDOUT_FILENO);
+    current = current->next;
+  }
+}
+
 // NOTE: The child process has four missions:
 // 1) check if all in/ot redirections are valid or not;
 // 2) patch the input/output rediderctions using dup2.
@@ -26,14 +41,12 @@ if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
 	{
 		while (current != NULL && current->cmd_nb != current_cmd_nb)
 			current = current->next;
+    first_dup2_pipes(current, current_cmd_nb);
 		while (current != NULL && current->cmd_nb == current_cmd_nb)
 		{
-			if (current->type == T_PIPE_IN || current->type == T_INPUT
-				|| current->type == T_HEREDOC)
+			if (current->type == T_INPUT || current->type == T_HEREDOC)
 				dup2(current->fd, STDIN_FILENO);
-			else if (current->type == T_OUTPUT_APPEND
-				|| current->type == T_OUTPUT_TRUNC
-				|| current->type == T_PIPE_OUT)
+			else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC)
 				dup2(current->fd, STDOUT_FILENO);
 			current = current->next;
 		}
@@ -60,7 +73,7 @@ void	parent_process(t_data *data, int current_cmd_nb)
 	if (current_cmd_nb <= data->max_cmd_nb)
 	{
 		data->old_read_fd = data->pipe_fd[0];
-		//wait(NULL); NOTE: faut voir si ce wait il est pertinent ou pas
+		//wait(NULL); // NOTE: faut voir si ce wait il est pertinent ou pas
 		close(data->pipe_fd[1]);
 	}
 }

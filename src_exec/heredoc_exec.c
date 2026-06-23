@@ -101,7 +101,8 @@ void create_heredoc_fd(t_data *data, t_line *heredoc)
 	pipe(data->heredoc_pipe_fds);
 	heredoc->fd = data->heredoc_pipe_fds[0];
   temp = ft_strdup(heredoc->content);
-  heredoc->content 
+  heredoc->content = ft_strjoin(temp, "\n");
+  free (temp);
 }
 
 // NOTE: Here starts the heredocs executions. There is two steps per heredoc :
