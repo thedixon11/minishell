@@ -36,6 +36,8 @@ char	*second_block_not_dollar(char *str, int *start)
 		end++;
 	len = end - *start;
 	second_block = ft_substr(str, *start, len);
+  if (!second_block)
+    return (NULL);
 	*start = end;
 	return (second_block);
 }
@@ -55,6 +57,8 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 
 	i_quote = 0;
 	first_block = ft_strdup("");
+  if (!first_block)
+    return (NULL);
 	while (inside_quote[i_quote] != 0)
 	{
 		if (inside_quote[i_quote] != '$')
@@ -68,6 +72,11 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 			free(second_block);
 			free(temp);
 		}
+    else 
+    {
+      free (first_block);
+      return (NULL); 
+    }
 	}
 	return (first_block);
 }
@@ -88,6 +97,8 @@ char	*extract_quote(char *value, int *i_value, char quote)
 	len = end - *i_value;
 	inside_quote = ft_substr(value, *i_value, len);
 	*i_value = end + 1;
+  if (!inside_quote)
+    return (NULL);
 	return (inside_quote);
 }
 
@@ -105,6 +116,8 @@ char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 	char	*quote_result;
 
 	inside_quote = extract_quote(value, i_value, quote);
+  if (!inside_quote)
+    return (NULL);
 	if (quote == '\'')
 		quote_result = ft_strdup(inside_quote);
 	else if (quote == '\"')
@@ -112,5 +125,7 @@ char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 	else
 		return (NULL);
 	free(inside_quote);
+  if (!quote_result)
+    return (NULL);
 	return (quote_result);
 }

@@ -21,6 +21,7 @@ char  *go_until_dollar_hdoc(char *line, int *start);
 char  *delimiter_manager_hdoc(char *old_del);
 char  *go_until_quote_hdoc(char *old_del, int *i);
 char  *extract_quote_hdoc(char *old_del, int *i, char quote);
+void  ft_error(t_data *data, char *err_message);
 
 //check in and out redirections
 t_bool	check_and_prepare_fds(t_data *data, int current_cmd_nb);

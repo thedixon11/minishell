@@ -27,6 +27,8 @@ char	*go_until_dollar(char *content, int *start)
 		}
 	}
 	second_block = ft_substr(content, *start, end - (*start));
+  if (!second_block)
+    return (NULL);
 	*start = end;
 	return (second_block);
 }
@@ -43,6 +45,8 @@ char	*go_until_quote(char *content, int *start)
 	while (content[end] != 0 && content[end] != '\'' && content[end] != '"')
 		end++;
 	second_block = ft_substr(content, *start, end - (*start));
+  if (!second_block)
+    return (NULL);
 	*start = end;
 	return (second_block);
 }
@@ -67,6 +71,8 @@ char	*expand_in_quote(t_data *data, char *row)
 
 	i = 0;
 	first_block = ft_strdup("");
+  if (!first_block)
+    return (NULL);
 	while (row[i] != 0)
 	{
 		if (row[i] != '"' && row[i] != '\'')
@@ -79,7 +85,14 @@ char	*expand_in_quote(t_data *data, char *row)
 			first_block = ft_strjoin(temp, second_block);
 			free(second_block);
 			free(temp);
+      if (!first_block)
+        return (NULL);
 		}
+    else
+    {
+      free(first_block);
+      return (NULL);
+    }
 	}
 	return (first_block);
 }
@@ -103,6 +116,8 @@ char	*expand_off_quote(t_data *data, char *content)
 
 	i = 0;
 	first_block = ft_strdup("");
+  if (!first_block)
+    ft_error(data, ERR_MALLOC);
 	while (content[i] != 0)
 	{
 		if (content[i] != 0 && content[i] != '$')
@@ -116,6 +131,11 @@ char	*expand_off_quote(t_data *data, char *content)
 			free(second_block);
 			free(temp);
 		}
+    else
+    {
+      free (first_block);
+      ft_error(data, ERR_MALLOC);
+    }
 	}
 	return (first_block);
 }
@@ -143,11 +163,17 @@ void	val_manager(t_data *data)
 			temp = expand_off_quote(data, current->content);
 			current->content_xpand = ft_split(temp, ' ');
 			free(temp);
+      if (!current->content_xpand)
+        ft_error(data, ERR_MALLOC);
 			while (current->content_xpand[y] != NULL)
 			{
 				temp = ft_strdup(current->content_xpand[y]);
+        if (!temp)
+          ft_error(data, ERR_MALLOC);
 				free(current->content_xpand[y]);
 				current->content_xpand[y] = expand_in_quote(data, temp);
+        if (!current->content_xpand[y])
+          ft_error(data, ERR_MALLOC);
 				free(temp);
 				y++;
 			}

@@ -75,3 +75,9 @@ void	free_and_close_life(t_data *data)
 	free_env(data->env);
 	free(data);
 }
+
+void  ft_error(t_data *data, char *err_message)
+{
+  ft_putendl_fd(err_message, 3);
+  free_and_close_life(data);
+}

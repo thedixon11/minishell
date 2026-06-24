@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include <unistd.h>
 
 // NOTE: It's the entry point to deal with dollars. Managing the dollars depends
 //	on which value is right after it. There is 5 possiblities :
@@ -35,17 +36,23 @@ char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 	{
 		//result = find_exit_error();
 		result = ft_calloc(2, sizeof(char));
+    if (!result)
+      return (NULL);
 		result[0] = 8;
 		return (result);
 	}
 	else if (ft_isalpha(str[*i + 1]) == 1 || str[*i + 1] == '_')
 	{
 		result = env_var_manager(data, str, i);
+    if (!result)
+      return (NULL);
 		return (result);
 	}
 	else
 	{
 		result = ft_calloc(3, sizeof(char));
+    if (!result)
+      return (NULL);
 		result[0] = '$';
 		result[1] = str[*i + 1];
 		*i += 2;
