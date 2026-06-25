@@ -98,7 +98,11 @@ void create_heredoc_fd(t_data *data, t_line *heredoc)
 {
   char  *temp;
 
-	pipe(data->heredoc_pipe_fds);
+	if (pipe(data->heredoc_pipe_fds) == -1);
+  {
+    perror("pipe");
+    
+  }
 	heredoc->fd = data->heredoc_pipe_fds[0];
   temp = ft_strdup(heredoc->content);
   heredoc->content = ft_strjoin(temp, "\n");
@@ -110,7 +114,7 @@ void create_heredoc_fd(t_data *data, t_line *heredoc)
 // 2) if the delimiter has quotes, have to manage them;
 // 2) write on that buffer, and store the read fd;
 
-void	heredoc_exec(t_data *data)
+int	heredoc_exec(t_data *data)
 {
 	t_line	*current;
   char  *temp;

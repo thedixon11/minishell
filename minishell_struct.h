@@ -15,6 +15,13 @@ typedef enum e_bool
   B_TRUE
 } t_bool;
 
+typedef enum e_scope
+{
+  S_OUTSIDE,
+  S_PARENT,
+  S_CHILD
+} t_scope;
+
 //NOTE: cet enum enumere les differents types de nodes possible dans la liste chainee de la cmd
 typedef enum e_type
 {
@@ -68,6 +75,8 @@ typedef struct s_data
   int pipe_fd[2];
   int old_read_fd;
   int heredoc_pipe_fds[2];
+  int wstatus;
+  int saved_errno;
 } t_data;
 
 #endif /*MINISHELL_STRUCT_H*/

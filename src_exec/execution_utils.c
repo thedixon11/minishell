@@ -76,8 +76,16 @@ void	free_and_close_life(t_data *data)
 	free(data);
 }
 
-void  ft_error(t_data *data, char *err_message)
+int  ft_error(t_data *data, char *err_message, int code, t_scope scope)
 {
-  ft_putendl_fd(err_message, 3);
-  free_and_close_life(data);
+  ft_putendl_fd(err_message, 2);
+	close_all_fd(data->line_cmd);
+	free_line_cmd(data->line_cmd);
+  if (scope == S_CHILD)
+  {
+    free_env(data->env);
+    free(data);
+    exit(code);
+  }
+  return (code);
 }

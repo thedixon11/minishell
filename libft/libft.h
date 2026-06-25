@@ -20,6 +20,7 @@
 # include <stdarg.h>
 # include <limits.h>
 # include <sys/wait.h>
+# include <errno.h>
 
 typedef struct s_list
 {

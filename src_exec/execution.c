@@ -126,12 +126,21 @@ void	execute_cmds(t_data *data)
 // NOTE: execution process start here. There is two steps:
 // 1) execution of all heredocs;
 // 2) check all input and output redirections (not pipe)
-// 2) execution of the commands;
+// 3) execution of the commands;
 
-void	execution(t_data *data)
+int execution(t_data *data)
 {
-  val_manager(data);
-	heredoc_exec(data);
-	execute_cmds(data);
+  int error;
+
+  error = val_manager(data);
+  if (error != 0)
+    return (error);
+	error = heredoc_exec(data);
+  if (error != 0)
+    return (error);
+  error = execute_cmds(data);
+  if (error != 0)
+     return (error);
 	free_and_close_life(data);
+  return(error);
 }

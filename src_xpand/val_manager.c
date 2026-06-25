@@ -117,7 +117,7 @@ char	*expand_off_quote(t_data *data, char *content)
 	i = 0;
 	first_block = ft_strdup("");
   if (!first_block)
-    ft_error(data, ERR_MALLOC);
+    return (NULL);
 	while (content[i] != 0)
 	{
 		if (content[i] != 0 && content[i] != '$')
@@ -130,11 +130,13 @@ char	*expand_off_quote(t_data *data, char *content)
 			first_block = ft_strjoin(temp, second_block);
 			free(second_block);
 			free(temp);
+      if (!first_block)
+        return (NULL);
 		}
     else
     {
       free (first_block);
-      ft_error(data, ERR_MALLOC);
+      return (NULL);
     }
 	}
 	return (first_block);
@@ -146,7 +148,7 @@ char	*expand_off_quote(t_data *data, char *content)
 //	2) we have to split the content (spaces are the separators)
 //	3) we have to expend inside quotes of all the lines of splitted_content;
 
-void	val_manager(t_data *data)
+int val_manager(t_data *data)
 {
 	char	*temp;
 	int		y;
@@ -161,23 +163,26 @@ void	val_manager(t_data *data)
 			|| current->type == T_OUTPUT_APPEND || current->type == T_COMMAND)
 		{
 			temp = expand_off_quote(data, current->content);
+      if (!temp)
+        return (ft_error(data, ERR_MALLOC, 1, S_OUTSIDE);
 			current->content_xpand = ft_split(temp, ' ');
 			free(temp);
       if (!current->content_xpand)
-        ft_error(data, ERR_MALLOC);
+       return (ft_error(data, ERR_MALLOC, 1, S_OUTSIDE));
 			while (current->content_xpand[y] != NULL)
 			{
 				temp = ft_strdup(current->content_xpand[y]);
         if (!temp)
-          ft_error(data, ERR_MALLOC);
+          return (ft_error(data, ERR_MALLOC, 1, S_OUTSIDE));
 				free(current->content_xpand[y]);
 				current->content_xpand[y] = expand_in_quote(data, temp);
         if (!current->content_xpand[y])
-          ft_error(data, ERR_MALLOC);
+          return (ft_error(data, ERR_MALLOC, 1, S_OUTSIDE));
 				free(temp);
 				y++;
 			}
 		}
 		current = current->next;
 	}
+  return (0);
 }

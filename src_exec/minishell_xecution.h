@@ -46,6 +46,7 @@ void	close_all_fd(t_line *line_cmd);
 void	free_line_cmd(t_line *line_cmd);
 void	free_env(t_env *env);
 void	free_cmd_data(t_cmd *cmd_data);
+int  ft_error(t_data *data, char *err_message, int code, t_scope scope);
 
 #endif
 
