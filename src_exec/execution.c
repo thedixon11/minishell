@@ -97,7 +97,7 @@ void	parent_process(t_data *data, int current_cmd_nb)
 // will not be open
 //
 //
-void	execute_cmds(t_data *data)
+int	execute_cmds(t_data *data)
 {
 	int	pid;
 	int	current_cmd_nb;

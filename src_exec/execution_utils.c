@@ -85,7 +85,7 @@ int  ft_error(t_data *data, char *err_message, int code, t_scope scope)
   {
     free_env(data->env);
     free(data);
-    exit(code);
+    exit(code)
   }
   return (code);
 }
