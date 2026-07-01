@@ -1,19 +1,42 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
 
-void  first_dup2_pipes(t_line *start, int current_cmd_nb)
+void  dup2_rest(t_data *data, int current_cmd_nb)
 {
   t_line  *current;
 
-  current = start;
-  while (current != NULL && current->cmd_nb == current_cmd_nb)
+  current = data->line_cmd;
+  while (current != NULL && current->cmd_nb != current_cmd_nb)
+		current = current->next;
+	while (current != NULL && data->error == 0 && current->cmd_nb == current_cmd_nb)
+	{
+		if (data->error == 0 && current->type == T_INPUT || current->type == T_HEREDOC)
+			data->error = dup2(current->fd, STDIN_FILENO);
+		else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC)
+			data->error = dup2(current->fd, STDOUT_FILENO);
+	  current = current->next;
+	}
+  if (data->error != 0)
+    ft_error_child(data, NULL, "dup2", 1);
+}
+
+void  first_dup2_pipes(t_data *data, int current_cmd_nb)
+{
+  t_line  *current;
+ 
+  current = data->line_cmd;
+  while (current != NULL && current->cmd_nb != current_cmd_nb)
+			current = current->next;
+  while (current != NULL && data->error == 0 && current->cmd_nb == current_cmd_nb)
   {
     if (current->type == T_PIPE_IN)
-			dup2(current->fd, STDIN_FILENO);
-    else if (current->type == T_PIPE_OUT)
-			dup2(current->fd, STDOUT_FILENO);
+		  data->error = dup2(current->fd, STDIN_FILENO);
+    else if (data->error != 0 && current->type == T_PIPE_OUT)
+			data->error = dup2(current->fd, STDOUT_FILENO);
     current = current->next;
   }
+  if (data->error != 0)
+    ft_error_child(data, NULL, "dup2", 1);
 }
 
 // NOTE: The child process has four missions:
@@ -35,28 +58,18 @@ void	child_process(t_data *data, int current_cmd_nb)
 	t_line	*current;
 	t_cmd	*cmd_data;
 
-	current = data->line_cmd;
 	close(data->pipe_fd[0]);
-if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
-	{
-		while (current != NULL && current->cmd_nb != current_cmd_nb)
-			current = current->next;
-    first_dup2_pipes(current, current_cmd_nb);
-		while (current != NULL && current->cmd_nb == current_cmd_nb)
-		{
-			if (current->type == T_INPUT || current->type == T_HEREDOC)
-				dup2(current->fd, STDIN_FILENO);
-			else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC)
-				dup2(current->fd, STDOUT_FILENO);
-			current = current->next;
-		}
-		current = data->line_cmd;
+  if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
+  {
+    first_dup2_pipes(data, current_cmd_nb);
+    dup2_rest(data, current_cmd_nb);
+  	current = data->line_cmd;
 		while (current->type != T_COMMAND || current->cmd_nb != current_cmd_nb)
 			current = current->next;
 		cmd_data = execve_preparation(data, current->content_xpand);
 	  free_and_close_life(data);
 		if (execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env) == -1)
-	    free_and_close_life(data);
+	    ft_error_child(data, B_TRUE, "execve", 1);
 	}
 	exit(0);
 }

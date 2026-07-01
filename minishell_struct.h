@@ -77,6 +77,8 @@ typedef struct s_data
   int heredoc_pipe_fds[2];
   int wstatus;
   int saved_errno;
+  int error;
+  t_cmd *cmd_data;
 } t_data;
 
 #endif /*MINISHELL_STRUCT_H*/

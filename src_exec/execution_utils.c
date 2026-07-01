@@ -1,12 +1,12 @@
 #include "../minishell_general.h"
 
-void	free_cmd_data(t_cmd *cmd_data)
+void	free_cmd_data(t_cmd cmd_data)
 {
 	if (cmd_data->prog_fullname != NULL)
 		free(cmd_data->prog_fullname);
 	if (cmd_data->args_array != NULL)
 		ft_free_tab(cmd_data->args_array);
-	if (cmd_data->path_array != NULL)
+	if (cmd_data.path_array != NULL)
 		ft_free_tab (cmd_data->path_array);
 	if (cmd_data->env != NULL)
 		ft_free_tab(cmd_data->env);
@@ -74,18 +74,4 @@ void	free_and_close_life(t_data *data)
 	free_line_cmd(data->line_cmd);
 	free_env(data->env);
 	free(data);
-}
-
-int  ft_error(t_data *data, char *err_message, int code, t_scope scope)
-{
-  ft_putendl_fd(err_message, 2);
-	close_all_fd(data->line_cmd);
-	free_line_cmd(data->line_cmd);
-  if (scope == S_CHILD)
-  {
-    free_env(data->env);
-    free(data);
-    exit(code)
-  }
-  return (code);
 }
