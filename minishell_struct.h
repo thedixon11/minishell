@@ -77,6 +77,7 @@ typedef struct s_data
 	int				old_read_fd;
 	int				heredoc_pipe_fds[2];
 	int				wstatus;
+  int       exit_code;
 	int				saved_errno;
 	int				error;
 	int				code;

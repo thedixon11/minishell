@@ -127,11 +127,9 @@ int	execute_cmds(t_data *data)
 			child_process(data, current_cmd_nb);
 		else if (pid > 0)
 			parent_process(data, current_cmd_nb);
-	current_cmd_nb++;
+	  current_cmd_nb++;
   }
-
-	while	(wait(NULL) > 0)
-		;
+  wait_all_children(t_data *data);
 	if (data->old_read_fd >= 0)
 		close(data->old_read_fd);
 }
