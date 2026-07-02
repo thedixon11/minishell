@@ -18,10 +18,10 @@ char	*rebuild_value(t_data *data, t_env *current)
 	if (!rebuild_value)
 	{
 		data->saved_errno = errno;
-		free(temp);
+		ft_free(&temp);
 		return (NULL);
 	}
-	free(temp);
+	ft_free(&temp);
 	return (rebuild_value);
 }
 

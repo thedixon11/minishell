@@ -70,8 +70,8 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
 			data->saved_errno = errno;
-			free(second_block);
-			free(temp);
+			ft_free(&second_block);
+			ft_free(&temp);
 			if (!first_block)
 			{
 				errno = data->saved_errno;
@@ -80,7 +80,7 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 		}
 		else
 		{
-			free(first_block);
+			ft_free(&first_block);
 			return (NULL);
 		}
 	}
@@ -134,7 +134,7 @@ char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 		quote_result = quote_expansion(data, inside_quote);
 	else
 		return (NULL);
-	free(inside_quote);
+	ft_free(&inside_quote);
 	if (!quote_result)
 		return (NULL);
 	return (quote_result);

@@ -76,7 +76,7 @@ char	*env_var_manager(t_data *data, char *str, int *i)
 	if (!var_env)
 		return (NULL);
 	xpansion_result = env_var_checker(data->env, var_env);
-	free(var_env);
+	ft_free(&var_env);
 	if (!xpansion_result)
 		return (NULL);
 	return (xpansion_result);

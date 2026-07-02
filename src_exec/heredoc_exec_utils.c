@@ -61,15 +61,15 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
 			data->saved_errno = errno;
-			free(temp);
-			free(second_block);
+			ft_free(&temp);
+			ft_free(&second_block);
 			errno = data->saved_errno;
 			if (!first_block)
 				return (ft_error_parent(B_TRUE, "malloc", 1));	
 		}
 		else 
 		{
-			free (first_block);
+			ft_free (&first_block);
 			return (NULL);
 		}
 	}

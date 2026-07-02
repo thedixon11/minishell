@@ -50,15 +50,15 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
 			data->saved_errno = errno;
-			free(second_block);
-			free(temp);
+			ft_free(&second_block);
+			ft_free(&temp);
 			errno = data->saved_errno
 			if (!first_block)
 				return (ft_error_parent(B_TRUE, "malloc", 1));
 		}
 		else 
 		{
-			free (first_block);
+			ft_free(&first_block);
 			return (NULL);
 		}
 	}
@@ -84,7 +84,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	if (line == NULL)
 		return (ft_error_parent_int(B_TRUE, "malloc", 1));
 	line_xpanded = expand_line_hdoc(data, line, xpand_or_not);
-	free(line);
+	ft_free(&line);
 	if (!line_xpanded)
 		return (1);
 	while (ft_strncmp(line_xpanded, heredoc->content, limiter_len) != 0)
@@ -93,19 +93,19 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		data->error = write(data->heredoc_pipe_fds[1], line_xpanded,
 				len_of_line);
 		data->saved_errno = errno;
-		free(line_xpanded);
+		ft_free(&line_xpanded);
 		if (data->error != 0)
 			return (ft_error_parent_int(B_TRUE, "write", 1));
 		line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 		if (line == NULL)
 			return (ft_error_parent_int(B_TRUE, "malloc", 1));
 		line_xpanded = expand_line_hdoc(data, line, xpand_or_not);
-		free(line);
+		ft_free(&line);
 		if (!line_xpanded)
 			return (1);
 	}
-	free(line);
-	free(line_xpanded);
+	ft_free(&line);
+	ft_free(&line_xpanded);
 	close(data->heredoc_pipe_fds[1]);
 	return (0);
 }
@@ -130,7 +130,7 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 		return (ft_error_parent_int(B_TRUE, "malloc", 1));
 	heredoc->content = ft_strjoin(temp, "\n");
 	data->saved_errno = errno;
-	free(temp);
+	ft_free(&temp);
 	if (!heredoc->content)
 		return (ft_error_parent_int(B_TRUE, "malloc", 1));
 	return (0);
@@ -162,7 +162,7 @@ int	heredoc_exec(t_data *data)
 				if (!temp)
 					ft_error_parent_int(B_TRUE, "malloc", 1);
 				current->content = delimiter_manager_hdoc(data, temp);
-				free(temp);
+				ft_free(&temp);
 				if (!current->content)
 					return (1);
 				write_on_fd(data, current, B_FALSE);

@@ -1,10 +1,12 @@
 #include "../minishell_general.h"
-#include <stdlib.h>
 
 void  ft_free(void **ptr)
 {
-  free(*ptr);
-  *ptr = NULL;
+  if (*ptr != NULL)
+  {
+    free(*ptr);
+    *ptr = NULL;
+  }
 }
 
 void  wait_all_children(t_data *data)
@@ -77,8 +79,11 @@ void	free_line_cmd(t_line *line_cmd)
 
 void  close_fd(int *fd)
 {
-  close(*fd);
-  *fd = -1;
+  if (*fd != -1)
+  {
+    close(*fd);
+    *fd = -1;
+  }
 }
 
 void	close_all_fd(t_line *line_cmd)
