@@ -1,10 +1,18 @@
 #include "../minishell_general.h"
 
+int	ft_error_parent_int(t_bool do_i_perror, char *message, int code)
+{
+	if (code != 0 && do_i_perror == B_TRUE)
+		perror(message);
+	data->code = code;
+	return (1);
+}
+
 char	*ft_error_parent(t_bool do_i_perror, char *message, int code)
 {
 	if (code != 0 && do_i_perror == B_TRUE)
 		perror(message);
-	data->error = code;
+	data->code = code;
 	return (NULL);
 }
 

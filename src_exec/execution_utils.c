@@ -7,7 +7,7 @@ void	free_cmd_data(t_cmd cmd_data)
 	if (cmd_data->args_array != NULL)
 		ft_free_tab(cmd_data->args_array);
 	if (cmd_data.path_array != NULL)
-		ft_free_tab (cmd_data->path_array);
+		ft_free_tab(cmd_data->path_array);
 	if (cmd_data->env != NULL)
 		ft_free_tab(cmd_data->env);
 }
@@ -24,8 +24,8 @@ void	free_env(t_env *env)
 		if (current->content != NULL)
 			free(current->content);
 		current = current->next;
-    if (current->prev != NULL)
-		  free(current->prev);
+		if (current->prev != NULL)
+			free(current->prev);
 	}
 	if (current->name != NULL)
 		free(current->name);
@@ -51,7 +51,7 @@ void	free_line_cmd(t_line *line_cmd)
 	if (current->content != NULL)
 		free(current->content);
 	if (current->content_xpand != NULL)
-		ft_free_tab (current->content_xpand);
+		ft_free_tab(current->content_xpand);
 	free(current);
 }
 

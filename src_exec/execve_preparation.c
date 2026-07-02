@@ -9,11 +9,11 @@ int	is_prog_existing_and_executable(t_data *data, char *path_to_check)
 		return (-1);
 	if (data == NULL && access(path_to_check, X_OK) != 0)
 		return (-1);
-  if (data != NULL && access(path_to_check, F_OK) != 0)
-    ft_error_child(data, B_TRUE, "access not such file or directory", 1);
-  if (data != NULL && access(path_to_check, X_OK) != 0) 
-    ft_error_child(data, B_TRUE, "access not such file or directory", 127);
-  return (0);
+	if (data != NULL && access(path_to_check, F_OK) != 0)
+		ft_error_child(data, B_TRUE, "access not such file or directory", 1);
+	if (data != NULL && access(path_to_check, X_OK) != 0)
+		ft_error_child(data, B_TRUE, "access not such file or directory", 127);
+	return (0);
 }
 
 // NOTE: the function create_path_array will split the PATH string that
@@ -22,11 +22,11 @@ int	is_prog_existing_and_executable(t_data *data, char *path_to_check)
 
 char	**create_path_array(t_data *data, char *path_to_split)
 {
-	char  **path_array;
+	char	**path_array;
 
 	path_array = ft_split(path_to_split, ':');
 	if (!path_array)
-  	ft_error_child(data, B_TRUE, "malloc", 1);
+		ft_error_child(data, B_TRUE, "malloc", 1);
 	return (path_array);
 }
 
@@ -49,7 +49,7 @@ char	*create_prog_fullname(t_data *data, t_cmd *cmd_data, char *prog_name)
 	{
 		prog_fullname = ft_strjoin(cmd_data->path_array[y], temp);
 		if (prog_fullname)
-		  ft_error_child(data, B_TRUE, "malloc", 1);
+			ft_error_child(data, B_TRUE, "malloc", 1);
 		if (is_prog_existing_and_executable(data, prog_fullname) == 0)
 		{
 			free(temp);
@@ -59,7 +59,7 @@ char	*create_prog_fullname(t_data *data, t_cmd *cmd_data, char *prog_name)
 		y++;
 	}
 	free(temp);
-  ft_error_child(data, B_FALSE, "access command not found", 1);
+	ft_error_child(data, B_FALSE, "access command not found", 1);
 	return (NULL);
 }
 
@@ -85,12 +85,12 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 	cmd_data = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd_data)
 		ft_error_child(data, B_TRUE, "malloc", 1);
-  data->cmd_data = cmd_data;
+	data->cmd_data = cmd_data;
 	cmd_data->args_array = ft_arraydup(cmd_content);
-  if (!cmd_data->args_array)
+	if (!cmd_data->args_array)
 		ft_error_child(data, B_TRUE, "malloc", 1);
 	cmd_data->env = env_converter_ll_to_array(data, data->env);
-  if (!cmd_data->env)
+	if (!cmd_data->env)
 		ft_error_child(data, B_TRUE, "malloc", 1);
 	while (current != NULL)
 	{
@@ -102,11 +102,11 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 		cmd_data->prog_fullname = create_prog_fullname(data, cmd_data,
 				cmd_content[0]);
 	else
-  {
+	{
 		cmd_data->prog_fullname = ft_strdup(cmd_data->args_array[0]);
-    if (!cmd_data->prog_fullname)
-      ft_error_child(data, B_TRUE, "malloc", 1);
-  }
+		if (!cmd_data->prog_fullname)
+			ft_error_child(data, B_TRUE, "malloc", 1);
+	}
 	if (is_prog_existing_and_executable(data, cmd_data->prog_fullname) != 0)
 		return (NULL);
 	return (cmd_data);

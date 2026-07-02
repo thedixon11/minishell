@@ -119,10 +119,10 @@ int	execute_cmds(t_data *data)
 	while (current_cmd_nb <= data->max_cmd_nb)
 	{
 		if (pipe(data->pipe_fd) == -1)
-			exit(10);
+			return (ft_error_parent_int(B_TRUE, "pipe", 1);
 		pid = fork();
-		if (pid == -1)
-			exit(10);
+		if (pid == -1)	
+			return (ft_error_parent_int(B_TRUE, "fork", 1);
 		else if (pid == 0)
 			child_process(data, current_cmd_nb);
 		else if (pid > 0)
@@ -143,17 +143,13 @@ int	execute_cmds(t_data *data)
 
 int execution(t_data *data)
 {
-  int error;
+	int error;
 
-  error = val_manager(data);
-  if (error != 0)
-    return (error);
-	error = heredoc_exec(data);
-  if (error != 0)
-    return (error);
-  error = execute_cmds(data);
-  if (error != 0)
-     return (error);
+	error = val_manager(data);
+	if (error == 0)
+		error = heredoc_exec(data);
+	if (error == 0)
+		error = execute_cmds(data);
 	free_and_close_life(data);
-  return(error);
+	return (error);
 }

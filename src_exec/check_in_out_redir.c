@@ -3,7 +3,6 @@
 
 // TODO: have to add the fact he will just check the nodes of the right number cmd
 
-
 // NOTE: The function open_fd_in_line_cmd will open all fds, depending on what
 // do we have for elements in the command. We will add the fds in the node.
 // It will be useful at the moment (in the child) we'll dup2 in serie.
@@ -13,7 +12,7 @@
 // c) INPUT REDIRECTION -> open an input file
 // d) OUTPUT REDIRECTION TRUNCATE -> open an output file;
 // e) OUTPUT REDIRECTION APPEND -> open an output file;
-// f) HEREDOC -> create a fd with pipe function 
+// f) HEREDOC -> create a fd with pipe function
 
 void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
 {
@@ -44,16 +43,15 @@ void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
 	}
 }
 
-
-t_bool check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
+t_bool	check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
 {
 	t_line	*current;
-	int	y;
+	int		y;
 
 	y = 0;
 	current = line_cmd;
-  while (current != NULL && current->cmd_nb != current_cmd_nb)
-    current = current->next;
+	while (current != NULL && current->cmd_nb != current_cmd_nb)
+		current = current->next;
 	while (current != NULL && current->cmd_nb == current_cmd_nb)
 	{
 		y = 0;

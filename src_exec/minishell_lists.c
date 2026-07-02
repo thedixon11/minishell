@@ -1,8 +1,8 @@
+#include "../minishell_general.h"
 #include <stdalign.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../minishell_general.h"
 
 /* ══════════════════════════════════════════════════════════════════════════════
 **  T_LINE — COMMAND LINKED LIST
@@ -10,7 +10,7 @@
 
 static const char	*type_to_str(t_type type)
 {
-	const char	*names[] = {
+	const char *names[] = {
 		"T_INPUT",
 		"T_OUTPUT_TRUNC",
 		"T_OUTPUT_APPEND",
@@ -29,13 +29,13 @@ static t_line	*new_line_node(t_type type, const char *content, int cmd_nb)
 	node = malloc(sizeof(t_line));
 	if (!node)
 		return (NULL);
-	node->type          = type;
-	node->content       = content ? strdup(content) : NULL;
+	node->type = type;
+	node->content = content ? strdup(content) : NULL;
 	node->content_xpand = NULL;
-	node->fd            = -1;
-	node->cmd_nb        = cmd_nb;
-	node->prev          = NULL;
-	node->next          = NULL;
+	node->fd = -1;
+	node->cmd_nb = cmd_nb;
+	node->prev = NULL;
+	node->next = NULL;
 	return (node);
 }
 
@@ -49,7 +49,7 @@ static t_line	*append_line(t_line *head, t_line *node)
 	while (cursor->next)
 		cursor = cursor->next;
 	cursor->next = node;
-	node->prev   = cursor;
+	node->prev = cursor;
 	return (head);
 }
 
@@ -81,15 +81,15 @@ t_line	*build_line_list(void)
 	t_line	*head;
 
 	head = NULL;
-	head = append_line(head, new_line_node(T_INPUT,        "infile1",  0));
-	head = append_line(head, new_line_node(T_INPUT,        "lamerde",  0));
-	head = append_line(head, new_line_node(T_COMMAND,      "cat",      0));
+	head = append_line(head, new_line_node(T_INPUT, "infile1", 0));
+	head = append_line(head, new_line_node(T_INPUT, "lamerde", 0));
+	head = append_line(head, new_line_node(T_COMMAND, "cat", 0));
 	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "outfile1", 0));
-	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "lecaca",   0));
-	head = append_line(head, new_line_node(T_PIPE_OUT,     "|",        0));
-	head = append_line(head, new_line_node(T_PIPE_IN,      "|",        1));
-	head = append_line(head, new_line_node(T_INPUT,        "lamerde",  1));
-	head = append_line(head, new_line_node(T_COMMAND,      "cat",      1));
+	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "lecaca", 0));
+	head = append_line(head, new_line_node(T_PIPE_OUT, "|", 0));
+	head = append_line(head, new_line_node(T_PIPE_IN, "|", 1));
+	head = append_line(head, new_line_node(T_INPUT, "lamerde", 1));
+	head = append_line(head, new_line_node(T_COMMAND, "cat", 1));
 	return (head);
 }
 
@@ -99,16 +99,13 @@ void	print_line_list(t_line *head)
 	int		i;
 
 	cursor = head;
-	i      = 0;
+	i = 0;
 	printf("%-4s  %-16s  %-12s  %s\n", "#", "type", "content", "cmd_nb");
 	printf("──────────────────────────────────────────────────\n");
 	while (cursor)
 	{
-		printf("[%-2d]  %-16s  %-12s  %d\n",
-			i,
-			type_to_str(cursor->type),
-			cursor->content ? cursor->content : "(null)",
-			cursor->cmd_nb);
+		printf("[%-2d]  %-16s  %-12s  %d\n", i, type_to_str(cursor->type),
+			cursor->content ? cursor->content : "(null)", cursor->cmd_nb);
 		cursor = cursor->next;
 		i++;
 	}
@@ -149,12 +146,12 @@ static t_env	*new_env_node(const char *raw)
 	eq = strchr(raw, '=');
 	if (eq)
 	{
-		node->name    = strndup(raw, eq - raw);
+		node->name = strndup(raw, eq - raw);
 		node->content = strdup(eq + 1);
 	}
 	else
 	{
-		node->name    = strdup(raw);
+		node->name = strdup(raw);
 		node->content = NULL;
 	}
 	if (!node->name)
@@ -178,7 +175,7 @@ static t_env	*append_env(t_env *head, t_env *node)
 	while (cursor->next)
 		cursor = cursor->next;
 	cursor->next = node;
-	node->prev   = cursor;
+	node->prev = cursor;
 	return (head);
 }
 
@@ -207,14 +204,12 @@ void	print_env_list(t_env *head)
 	int		i;
 
 	cursor = head;
-	i      = 0;
+	i = 0;
 	printf("%-4s  %-24s  %s\n", "#", "name", "content");
 	printf("──────────────────────────────────────────────────────\n");
 	while (cursor)
 	{
-		printf("[%-2d]  %-24s  %s\n",
-			i,
-			cursor->name,
+		printf("[%-2d]  %-24s  %s\n", i, cursor->name,
 			cursor->content ? cursor->content : "(null)");
 		cursor = cursor->next;
 		i++;
@@ -235,7 +230,6 @@ void	free_env_list(t_env *head)
 	}
 }
 
-
 /* ══════════════════════════════════════════════════════════════════════════════
 **  DATA CREATION
 ** ══════════════════════════════════════════════════════════════════════════════ */
@@ -244,16 +238,14 @@ static t_data	*data_creation(t_env *env, t_line *line_cmd)
 {
 	t_data	*data;
 
-
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (NULL);
 	data->env = env;
 	data->line_cmd = line_cmd;
 	data->max_cmd_nb = 1;
-	return (data);	
+	return (data);
 }
-
 
 /* ══════════════════════════════════════════════════════════════════════════════
 **  ENTRY POINT
@@ -267,27 +259,22 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-
 	/* ── command list ───────────────────────────────────────────────────── */
 	printf("\n=== COMMAND LIST : < infile1 < lamerde cat > outfile1 > lecaca | < lamerde cat ===\n\n");
 	line_list = build_line_list();
 	if (!line_list)
 		return (fprintf(stderr, "Error: malloc failure (line list)\n"), 1);
 	print_line_list(line_list);
-
 	/* ── environment list ───────────────────────────────────────────────── */
 	printf("\n=== ENVIRONMENT LIST ===\n\n");
 	env_list = build_env_list(envp);
 	if (!env_list)
 		return (fprintf(stderr, "Error: malloc failure (env list)\n"), 1);
 	print_env_list(env_list);
-
-
 	data = data_creation(env_list, line_list);
 	execution(data);
-	//free_line_list(line_list);
-	//free_env_list(env_list);
-
+	// free_line_list(line_list);
+	// free_env_list(env_list);
 	printf("\n");
 	return (0);
 }
