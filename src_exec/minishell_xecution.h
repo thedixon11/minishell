@@ -48,6 +48,7 @@ void	free_env(t_env *env);
 void	free_cmd_data(t_cmd *cmd_data);
 int  ft_error(t_data *data, char *err_message, int code, t_scope scope);
 void  ft_error_child(t_data *data, t_bool do_i_perror, char *message, int code);
+char  *ft_error_parent(t_bool do_i_perror, char *message, int code);
 
 #endif
 

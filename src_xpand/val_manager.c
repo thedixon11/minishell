@@ -28,7 +28,7 @@ char	*go_until_dollar(char *content, int *start)
 	}
 	second_block = ft_substr(content, *start, end - (*start));
   if (!second_block)
-    return (NULL);
+    return (ft_error_parent(B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -117,7 +117,7 @@ char	*expand_off_quote(t_data *data, char *content)
 	i = 0;
 	first_block = ft_strdup("");
   if (!first_block)
-    return (NULL);
+    return (ft_error_parent(B_TRUE, "malloc", 1));
 	while (content[i] != 0)
 	{
 		if (content[i] != 0 && content[i] != '$')
@@ -128,10 +128,14 @@ char	*expand_off_quote(t_data *data, char *content)
 		{
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
+      data->saved_errno = errno;
 			free(second_block);
 			free(temp);
       if (!first_block)
-        return (NULL);
+      {
+        errno = data->saved_errno;
+        return (ft_error_parent(B_TRUE, "malloc", 1));
+      }
 		}
     else
     {
@@ -164,21 +168,32 @@ int val_manager(t_data *data)
 		{
 			temp = expand_off_quote(data, current->content);
       if (!temp)
-        return (ft_error(data, ERR_MALLOC, 1, S_OUTSIDE);
+        return (1);
 			current->content_xpand = ft_split(temp, ' ');
+      data->saved_errno = errno;
 			free(temp);
       if (!current->content_xpand)
-       return (ft_error(data, ERR_MALLOC, 1, S_OUTSIDE));
+      {
+        errno = data->saved_errno;
+        ft_error_parent(B_TRUE, "malloc", 1);
+        return (1);
+      }
 			while (current->content_xpand[y] != NULL)
 			{
 				temp = ft_strdup(current->content_xpand[y]);
         if (!temp)
-          return (ft_error(data, ERR_MALLOC, 1, S_OUTSIDE));
+        {
+          ft_error_parent(B_TRUE, "malloc", 1);
+          return (1);
+        }
 				free(current->content_xpand[y]);
 				current->content_xpand[y] = expand_in_quote(data, temp);
+        free(temp);
         if (!current->content_xpand[y])
-          return (ft_error(data, ERR_MALLOC, 1, S_OUTSIDE));
-				free(temp);
+        {
+          ft_error_parent(B_TRUE, "malloc", 1);
+          return (1);
+        }
 				y++;
 			}
 		}

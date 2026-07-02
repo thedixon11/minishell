@@ -23,14 +23,14 @@ char	*env_var_checker(t_env *env, char *var_env)
 		{
 			xpansion_result = ft_strdup(current->content);
       if (!xpansion_result)
-        return (NULL);
+        return (ft_error_parent(B_TRUE, "malloc", 1));
 			return (xpansion_result);
 		}
 		current = current->next;
 	}
   xpansion_result = ft_strdup("");
   if (!xpansion_result)
-	  return (NULL);
+	  return (ft_error_parent(B_TRUE, "malloc", 1));
   return (xpansion_result);
 }
 
@@ -54,7 +54,7 @@ char	*extract_env_var(char *str, int *i)
 	len = end - *i;
 	var_env = ft_substr(str, *i, len);
   if (!var_env)
-    return (NULL);
+    return (ft_error_parent(B_TRUE, "malloc", 1));
 	*i = end;
 	return (var_env);
 }

@@ -37,7 +37,7 @@ char	*second_block_not_dollar(char *str, int *start)
 	len = end - *start;
 	second_block = ft_substr(str, *start, len);
   if (!second_block)
-    return (NULL);
+    return (ft_error_parent(B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -58,7 +58,7 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 	i_quote = 0;
 	first_block = ft_strdup("");
   if (!first_block)
-    return (NULL);
+    return (ft_error_parent(B_TRUE, "malloc, 1"));
 	while (inside_quote[i_quote] != 0)
 	{
 		if (inside_quote[i_quote] != '$')
