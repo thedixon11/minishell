@@ -14,8 +14,8 @@ char	*go_until_dollar(char *content, int *start)
 	quote = 'a';
 	while (content[end] != 0 && content[end] != '$')
 	{
-		while (content[end] != 0 && content[end] != '"'
-			&& content[end] != '\'' && content[end] != '$')
+		while (content[end] != 0 && content[end] != '"' && content[end] != '\''
+			&& content[end] != '$')
 			end++;
 		if (content[end] == '"' || content[end] == '\'')
 		{
@@ -27,8 +27,8 @@ char	*go_until_dollar(char *content, int *start)
 		}
 	}
 	second_block = ft_substr(content, *start, end - (*start));
-  if (!second_block)
-    return (ft_error_parent(B_TRUE, "malloc", 1));
+	if (!second_block)
+		return (ft_error_parent(B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -45,8 +45,8 @@ char	*go_until_quote(char *content, int *start)
 	while (content[end] != 0 && content[end] != '\'' && content[end] != '"')
 		end++;
 	second_block = ft_substr(content, *start, end - (*start));
-  if (!second_block)
-    return (NULL);
+	if (!second_block)
+		return (ft_error_parent(B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -71,8 +71,8 @@ char	*expand_in_quote(t_data *data, char *row)
 
 	i = 0;
 	first_block = ft_strdup("");
-  if (!first_block)
-    return (NULL);
+	if (!first_block)
+		return (ft_error_parent(B_TRUE, "malloc", 1));
 	while (row[i] != 0)
 	{
 		if (row[i] != '"' && row[i] != '\'')
@@ -83,16 +83,20 @@ char	*expand_in_quote(t_data *data, char *row)
 		{
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
+			data->saved_errno = errno;
 			free(second_block);
 			free(temp);
-      if (!first_block)
-        return (NULL);
+			if (!first_block)
+			{
+				errno = data->saved_errno;
+				return (ft_error_parent(B_TRUE, "malloc", 1));
+			}
 		}
-    else
-    {
-      free(first_block);
-      return (NULL);
-    }
+		else
+		{
+			free(first_block);
+			return (NULL);
+		}
 	}
 	return (first_block);
 }
@@ -102,7 +106,7 @@ char	*expand_in_quote(t_data *data, char *row)
 // We work in a system of first and second block. The idea is to manage the
 // second block, either it is or not a dollar situation, and then to join
 // the first block (already treated) with second block.
-// This fusion becomes the new first block and we repeat the process. 
+// This fusion becomes the new first block and we repeat the process.
 //
 // NOTE: the function go_until_dollar will extract from i until the next
 // dollar. The next dollar will be at this step outside a quote.
@@ -116,8 +120,8 @@ char	*expand_off_quote(t_data *data, char *content)
 
 	i = 0;
 	first_block = ft_strdup("");
-  if (!first_block)
-    return (ft_error_parent(B_TRUE, "malloc", 1));
+	if (!first_block)
+		return (ft_error_parent(B_TRUE, "malloc", 1));
 	while (content[i] != 0)
 	{
 		if (content[i] != 0 && content[i] != '$')
@@ -128,20 +132,20 @@ char	*expand_off_quote(t_data *data, char *content)
 		{
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
-      data->saved_errno = errno;
+			data->saved_errno = errno;
 			free(second_block);
 			free(temp);
-      if (!first_block)
-      {
-        errno = data->saved_errno;
-        return (ft_error_parent(B_TRUE, "malloc", 1));
-      }
+			if (!first_block)
+			{
+				errno = data->saved_errno;
+				return (ft_error_parent(B_TRUE, "malloc", 1));
+			}
 		}
-    else
-    {
-      free (first_block);
-      return (NULL);
-    }
+		else
+		{
+			free(first_block);
+			return (NULL);
+		}
 	}
 	return (first_block);
 }
@@ -152,7 +156,7 @@ char	*expand_off_quote(t_data *data, char *content)
 //	2) we have to split the content (spaces are the separators)
 //	3) we have to expend inside quotes of all the lines of splitted_content;
 
-int val_manager(t_data *data)
+int	val_manager(t_data *data)
 {
 	char	*temp;
 	int		y;
@@ -167,37 +171,37 @@ int val_manager(t_data *data)
 			|| current->type == T_OUTPUT_APPEND || current->type == T_COMMAND)
 		{
 			temp = expand_off_quote(data, current->content);
-      if (!temp)
-        return (1);
+			if (!temp)
+				return (1);
 			current->content_xpand = ft_split(temp, ' ');
-      data->saved_errno = errno;
+			data->saved_errno = errno;
 			free(temp);
-      if (!current->content_xpand)
-      {
-        errno = data->saved_errno;
-        ft_error_parent(B_TRUE, "malloc", 1);
-        return (1);
-      }
+			if (!current->content_xpand)
+			{
+				errno = data->saved_errno;
+				ft_error_parent(B_TRUE, "malloc", 1);
+				return (1);
+			}
 			while (current->content_xpand[y] != NULL)
 			{
 				temp = ft_strdup(current->content_xpand[y]);
-        if (!temp)
-        {
-          ft_error_parent(B_TRUE, "malloc", 1);
-          return (1);
-        }
+				if (!temp)
+				{
+					ft_error_parent(B_TRUE, "malloc", 1);
+					return (1);
+				}
 				free(current->content_xpand[y]);
 				current->content_xpand[y] = expand_in_quote(data, temp);
-        free(temp);
-        if (!current->content_xpand[y])
-        {
-          ft_error_parent(B_TRUE, "malloc", 1);
-          return (1);
-        }
+				free(temp);
+				if (!current->content_xpand[y])
+				{
+					ft_error_parent(B_TRUE, "malloc", 1);
+					return (1);
+				}
 				y++;
 			}
 		}
 		current = current->next;
 	}
-  return (0);
+	return (0);
 }

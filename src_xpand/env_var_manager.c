@@ -22,16 +22,16 @@ char	*env_var_checker(t_env *env, char *var_env)
 		if (ft_strncmp(var_env, current->name, len) == 0)
 		{
 			xpansion_result = ft_strdup(current->content);
-      if (!xpansion_result)
-        return (ft_error_parent(B_TRUE, "malloc", 1));
+			if (!xpansion_result)
+				return (ft_error_parent(B_TRUE, "malloc", 1));
 			return (xpansion_result);
 		}
 		current = current->next;
 	}
-  xpansion_result = ft_strdup("");
-  if (!xpansion_result)
-	  return (ft_error_parent(B_TRUE, "malloc", 1));
-  return (xpansion_result);
+	xpansion_result = ft_strdup("");
+	if (!xpansion_result)
+		return (ft_error_parent(B_TRUE, "malloc", 1));
+	return (xpansion_result);
 }
 
 // NOTE: Withe extract_env_var, we'll extract the env_var of the content.
@@ -53,8 +53,8 @@ char	*extract_env_var(char *str, int *i)
 		end++;
 	len = end - *i;
 	var_env = ft_substr(str, *i, len);
-  if (!var_env)
-    return (ft_error_parent(B_TRUE, "malloc", 1));
+	if (!var_env)
+		return (ft_error_parent(B_TRUE, "malloc", 1));
 	*i = end;
 	return (var_env);
 }
@@ -73,11 +73,11 @@ char	*env_var_manager(t_data *data, char *str, int *i)
 	char	*var_env;
 
 	var_env = extract_env_var(str, i);
-  if (!var_env)
-    return (NULL);
+	if (!var_env)
+		return (NULL);
 	xpansion_result = env_var_checker(data->env, var_env);
 	free(var_env);
-  if (!xpansion_result)
-    return (NULL);
+	if (!xpansion_result)
+		return (NULL);
 	return (xpansion_result);
 }

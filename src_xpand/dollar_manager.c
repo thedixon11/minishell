@@ -34,28 +34,28 @@ char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 	}
 	else if (str[*i + 1] == '?')
 	{
-		//result = find_exit_error();
+		// result = find_exit_error();
 		result = ft_calloc(2, sizeof(char));
-    if (!result)
-      return (ft_error_parent(B_TRUE, "malloc", 1));
+		if (!result)
+			return (ft_error_parent(B_TRUE, "malloc", 1));
 		result[0] = 8;
 		return (result);
 	}
 	else if (ft_isalpha(str[*i + 1]) == 1 || str[*i + 1] == '_')
 	{
 		result = env_var_manager(data, str, i);
-    if (!result)
-      return (NULL);
+		if (!result)
+			return (NULL);
 		return (result);
 	}
 	else
 	{
 		result = ft_calloc(3, sizeof(char));
-    if (!result)
-      return (ft_error_parent(B_TRUE, "malloc", 1));
+		if (!result)
+			return (ft_error_parent(B_TRUE, "malloc", 1));
 		result[0] = '$';
 		result[1] = str[*i + 1];
 		*i += 2;
 		return (result);
-  }
+	}
 }
