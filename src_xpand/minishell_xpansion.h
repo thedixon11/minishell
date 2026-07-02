@@ -17,10 +17,9 @@ char	*extract_env_var(char *str, int *i);
 char	*env_var_checker(t_env *env, char *var_env);
 
 // quote_manager functions
-char	*quote_manager(t_data *data, char *content, int *i_content, char quote);
+char	*quote_manager(t_data *data, char *value, int *i_value, char quote);
 char	*extract_quote(char *value, int *i_value, char quote);
 char	*quote_expansion(t_data *data, char *inside_quote);
 char	*second_block_not_dollar(char *str, int *i);
-t_bool	is_it_dollar_or_quote(char c, t_quote q_mode);
 
 #endif

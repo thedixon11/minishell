@@ -1,25 +1,5 @@
 #include "../minishell_general.h"
 
-/*
-// NOTE: is_it_dollar_or_quote will check if the value is a
-// single quote, double quote or a dollar. It's an utils for function
-// second_block_not_dollar_or_quote (for quote_expansion).
-
-t_bool	is_it_dollar_or_quote(char c, t_quote q_mode)
-{
-	int		end;
-	int		len;
-	char	*second_block;
-
-	if (c == '$')
-		return (B_TRUE);
-	else if (c == '"' && q_mode == Q_NONE)
-		return (B_TRUE);
-	else if (c == '\'' && q_mode == Q_NONE)
-		return (B_TRUE);
-	else
-		return (B_FALSE);
-}*/
 // NOTE: second_block_not_dollar_or_quote will create a block from i until
 // the next dollar or quote (single or double). It's an utils for function
 // quote_expansion.
