@@ -23,6 +23,7 @@ typedef enum e_scope
 }					t_scope;
 
 // NOTE: cet enum enumere les differents types de nodes possible dans la liste chainee de la cmd
+
 typedef enum e_type
 {
 	T_INPUT,
@@ -36,7 +37,7 @@ typedef enum e_type
 
 // NOTE: la struct t_line est utilisee pour la liste chainee de la cmd.
 // chaque node est un element de la cmd (soit cmd, pipe in, pipe out, heredoc,
-	...)
+//	...)
 typedef struct s_line
 {
 	t_type			type;
@@ -49,6 +50,7 @@ typedef struct s_line
 }					t_line;
 
 // NOTE: la struct s_env est creer au tout debut du programme par Alex.
+//
 typedef struct s_env
 {
 	char			*name;
@@ -58,6 +60,7 @@ typedef struct s_env
 }					t_env;
 
 // NOTE: la struct t_cmd est creer uniquement dans l'execve preparation
+//
 typedef struct s_cmd
 {
 	char			*prog_fullname;
@@ -68,6 +71,7 @@ typedef struct s_cmd
 
 // NOTE: la struct t_data est creer au tout debut du programme.
 // elle va contenir des donnees utilisees globalement dans le prog.
+//
 typedef struct s_data
 {
 	t_env			*env;

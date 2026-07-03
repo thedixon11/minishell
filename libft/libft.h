@@ -21,6 +21,7 @@
 # include <limits.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <stdio.h>
 
 typedef struct s_list
 {
@@ -66,7 +67,7 @@ char	*ft_strrm(const char *s, size_t len);
 //array_function
 char	**ft_arraydup(char **tab);
 int		ft_arraychr(char **tab, char c);
-void	ft_free_tab(char **tab);
+void	ft_free_tab(char ***tab);
 
 //put_fd_functions
 void	ft_putchar_fd(char c, int fd);

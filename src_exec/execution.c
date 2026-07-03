@@ -10,14 +10,14 @@ void  dup2_rest(t_data *data, int current_cmd_nb)
 		current = current->next;
 	while (current != NULL && data->error == 0 && current->cmd_nb == current_cmd_nb)
 	{
-		if (data->error == 0 && current->type == T_INPUT || current->type == T_HEREDOC)
+		if (data->error == 0 && (current->type == T_INPUT || current->type == T_HEREDOC))
 			data->error = dup2(current->fd, STDIN_FILENO);
 		else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC)
 			data->error = dup2(current->fd, STDOUT_FILENO);
 	  current = current->next;
 	}
   if (data->error != 0)
-    ft_error_child(data, NULL, "dup2", 1);
+    ft_error_child(data, B_TRUE, "dup2", 1);
 }
 
 void  first_dup2_pipes(t_data *data, int current_cmd_nb)
@@ -36,7 +36,7 @@ void  first_dup2_pipes(t_data *data, int current_cmd_nb)
     current = current->next;
   }
   if (data->error != 0)
-    ft_error_child(data, NULL, "dup2", 1);
+    ft_error_child(data, B_TRUE, "dup2", 1);
 }
 
 // NOTE: The child process has four missions:
@@ -59,18 +59,16 @@ void	child_process(t_data *data, int current_cmd_nb)
 	t_cmd	*cmd_data;
 
 	close(data->pipe_fd[0]);
-  if (check_and_prepare_fds(data, current_cmd_nb) == B_TRUE)
-  {
+	check_and_prepare_fds(data, current_cmd_nb);
     first_dup2_pipes(data, current_cmd_nb);
     dup2_rest(data, current_cmd_nb);
   	current = data->line_cmd;
-		while (current->type != T_COMMAND || current->cmd_nb != current_cmd_nb)
-			current = current->next;
-		cmd_data = execve_preparation(data, current->content_xpand);
-	  free_and_close_life(data);
-		if (execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env) == -1)
+	while (current->type != T_COMMAND || current->cmd_nb != current_cmd_nb)
+		current = current->next;
+	cmd_data = execve_preparation(data, current->content_xpand);
+	free_and_close_life(data);
+	if (execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env) == -1)
 	    ft_error_child(data, B_TRUE, "execve", 1);
-	}
 	exit(0);
 }
 
@@ -119,19 +117,20 @@ int	execute_cmds(t_data *data)
 	while (current_cmd_nb <= data->max_cmd_nb)
 	{
 		if (pipe(data->pipe_fd) == -1)
-			return (ft_error_parent_int(B_TRUE, "pipe", 1);
+			return (ft_error_parent_int(data, B_TRUE, "pipe", 1));
 		pid = fork();
 		if (pid == -1)	
-			return (ft_error_parent_int(B_TRUE, "fork", 1);
+			return (ft_error_parent_int(data, B_TRUE, "fork", 1));
 		else if (pid == 0)
 			child_process(data, current_cmd_nb);
 		else if (pid > 0)
 			parent_process(data, current_cmd_nb);
 	  current_cmd_nb++;
   }
-  wait_all_children(t_data *data);
+  wait_all_children(data);
 	if (data->old_read_fd >= 0)
 		close(data->old_read_fd);
+	return (0);
 }
 
 // NOTE: execution process start here. There is two steps:

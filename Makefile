@@ -15,7 +15,8 @@ EXEC = minishell_lists.c \
 			execution_utils.c \
 			execve_preparation.c \
 			heredoc_exec.c \
-			heredoc_exec_utils.c
+			heredoc_exec_utils.c \
+			ft_error.c
 
 XPAND = val_manager.c \
 				quote_manager.c \

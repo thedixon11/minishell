@@ -84,8 +84,8 @@ char	*expand_in_quote(t_data *data, char *row)
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
 			data->saved_errno = errno;
-			ft_free(&second_block);
-			ft_free(&temp);
+			ft_free((void**)&second_block);
+			ft_free((void**)&temp);
 			if (!first_block)
 			{
 				errno = data->saved_errno;
@@ -94,7 +94,7 @@ char	*expand_in_quote(t_data *data, char *row)
 		}
 		else
 		{
-			ft_free(&first_block);
+			ft_free((void**)&first_block);
 			return (NULL);
 		}
 	}
@@ -133,8 +133,8 @@ char	*expand_off_quote(t_data *data, char *content)
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
 			data->saved_errno = errno;
-			ft_free(&second_block);
-			ft_free(&temp);
+			ft_free((void**)&second_block);
+			ft_free((void**)&temp);
 			if (!first_block)
 			{
 				errno = data->saved_errno;
@@ -143,7 +143,7 @@ char	*expand_off_quote(t_data *data, char *content)
 		}
 		else
 		{
-			ft_free(&first_block);
+			ft_free((void**)&first_block);
 			return (NULL);
 		}
 	}
@@ -175,7 +175,7 @@ int	val_manager(t_data *data)
 				return (1);
 			current->content_xpand = ft_split(temp, ' ');
 			data->saved_errno = errno;
-			ft_free(&temp);
+			ft_free((void**)&temp);
 			if (!current->content_xpand)
 			{
 				errno = data->saved_errno;
@@ -190,9 +190,9 @@ int	val_manager(t_data *data)
 					ft_error_parent(B_TRUE, "malloc", 1);
 					return (1);
 				}
-				ft_free(&current->content_xpand[y]);
+				ft_free((void**)&current->content_xpand[y]);
 				current->content_xpand[y] = expand_in_quote(data, temp);
-				ft_free(&temp);
+				ft_free((void**)&temp);
 				if (!current->content_xpand[y])
 				{
 					ft_error_parent(B_TRUE, "malloc", 1);

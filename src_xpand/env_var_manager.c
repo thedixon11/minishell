@@ -9,7 +9,7 @@
 // NOTE: the environement is stored in a linked list created at the beggining
 // of the program.
 
-char	*env_var_checker(t_env *env, char *var_env)
+char	*env_var_checker(t_data *data, t_env *env, char *var_env)
 {
 	t_env	*current;
 	int		len;
@@ -23,14 +23,14 @@ char	*env_var_checker(t_env *env, char *var_env)
 		{
 			xpansion_result = ft_strdup(current->content);
 			if (!xpansion_result)
-				return (ft_error_parent(B_TRUE, "malloc", 1));
+				return (ft_error_parent(data, B_TRUE, "malloc", 1));
 			return (xpansion_result);
 		}
 		current = current->next;
 	}
 	xpansion_result = ft_strdup("");
 	if (!xpansion_result)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	return (xpansion_result);
 }
 
@@ -40,7 +40,7 @@ char	*env_var_checker(t_env *env, char *var_env)
 // NOTE: str may be either value, or inside_quote.
 // i may be either i_value or i_quote.
 
-char	*extract_env_var(char *str, int *i)
+char	*extract_env_var(t_data *data, char *str, int *i)
 {
 	int		end;
 	int		len;
@@ -54,7 +54,7 @@ char	*extract_env_var(char *str, int *i)
 	len = end - *i;
 	var_env = ft_substr(str, *i, len);
 	if (!var_env)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*i = end;
 	return (var_env);
 }
@@ -76,7 +76,7 @@ char	*env_var_manager(t_data *data, char *str, int *i)
 	if (!var_env)
 		return (NULL);
 	xpansion_result = env_var_checker(data->env, var_env);
-	ft_free(&var_env);
+	ft_free((void**)&var_env);
 	if (!xpansion_result)
 		return (NULL);
 	return (xpansion_result);

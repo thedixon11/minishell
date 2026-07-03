@@ -25,7 +25,7 @@ void  wait_all_children(t_data *data)
 void	free_cmd_data(t_cmd *cmd_data)
 {
 	if (cmd_data->prog_fullname != NULL)
-		ft_free(&cmd_data->prog_fullname);
+		ft_free((void**)&cmd_data->prog_fullname);
 	if (cmd_data->args_array != NULL)
 		ft_free_tab(&cmd_data->args_array);
 	if (cmd_data->path_array != NULL)
@@ -42,18 +42,18 @@ void	free_env(t_env *env)
 	while (current->next != NULL)
 	{
 		if (current->name != NULL)
-			ft_free(&current->name);
+			ft_free((void**)&current->name);
 		if (current->content != NULL)
-			ft_free(&current->content);
+			ft_free((void**)&current->content);
 		current = current->next;
 		if (current->prev != NULL)
-			ft_free(&current->prev);
+			ft_free((void**)&current->prev);
 	}
 	if (current->name != NULL)
-		ft_free(&current->name);
+		ft_free((void**)&current->name);
 	if (current->content != NULL)
-		ft_free(&current->content);
-	ft_free(&current);
+		ft_free((void**)&current->content);
+	ft_free((void**)&current);
 }
 
 void	free_line_cmd(t_line *line_cmd)
@@ -64,17 +64,17 @@ void	free_line_cmd(t_line *line_cmd)
 	while (current->next != NULL)
 	{
 		if (current->content != NULL)
-			ft_free(&current->content);
+			ft_free((void**)&current->content);
 		if (current->content_xpand != NULL)
 			ft_free_tab(&current->content_xpand);
 		current = current->next;
-		ft_free(&current->prev);
+		ft_free((void**)&current->prev);
 	}
 	if (current->content != NULL)
-		ft_free(&current->content);
+		ft_free((void**)&current->content);
 	if (current->content_xpand != NULL)
 		ft_free_tab(&current->content_xpand);
-	ft_free(&current);
+	ft_free((void**)&current);
 }
 
 void  close_fd(int *fd)
@@ -107,5 +107,5 @@ void	free_and_close_life(t_data *data)
 	close_all_fd(data->line_cmd);
 	free_line_cmd(data->line_cmd);
 	free_env(data->env);
-	ft_free(&data);
+	ft_free((void**)&data);
 }

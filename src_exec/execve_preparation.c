@@ -44,7 +44,7 @@ char	*create_prog_fullname(t_data *data, t_cmd *cmd_data, char *prog_name)
 	y = 0;
 	temp = ft_strjoin("/", prog_name);
 	if (!temp)
-		ft_error_child(data, cmd_data, "malloc", 1);
+		ft_error_child(data, B_TRUE, "malloc", 1);
 	while (cmd_data->path_array[y] != NULL)
 	{
 		prog_fullname = ft_strjoin(cmd_data->path_array[y], temp);
@@ -52,13 +52,13 @@ char	*create_prog_fullname(t_data *data, t_cmd *cmd_data, char *prog_name)
 			ft_error_child(data, B_TRUE, "malloc", 1);
 		if (is_prog_existing_and_executable(data, prog_fullname) == 0)
 		{
-			free(temp);
+			ft_free((void**)&temp);
 			return (prog_fullname);
 		}
-		free(prog_fullname);
+		ft_free((void**)&prog_fullname);
 		y++;
 	}
-	free(temp);
+	ft_free((void**)&temp);
 	ft_error_child(data, B_FALSE, "access command not found", 1);
 	return (NULL);
 }

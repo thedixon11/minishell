@@ -4,7 +4,7 @@
 
 // NOTE: will extract inside the quote
 
-char	*extract_quote_hdoc(char *old_del, int *start, char quote)
+char	*extract_quote_hdoc(t_data *data, char *old_del, int *start, char quote)
 {
 	int		end;
 	char	*inside_quote;
@@ -14,15 +14,15 @@ char	*extract_quote_hdoc(char *old_del, int *start, char quote)
 	while (old_del[end] != quote)
 		end++;
 	inside_quote = ft_substr(old_del, *start, end - (*start));
-	if (!second_block)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+	if (!inside_quote)
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*start = end + 1;
 	return (inside_quote);
 }
 
 // NOTE: will extract before quote entry;
 
-char	*go_until_quote_hdoc(char *old_del, int *start)
+char	*go_until_quote_hdoc(t_data *data, char *old_del, int *start)
 {
 	int		end;
 	char	*second_block;
@@ -32,7 +32,7 @@ char	*go_until_quote_hdoc(char *old_del, int *start)
 		end++;
 	second_block = ft_substr(old_del, *start, end - (*start));
 	if (!second_block)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -49,7 +49,7 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 	i = 0;
 	first_block = ft_strdup("");
 	if (!first_block)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	while (old_del[i] != 0)
 	{
 		if (old_del[i] != '\'' && old_del[i] != '\"' && old_del[i] != 0)
@@ -61,15 +61,15 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 			temp = first_block;
 			first_block = ft_strjoin(temp, second_block);
 			data->saved_errno = errno;
-			ft_free(&temp);
-			ft_free(&second_block);
+			ft_free((void**)&temp);
+			ft_free((void**)&second_block);
 			errno = data->saved_errno;
 			if (!first_block)
-				return (ft_error_parent(B_TRUE, "malloc", 1));	
+				return (ft_error_parent(data, B_TRUE, "malloc", 1));	
 		}
 		else 
 		{
-			ft_free (&first_block);
+			ft_free((void**)&first_block);
 			return (NULL);
 		}
 	}

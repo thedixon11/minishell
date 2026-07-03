@@ -17,11 +17,11 @@ void	ft_free_tab(char ***tab)
 	size_t	y;
 
 	y = 0;
-	while (tab[y] != NULL)
+	while (*tab[y] != NULL)
 	{
-		free(tab[y]);
+		free(*tab[y]);
 		y++;
 	}
-	free(tab);
-	tab = NULL;
+	free(*tab);
+	*tab = NULL;
 }

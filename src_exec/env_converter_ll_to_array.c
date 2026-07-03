@@ -18,10 +18,10 @@ char	*rebuild_value(t_data *data, t_env *current)
 	if (!rebuild_value)
 	{
 		data->saved_errno = errno;
-		ft_free(&temp);
+		ft_free((void**)&temp);
 		return (NULL);
 	}
-	ft_free(&temp);
+	ft_free((void**)&temp);
 	return (rebuild_value);
 }
 
@@ -54,7 +54,7 @@ char	**env_converter_ll_to_array(t_data *data, t_env *env)
 	while (current != NULL)
 	{
 		converted_env[y] = rebuild_value(data, current);
-		if (rebuild_value == NULL)
+		if (converted_env[y] == NULL)
 		{
 			errno = data->saved_errno;
 			ft_error_child(data, B_TRUE, "malloc", 1);
