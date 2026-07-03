@@ -42,7 +42,7 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 	while (line[i] != 0)
 	{
 		if (line[i] != 0 && line[i] != '$')
-			second_block = go_until_dollar_hdoc(line, &i);
+			second_block = go_until_dollar_hdoc(data, line, &i);
 		else if (line[i] != 0 && line[i] == '$')
 			second_block = dollar_manager(data, line, &i, Q_HEREDOC);
 		if (second_block != NULL)

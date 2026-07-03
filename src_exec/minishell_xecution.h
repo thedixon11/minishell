@@ -56,7 +56,7 @@ void  close_fd(int *fd);
 
 // ft_error
 void	ft_error_child(t_data *data, t_bool do_i_perror, char *message, int code);
-char	*ft_error_parent(t_bool do_i_perror, char *message, int code);
-int	ft_error_parent_int(t_bool do_i_perror, char *message, int code);
+char	*ft_error_parent(t_data *data, t_bool do_i_perror, char *message, int code);
+int	ft_error_parent_int(t_data *data, t_bool do_i_perror, char *message, int code);
 
 #endif

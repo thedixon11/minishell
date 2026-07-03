@@ -5,8 +5,8 @@
 int	val_manager(t_data *data);
 char	*expand_off_quote(t_data *data, char *content);
 char	*expand_in_quote(t_data *data, char *row);
-char	*go_until_quote(char *content, int *start);
-char	*go_until_dollar(char *content, int *start);
+char	*go_until_quote(t_data *data, char *content, int *start);
+char	*go_until_dollar(t_data *data, char *content, int *start);
 
 // dollar manager functions
 char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode);

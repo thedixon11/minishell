@@ -9,6 +9,9 @@
 //
 char	*second_block_not_dollar(char *str, int *start)
 {
+	int	end;
+	int	len;
+ 
 	end = *start;
 	len = 0;
 	while (str[end] != 0 && str[end] != '$')

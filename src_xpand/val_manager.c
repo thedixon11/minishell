@@ -4,7 +4,7 @@
 // next dollar. It is an util of expand_off_quote. If there is quotes, it
 // will skip the dollars inside and no expansions will be done inside quotes.
 
-char	*go_until_dollar(char *content, int *start)
+char	*go_until_dollar(t_data *data, char *content, int *start)
 {
 	int		end;
 	char	quote;
@@ -28,7 +28,7 @@ char	*go_until_dollar(char *content, int *start)
 	}
 	second_block = ft_substr(content, *start, end - (*start));
 	if (!second_block)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -36,7 +36,7 @@ char	*go_until_dollar(char *content, int *start)
 // NOTE: the fonction go_until_quote will create a block from start
 // until the next quote. It's an util of expand_in_quote function.
 
-char	*go_until_quote(char *content, int *start)
+char	*go_until_quote(t_data *data, char *content, int *start)
 {
 	int		end;
 	char	*second_block;
@@ -46,7 +46,7 @@ char	*go_until_quote(char *content, int *start)
 		end++;
 	second_block = ft_substr(content, *start, end - (*start));
 	if (!second_block)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -72,11 +72,11 @@ char	*expand_in_quote(t_data *data, char *row)
 	i = 0;
 	first_block = ft_strdup("");
 	if (!first_block)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data,B_TRUE, "malloc", 1));
 	while (row[i] != 0)
 	{
 		if (row[i] != '"' && row[i] != '\'')
-			second_block = go_until_quote(row, &i);
+			second_block = go_until_quote(data, row, &i);
 		else if (row[i] == '"' || row[i] == '\'')
 			second_block = quote_manager(data, row, &i, row[i]);
 		if (second_block != NULL)
@@ -89,7 +89,7 @@ char	*expand_in_quote(t_data *data, char *row)
 			if (!first_block)
 			{
 				errno = data->saved_errno;
-				return (ft_error_parent(B_TRUE, "malloc", 1));
+				return (ft_error_parent(data, B_TRUE, "malloc", 1));
 			}
 		}
 		else
@@ -121,11 +121,11 @@ char	*expand_off_quote(t_data *data, char *content)
 	i = 0;
 	first_block = ft_strdup("");
 	if (!first_block)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	while (content[i] != 0)
 	{
 		if (content[i] != 0 && content[i] != '$')
-			second_block = go_until_dollar(content, &i);
+			second_block = go_until_dollar(data, content, &i);
 		else if (content[i] == '$')
 			second_block = dollar_manager(data, content, &i, Q_NONE);
 		if (second_block != NULL)
@@ -138,7 +138,7 @@ char	*expand_off_quote(t_data *data, char *content)
 			if (!first_block)
 			{
 				errno = data->saved_errno;
-				return (ft_error_parent(B_TRUE, "malloc", 1));
+				return (ft_error_parent(data, B_TRUE, "malloc", 1));
 			}
 		}
 		else
@@ -179,7 +179,7 @@ int	val_manager(t_data *data)
 			if (!current->content_xpand)
 			{
 				errno = data->saved_errno;
-				ft_error_parent(B_TRUE, "malloc", 1);
+				ft_error_parent(data, B_TRUE, "malloc", 1);
 				return (1);
 			}
 			while (current->content_xpand[y] != NULL)
@@ -187,7 +187,7 @@ int	val_manager(t_data *data)
 				temp = ft_strdup(current->content_xpand[y]);
 				if (!temp)
 				{
-					ft_error_parent(B_TRUE, "malloc", 1);
+					ft_error_parent(data, B_TRUE, "malloc", 1);
 					return (1);
 				}
 				ft_free((void**)&current->content_xpand[y]);
@@ -195,7 +195,7 @@ int	val_manager(t_data *data)
 				ft_free((void**)&temp);
 				if (!current->content_xpand[y])
 				{
-					ft_error_parent(B_TRUE, "malloc", 1);
+					ft_error_parent(data, B_TRUE, "malloc", 1);
 					return (1);
 				}
 				y++;

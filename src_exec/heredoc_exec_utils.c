@@ -53,9 +53,9 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 	while (old_del[i] != 0)
 	{
 		if (old_del[i] != '\'' && old_del[i] != '\"' && old_del[i] != 0)
-			second_block = go_until_quote_hdoc(old_del, &i);
+			second_block = go_until_quote_hdoc(data, old_del, &i);
 		else if (old_del[i] == '\'' || old_del[i] != '\"')
-			second_block = extract_quote_hdoc(old_del, &i, old_del[i]);
+			second_block = extract_quote_hdoc(data, old_del, &i, old_del[i]);
 		if (second_block != NULL)
 		{
 			temp = first_block;
