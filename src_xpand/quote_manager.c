@@ -7,10 +7,11 @@
 // NOTE: str may be either value or inside_quote
 // i may be either i_value or i_quote
 //
-char	*second_block_not_dollar(char *str, int *start)
+char	*second_block_not_dollar(t_data *data, char *str, int *start)
 {
 	int	end;
 	int	len;
+  char *second_block;
  
 	end = *start;
 	len = 0;
@@ -19,7 +20,7 @@ char	*second_block_not_dollar(char *str, int *start)
 	len = end - *start;
 	second_block = ft_substr(str, *start, len);
 	if (!second_block)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -40,11 +41,11 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 	i_quote = 0;
 	first_block = ft_strdup("");
 	if (!first_block)
-		return (ft_error_parent(B_TRUE, "malloc, 1"));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	while (inside_quote[i_quote] != 0)
 	{
 		if (inside_quote[i_quote] != '$')
-			second_block = second_block_not_dollar(inside_quote, &i_quote);
+			second_block = second_block_not_dollar(data, inside_quote, &i_quote);
 		else if (inside_quote[i_quote] == '$')
 			second_block = dollar_manager(data, inside_quote, &i_quote,
 					Q_DOUBLE);
@@ -58,7 +59,7 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 			if (!first_block)
 			{
 				errno = data->saved_errno;
-				return (ft_error_parent(B_TRUE, "malloc", 1));
+				return (ft_error_parent(data, B_TRUE, "malloc", 1));
 			}
 		}
 		else
@@ -73,7 +74,7 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 // NOTE: with extract_quote, we'll extract from right after the entry quote,
 // until the closing quote.
 
-char	*extract_quote(char *value, int *i_value, char quote)
+char	*extract_quote(t_data *data, char *value, int *i_value, char quote)
 {
 	char	*inside_quote;
 	int		end;
@@ -87,7 +88,7 @@ char	*extract_quote(char *value, int *i_value, char quote)
 	inside_quote = ft_substr(value, *i_value, len);
 	*i_value = end + 1;
 	if (!inside_quote)
-		return (ft_error_parent(B_TRUE, "malloc", 1));
+		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	return (inside_quote);
 }
 
@@ -104,14 +105,14 @@ char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 	char	*inside_quote;
 	char	*quote_result;
 
-	inside_quote = extract_quote(value, i_value, quote);
+	inside_quote = extract_quote(data, value, i_value, quote);
 	if (!inside_quote)
 		return (NULL);
 	if (quote == '\'')
 	{
 		quote_result = ft_strdup(inside_quote);
 		if (!quote_result)
-			return (ft_error_parent(B_TRUE, "malloc", 1));
+			return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	}
 	else if (quote == '\"')
 		quote_result = quote_expansion(data, inside_quote);

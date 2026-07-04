@@ -72,10 +72,10 @@ char	*env_var_manager(t_data *data, char *str, int *i)
 	char	*xpansion_result;
 	char	*var_env;
 
-	var_env = extract_env_var(str, i);
+	var_env = extract_env_var(data, str, i);
 	if (!var_env)
 		return (NULL);
-	xpansion_result = env_var_checker(data->env, var_env);
+	xpansion_result = env_var_checker(data, data->env, var_env);
 	ft_free((void**)&var_env);
 	if (!xpansion_result)
 		return (NULL);

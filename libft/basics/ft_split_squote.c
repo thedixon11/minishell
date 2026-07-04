@@ -83,7 +83,7 @@ static char	**xtab(char const *s, char c, char **tab)
 		{
 			temp = ft_substr(s, start, ft_len(s, c, start));
 			if (!temp)
-				return (ft_free_tab(tab), NULL);
+				return (ft_free_tab(&tab), NULL);
 			tab[y] = ft_strtrim(temp, "'");
 			free(temp);
 			y++;
