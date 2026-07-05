@@ -44,13 +44,13 @@ void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
 	}
 }
 
-t_bool	check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
+t_bool	check_in_out_one_file(t_data *data, int current_cmd_nb)
 {
 	t_line	*current;
 	int		y;
 
 	y = 0;
-	current = line_cmd;
+	current = data->line_cmd;
 	while (current != NULL && current->cmd_nb != current_cmd_nb)
 		current = current->next;
 	while (current != NULL && current->cmd_nb == current_cmd_nb)
@@ -63,7 +63,13 @@ t_bool	check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
 				y++;
 		}
 		if (y > 1)
+		{
+			data->failed_content = ft_strdup(current->content);
+			data->saved_errno = errno;
+			if (!data->failed_content)
+				ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
 			return (B_FALSE);
+		}
 		current = current->next;
 	}
 	return (B_TRUE);
@@ -71,7 +77,7 @@ t_bool	check_in_out_one_file(t_line *line_cmd, int current_cmd_nb)
 
 void	check_and_prepare_fds(t_data *data, int current_cmd_nb)
 {
-	if (check_in_out_one_file(data->line_cmd, current_cmd_nb) == B_FALSE)
-		ft_error_child(data, B_FALSE, "ambiguous redirection", 1);
+	if (check_in_out_one_file(data, current_cmd_nb) == B_FALSE)
+		ft_error_child(data, B_FALSE, data->failed_content, 1); // WARNING: have to check correctly
 	open_fd_in_line_cmd(data, current_cmd_nb);
 }

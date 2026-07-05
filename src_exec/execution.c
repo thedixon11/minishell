@@ -18,7 +18,7 @@ void  dup2_rest(t_data *data, int current_cmd_nb)
 	  current = current->next;
 	}
   if (data->error != 0)
-    ft_error_child(data, B_TRUE, "dup2", 1);
+    ft_error_child(data, B_TRUE, DUP2_ERR, 1);
 }
 
 void  first_dup2_pipes(t_data *data, int current_cmd_nb)
@@ -38,7 +38,7 @@ void  first_dup2_pipes(t_data *data, int current_cmd_nb)
     current = current->next;
   }
   if (data->error != 0)
-    ft_error_child(data, B_TRUE, "dup2", 1);
+    ft_error_child(data, B_TRUE, DUP2_ERR, 1);
 }
 
 // NOTE: The child process has four missions:
@@ -72,7 +72,7 @@ void	child_process(t_data *data, int current_cmd_nb)
 	if (execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env) == -1)
 	{
 		data->saved_errno = errno;
-	    ft_error_child(data, B_TRUE, "execve", 1);
+	    ft_error_child(data, B_TRUE, EXECVE_ERR, 1);
 	}
 	exit(0);
 }
@@ -124,12 +124,12 @@ int	execute_cmds(t_data *data)
 		if (pipe(data->pipe_fd) == -1)
 		{
 			data->saved_errno = errno;
-			return (ft_error_parent_int(data, B_TRUE, "pipe", 1));
+			return (ft_error_parent_int(data, B_TRUE, PIPE_ERR, 1));
 		}
 		pid = fork();
 		data->saved_errno = errno;
 		if (pid == -1)
-			return (ft_error_parent_int(data, B_TRUE, "fork", 1));
+			return (ft_error_parent_int(data, B_TRUE, FORK_ERR, 1));
 		else if (pid == 0)
 			child_process(data, current_cmd_nb);
 		else if (pid > 0)
@@ -150,12 +150,14 @@ int	execute_cmds(t_data *data)
 int execution(t_data *data)
 {
 	int error;
+	int	code;
 
 	error = val_manager(data);
 	if (error == 0)
 		error = heredoc_exec(data);
 	if (error == 0)
 		error = execute_cmds(data);
+	code = data->code;
 	free_and_close_life(data);
-	return (error);
+	return (code);
 }

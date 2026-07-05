@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include "minishell_xecution.h"
 
 // NOTE: rebuld_value have the mission to fusion name of all env_var with their
 // respective content and '=' between them.
@@ -11,12 +12,12 @@ char	*rebuild_value(t_data *data, t_env *current)
 	temp = ft_strjoin(current->name, "=");
 	data->saved_errno = errno;
 	if (!temp)
-		return (NULL);
+		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
 	rebuild_value = ft_strjoin(temp, current->content);
 	data->saved_errno = errno;
 	ft_free((void**)&temp);
 	if (!rebuild_value)
-		return (NULL);
+		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
 	return (rebuild_value);
 }
 
@@ -28,11 +29,10 @@ char	*rebuild_value(t_data *data, t_env *current)
 // 2) have to rebuild the values
 // (we have to join name, '=' and content together)
 
-char	**env_converter_ll_to_array(t_data *data, t_env *env)
+void	env_converter_ll_to_array(t_data *data, t_env *env)
 {
 	t_env	*current;
 	int		y;
-	char	**converted_env;
 
 	y = 0;
 	current = env;
@@ -41,17 +41,16 @@ char	**env_converter_ll_to_array(t_data *data, t_env *env)
 		current = current->next;
 		y++;
 	}
-	converted_env = ft_calloc(y + 1, sizeof(char *));
+	data->cmd_data->env = ft_calloc(y + 1, sizeof(char *));
 	data->saved_errno = errno;
-	if (!converted_env)
-		ft_error_child(data, B_TRUE, "malloc", 1);
+	if (!data->cmd_data->env)
+		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
 	current = env;
 	y = 0;
 	while (current != NULL)
 	{
-		converted_env[y] = rebuild_value(data, current);
+		data->cmd_data->env[y] = rebuild_value(data, current);
 		current = current->next;
 		y++;
 	}
-	return (converted_env);
 }

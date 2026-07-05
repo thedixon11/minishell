@@ -26,11 +26,11 @@ char	*extract_quote_hdoc(t_data *data, char *old_del, int *i, char quote);
 
 // check in and out redirections
 void	check_and_prepare_fds(t_data *data, int current_cmd_nb);
-t_bool	check_in_out_one_file(t_line *line_cmd, int current_cmd_nb);
+t_bool	check_in_out_one_file(t_data *data, int current_cmd_nb);
 void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb);
 
 // environment convertert from linked list to env_converter_ll_to_array
-char	**env_converter_ll_to_array(t_data *data, t_env *env);
+void	env_converter_ll_to_array(t_data *data, t_env *env);
 char	*rebuild_value(t_data *data, t_env *current);
 
 // preparation of material before execve

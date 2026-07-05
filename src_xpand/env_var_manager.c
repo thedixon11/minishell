@@ -24,7 +24,7 @@ char	*env_var_checker(t_data *data, t_env *env, char *var_env)
 			xpansion_result = ft_strdup(current->content);
 			data->saved_errno = errno;
 			if (!xpansion_result)
-				return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
+				return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
 			return (xpansion_result);
 		}
 		current = current->next;
@@ -32,7 +32,7 @@ char	*env_var_checker(t_data *data, t_env *env, char *var_env)
 	xpansion_result = ft_strdup("");
 	data->saved_errno = errno;
 	if (!xpansion_result)
-		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
 	return (xpansion_result);
 }
 
@@ -57,7 +57,7 @@ char	*extract_env_var(t_data *data, char *str, int *i)
 	var_env = ft_substr(str, *i, len);
 	data->saved_errno = errno;
 	if (!var_env)
-		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
 	*i = end;
 	return (var_env);
 }
