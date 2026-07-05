@@ -9,19 +9,14 @@ char	*rebuild_value(t_data *data, t_env *current)
 	char	*rebuild_value;
 
 	temp = ft_strjoin(current->name, "=");
+	data->saved_errno = errno;
 	if (!temp)
-	{
-		data->saved_errno = errno;
 		return (NULL);
-	}
 	rebuild_value = ft_strjoin(temp, current->content);
-	if (!rebuild_value)
-	{
-		data->saved_errno = errno;
-		ft_free((void**)&temp);
-		return (NULL);
-	}
+	data->saved_errno = errno;
 	ft_free((void**)&temp);
+	if (!rebuild_value)
+		return (NULL);
 	return (rebuild_value);
 }
 
@@ -47,6 +42,7 @@ char	**env_converter_ll_to_array(t_data *data, t_env *env)
 		y++;
 	}
 	converted_env = ft_calloc(y + 1, sizeof(char *));
+	data->saved_errno = errno;
 	if (!converted_env)
 		ft_error_child(data, B_TRUE, "malloc", 1);
 	current = env;
@@ -54,11 +50,6 @@ char	**env_converter_ll_to_array(t_data *data, t_env *env)
 	while (current != NULL)
 	{
 		converted_env[y] = rebuild_value(data, current);
-		if (converted_env[y] == NULL)
-		{
-			errno = data->saved_errno;
-			ft_error_child(data, B_TRUE, "malloc", 1);
-		}
 		current = current->next;
 		y++;
 	}

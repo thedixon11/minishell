@@ -14,6 +14,7 @@ void  dup2_rest(t_data *data, int current_cmd_nb)
 			data->error = dup2(current->fd, STDIN_FILENO);
 		else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC)
 			data->error = dup2(current->fd, STDOUT_FILENO);
+		data->saved_errrno = errno;
 	  current = current->next;
 	}
   if (data->error != 0)
@@ -33,6 +34,7 @@ void  first_dup2_pipes(t_data *data, int current_cmd_nb)
 		  data->error = dup2(current->fd, STDIN_FILENO);
     else if (data->error != 0 && current->type == T_PIPE_OUT)
 			data->error = dup2(current->fd, STDOUT_FILENO);
+	data->saved_errno = errno;
     current = current->next;
   }
   if (data->error != 0)
@@ -68,7 +70,10 @@ void	child_process(t_data *data, int current_cmd_nb)
 	cmd_data = execve_preparation(data, current->content_xpand);
 	free_and_close_life(data);
 	if (execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env) == -1)
+	{
+		data->saved_errno = errno;
 	    ft_error_child(data, B_TRUE, "execve", 1);
+	}
 	exit(0);
 }
 
@@ -117,9 +122,13 @@ int	execute_cmds(t_data *data)
 	while (current_cmd_nb <= data->max_cmd_nb)
 	{
 		if (pipe(data->pipe_fd) == -1)
+		{
+			data->saved_errno = errno;
 			return (ft_error_parent_int(data, B_TRUE, "pipe", 1));
+		}
 		pid = fork();
-		if (pid == -1)	
+		data->saved_errno = errno;
+		if (pid == -1)
 			return (ft_error_parent_int(data, B_TRUE, "fork", 1));
 		else if (pid == 0)
 			child_process(data, current_cmd_nb);

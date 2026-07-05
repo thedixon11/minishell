@@ -13,6 +13,7 @@ char  *go_until_dollar_hdoc(t_data *data, char *line, int *start)
 	while (line[end] != 0 && line[end] != '$')
 		end++;
 	second_block = ft_substr(line, *start, end - (*start));
+	data->saved_errno = errno;
 	if (!second_block)
 		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*start = end;
@@ -34,9 +35,13 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 	if (xpand_or_not == B_FALSE)
 	{
 		first_block = ft_strdup(line);
+		data->saved_errno = errno;
+		if (!first_block)
+			return(ft_error_parent(data, B_TRUE, "malloc", 1));
 		return (first_block);
 	}
 	first_block = ft_strdup("");
+	data->saved_errno = errno;
 	if (!first_block)
 		return(ft_error_parent(data, B_TRUE, "malloc", 1));
 	while (line[i] != 0)
@@ -52,7 +57,6 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 			data->saved_errno = errno;
 			ft_free((void**)&second_block);
 			ft_free((void**)&temp);
-			errno = data->saved_errno;
 			if (!first_block)
 				return (ft_error_parent(data, B_TRUE, "malloc", 1));
 		}
@@ -81,6 +85,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 
 	limiter_len = ft_strlen(heredoc->content);
 	line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
+	data->saved_errno = errno;
 	if (line == NULL)
 		return (ft_error_parent_int(data, B_TRUE, "malloc", 1));
 	line_xpanded = expand_line_hdoc(data, line, xpand_or_not);
@@ -97,6 +102,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		if (data->error != 0)
 			return (ft_error_parent_int(data, B_TRUE, "write", 1));
 		line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
+		data->saved_errno = errno;
 		if (line == NULL)
 			return (ft_error_parent_int(data, B_TRUE, "malloc", 1));
 		line_xpanded = expand_line_hdoc(data, line, xpand_or_not);
@@ -123,9 +129,13 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 	char	*temp;
 
 	if (pipe(data->heredoc_pipe_fds) == -1)
+	{
+		data->saved_errno = errno;
 		return (ft_error_parent_int(data, B_TRUE, "pipe", 1));
+	}
 	heredoc->fd = data->heredoc_pipe_fds[0];
 	temp = ft_strdup(heredoc->content);
+	data->saved_errno = errno;
 	if (!temp)
 		return (ft_error_parent_int(data, B_TRUE, "malloc", 1));
 	heredoc->content = ft_strjoin(temp, "\n");
@@ -159,6 +169,7 @@ int	heredoc_exec(t_data *data)
 			else
 			{
 				temp = ft_strdup(current->content);
+				data->saved_errno = errno;
 				if (!temp)
 					ft_error_parent_int(data, B_TRUE, "malloc", 1);
 				current->content = delimiter_manager_hdoc(data, temp);

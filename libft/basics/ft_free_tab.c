@@ -17,9 +17,9 @@ void	ft_free_tab(char ***tab)
 	size_t	y;
 
 	y = 0;
-	while (*tab[y] != NULL)
+	while (tab[0][y] != NULL)
 	{
-		free(*tab[y]);
+		free(tab[0][y]);
 		y++;
 	}
 	free(*tab);

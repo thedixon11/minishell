@@ -37,8 +37,9 @@ void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
 					0644);
 		else if (current->type == T_PIPE_OUT)
 			current->fd = data->pipe_fd[1];
+		data->saved_errno = errno;
 		if (current->fd < 0 && current->type != T_COMMAND)
-			ft_error_child(data, B_TRUE, "open", 1);
+			ft_error_child(data, B_TRUE, current->content, 1);
 		current = current->next;
 	}
 }

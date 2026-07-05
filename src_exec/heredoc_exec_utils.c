@@ -14,6 +14,7 @@ char	*extract_quote_hdoc(t_data *data, char *old_del, int *start, char quote)
 	while (old_del[end] != quote)
 		end++;
 	inside_quote = ft_substr(old_del, *start, end - (*start));
+	data->saved_errno = errno;
 	if (!inside_quote)
 		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*start = end + 1;
@@ -31,6 +32,7 @@ char	*go_until_quote_hdoc(t_data *data, char *old_del, int *start)
 	while (old_del[end] != '\'' && old_del[end] != '"' && old_del[end] != 0)
 		end++;
 	second_block = ft_substr(old_del, *start, end - (*start));
+	data->saved_errno - errno;
 	if (!second_block)
 		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	*start = end;
@@ -48,6 +50,7 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 
 	i = 0;
 	first_block = ft_strdup("");
+	data->saved_errno = errno;
 	if (!first_block)
 		return (ft_error_parent(data, B_TRUE, "malloc", 1));
 	while (old_del[i] != 0)
@@ -63,7 +66,6 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 			data->saved_errno = errno;
 			ft_free((void**)&temp);
 			ft_free((void**)&second_block);
-			errno = data->saved_errno;
 			if (!first_block)
 				return (ft_error_parent(data, B_TRUE, "malloc", 1));	
 		}

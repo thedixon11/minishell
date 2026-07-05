@@ -10,9 +10,15 @@ int	is_prog_existing_and_executable(t_data *data, char *path_to_check)
 	if (data == NULL && access(path_to_check, X_OK) != 0)
 		return (-1);
 	if (data != NULL && access(path_to_check, F_OK) != 0)
+	{
+		data->saved_errno = errno;
 		ft_error_child(data, B_TRUE, "access not such file or directory", 1);
+	}
 	if (data != NULL && access(path_to_check, X_OK) != 0)
+	{
+		data->saved_errno = errno;
 		ft_error_child(data, B_TRUE, "access not such file or directory", 127);
+	}
 	return (0);
 }
 
@@ -25,6 +31,7 @@ char	**create_path_array(t_data *data, char *path_to_split)
 	char	**path_array;
 
 	path_array = ft_split(path_to_split, ':');
+	data->saved_errno = errno;
 	if (!path_array)
 		ft_error_child(data, B_TRUE, "malloc", 1);
 	return (path_array);
@@ -43,12 +50,14 @@ char	*create_prog_fullname(t_data *data, t_cmd *cmd_data, char *prog_name)
 
 	y = 0;
 	temp = ft_strjoin("/", prog_name);
+	data->saved_errno = errno;
 	if (!temp)
 		ft_error_child(data, B_TRUE, "malloc", 1);
 	while (cmd_data->path_array[y] != NULL)
 	{
 		prog_fullname = ft_strjoin(cmd_data->path_array[y], temp);
-		if (prog_fullname)
+		data->saved_errno = errno;
+		if (!prog_fullname)
 			ft_error_child(data, B_TRUE, "malloc", 1);
 		if (is_prog_existing_and_executable(data, prog_fullname) == 0)
 		{
@@ -83,15 +92,15 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 
 	current = data->env;
 	cmd_data = ft_calloc(1, sizeof(t_cmd));
+	data->saved_errno = errno;
 	if (!cmd_data)
 		ft_error_child(data, B_TRUE, "malloc", 1);
 	data->cmd_data = cmd_data;
 	cmd_data->args_array = ft_arraydup(cmd_content);
+	data->saved_errno = errno;
 	if (!cmd_data->args_array)
 		ft_error_child(data, B_TRUE, "malloc", 1);
 	cmd_data->env = env_converter_ll_to_array(data, data->env);
-	if (!cmd_data->env)
-		ft_error_child(data, B_TRUE, "malloc", 1);
 	while (current != NULL)
 	{
 		if (ft_strncmp(current->name, "PATH", 5) == 0)
@@ -104,6 +113,7 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 	else
 	{
 		cmd_data->prog_fullname = ft_strdup(cmd_data->args_array[0]);
+		data->saved_errno = errno;
 		if (!cmd_data->prog_fullname)
 			ft_error_child(data, B_TRUE, "malloc", 1);
 	}
