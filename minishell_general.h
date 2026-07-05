@@ -5,6 +5,4 @@
 # include "./src_exec/minishell_xecution.h"
 # include "./src_xpand/minishell_xpansion.h"
 
-# define ERR_MALLOC "Malloc failed. Program exited."
-
 #endif /*MINISHELL_GENERAL_H*/

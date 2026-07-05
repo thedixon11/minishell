@@ -21,7 +21,7 @@ char	*second_block_not_dollar(t_data *data, char *str, int *start)
 	second_block = ft_substr(str, *start, len);
 	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -43,7 +43,7 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 	first_block = ft_strdup("");
 	data->saved_errno = errno;
 	if (!first_block)
-		return (ft_error_parent(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	while (inside_quote[i_quote] != 0)
 	{
 		if (inside_quote[i_quote] != '$')
@@ -59,7 +59,7 @@ char	*quote_expansion(t_data *data, char *inside_quote)
 			ft_free((void**)&second_block);
 			ft_free((void**)&temp);
 			if (!first_block)
-				return (ft_error_parent(data, B_TRUE, "malloc", 1));
+				return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 		}
 		else
 		{
@@ -88,7 +88,7 @@ char	*extract_quote(t_data *data, char *value, int *i_value, char quote)
 	data->saved_errno = errno;
 	*i_value = end + 1;
 	if (!inside_quote)
-		return (ft_error_parent(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	return (inside_quote);
 }
 
@@ -113,7 +113,7 @@ char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 		quote_result = ft_strdup(inside_quote);
 		data->saved_errno = errno;
 		if (!quote_result)
-			return (ft_error_parent(data, B_TRUE, "malloc", 1));
+			return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	}
 	else if (quote == '\"')
 		quote_result = quote_expansion(data, inside_quote);

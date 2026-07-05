@@ -15,7 +15,7 @@ char  *go_until_dollar_hdoc(t_data *data, char *line, int *start)
 	second_block = ft_substr(line, *start, end - (*start));
 	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -37,13 +37,13 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 		first_block = ft_strdup(line);
 		data->saved_errno = errno;
 		if (!first_block)
-			return(ft_error_parent(data, B_TRUE, "malloc", 1));
+			return(ft_error_parent_char(data, B_TRUE, "malloc", 1));
 		return (first_block);
 	}
 	first_block = ft_strdup("");
 	data->saved_errno = errno;
 	if (!first_block)
-		return(ft_error_parent(data, B_TRUE, "malloc", 1));
+		return(ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	while (line[i] != 0)
 	{
 		if (line[i] != 0 && line[i] != '$')
@@ -58,7 +58,7 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 			ft_free((void**)&second_block);
 			ft_free((void**)&temp);
 			if (!first_block)
-				return (ft_error_parent(data, B_TRUE, "malloc", 1));
+				return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 		}
 		else 
 		{

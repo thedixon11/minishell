@@ -14,7 +14,7 @@ void  dup2_rest(t_data *data, int current_cmd_nb)
 			data->error = dup2(current->fd, STDIN_FILENO);
 		else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC)
 			data->error = dup2(current->fd, STDOUT_FILENO);
-		data->saved_errrno = errno;
+		data->saved_errno = errno;
 	  current = current->next;
 	}
   if (data->error != 0)

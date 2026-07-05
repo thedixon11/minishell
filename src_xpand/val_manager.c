@@ -27,8 +27,9 @@ char	*go_until_dollar(t_data *data, char *content, int *start)
 		}
 	}
 	second_block = ft_substr(content, *start, end - (*start));
+	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -45,8 +46,9 @@ char	*go_until_quote(t_data *data, char *content, int *start)
 	while (content[end] != 0 && content[end] != '\'' && content[end] != '"')
 		end++;
 	second_block = ft_substr(content, *start, end - (*start));
+	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	*start = end;
 	return (second_block);
 }
@@ -71,8 +73,9 @@ char	*expand_in_quote(t_data *data, char *row)
 
 	i = 0;
 	first_block = ft_strdup("");
+	data->saved_errno = errno;
 	if (!first_block)
-		return (ft_error_parent(data,B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data,B_TRUE, "malloc", 1));
 	while (row[i] != 0)
 	{
 		if (row[i] != '"' && row[i] != '\'')
@@ -87,10 +90,7 @@ char	*expand_in_quote(t_data *data, char *row)
 			ft_free((void**)&second_block);
 			ft_free((void**)&temp);
 			if (!first_block)
-			{
-				errno = data->saved_errno;
-				return (ft_error_parent(data, B_TRUE, "malloc", 1));
-			}
+				return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 		}
 		else
 		{
@@ -120,8 +120,9 @@ char	*expand_off_quote(t_data *data, char *content)
 
 	i = 0;
 	first_block = ft_strdup("");
+	data->saved_errno = errno;
 	if (!first_block)
-		return (ft_error_parent(data, B_TRUE, "malloc", 1));
+		return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 	while (content[i] != 0)
 	{
 		if (content[i] != 0 && content[i] != '$')
@@ -136,10 +137,7 @@ char	*expand_off_quote(t_data *data, char *content)
 			ft_free((void**)&second_block);
 			ft_free((void**)&temp);
 			if (!first_block)
-			{
-				errno = data->saved_errno;
-				return (ft_error_parent(data, B_TRUE, "malloc", 1));
-			}
+				return (ft_error_parent_char(data, B_TRUE, "malloc", 1));
 		}
 		else
 		{
@@ -177,27 +175,18 @@ int	val_manager(t_data *data)
 			data->saved_errno = errno;
 			ft_free((void**)&temp);
 			if (!current->content_xpand)
-			{
-				errno = data->saved_errno;
-				ft_error_parent(data, B_TRUE, "malloc", 1);
-				return (1);
-			}
+				return (ft_error_parent_int(data, B_TRUE, "malloc", 1));
 			while (current->content_xpand[y] != NULL)
 			{
 				temp = ft_strdup(current->content_xpand[y]);
+				data->saved_errno = errno;
 				if (!temp)
-				{
-					ft_error_parent(data, B_TRUE, "malloc", 1);
-					return (1);
-				}
+					return (ft_error_parent_int(data, B_TRUE, "malloc", 1));
 				ft_free((void**)&current->content_xpand[y]);
 				current->content_xpand[y] = expand_in_quote(data, temp);
 				ft_free((void**)&temp);
 				if (!current->content_xpand[y])
-				{
-					ft_error_parent(data, B_TRUE, "malloc", 1);
 					return (1);
-				}
 				y++;
 			}
 		}
