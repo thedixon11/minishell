@@ -2,14 +2,15 @@ NAME = xcution
 
 XPAND_DIR = src_xpand
 EXEC_DIR = src_exec
+TEST_DIR = src_test
 XPAND_OBJ_DIR = obj_xpand
 EXEC_OBJ_DIR = obj_exec
+TEST_OBJ_DIR = obj_test
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-EXEC = minishell_lists.c \
-			check_in_out_redir.c \
+EXEC =	check_in_out_redir.c \
 			env_converter_ll_to_array.c \
 			execution.c \
 			execution_utils.c \
@@ -23,10 +24,15 @@ XPAND = val_manager.c \
 				env_var_manager.c \
 				dollar_manager.c
 
+TEST = minishell_lists.c
+
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
+TEST := $(addprefix $(TEST_DIR)/,$(TEST))
+
 OBJS_XPAND := $(patsubst $(XPAND_DIR)/%.c,$(XPAND_OBJ_DIR)/%.o,$(XPAND))
 OBJS_EXEC := $(patsubst $(EXEC_DIR)/%.c,$(EXEC_OBJ_DIR)/%.o,$(EXEC))
+OBJS_TEST := $(patsubst $(TEST_DIR)/%.c,$(TEST_OBJ_DIR)/%.o,$(TEST))
 
 CC = cc
 RM = rm -f
@@ -35,8 +41,8 @@ INCLUDE = -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(LIBFT_DIR)/include
 
 all: $(NAME)
 
-$(NAME): $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT)
-	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
@@ -49,8 +55,12 @@ $(XPAND_OBJ_DIR)/%.o: $(XPAND_DIR)/%.c
 	@mkdir -p $(XPAND_OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
+$(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.c
+	@mkdir -p $(TEST_OBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
 clean:
-	$(RM) -r $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR)
+	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
