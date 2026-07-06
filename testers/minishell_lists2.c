@@ -243,6 +243,7 @@ int	main(int argc, char **argv, char **envp)
 	t_line	*line_list;
 	t_env	*env_list;
 	t_data	*data;
+	int	code;
 
 	(void)argc;
 	(void)argv;
@@ -263,10 +264,10 @@ int	main(int argc, char **argv, char **envp)
 
 
 	data = data_creation(env_list, line_list);
-	execution(data);
+	code = execution(data);
 	//free_line_list(line_list);
 	//free_env_list(env_list);
 
 	printf("\n");
-	return (0);
+	return (code);
 }

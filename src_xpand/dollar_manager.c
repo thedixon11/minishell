@@ -39,7 +39,8 @@ char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 		data->saved_errno = errno;
 		if (!result)
 			return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
-		result[0] = 8;
+		result[0] = data->code;
+		*i += 2;
 		return (result);
 	}
 	else if (ft_isalpha(str[*i + 1]) == 1 || str[*i + 1] == '_')

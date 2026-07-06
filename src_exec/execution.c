@@ -17,7 +17,7 @@ void  dup2_rest(t_data *data, int current_cmd_nb)
 		data->saved_errno = errno;
 	  current = current->next;
 	}
-  if (data->error != 0)
+  if (data->error == -1)
     ft_error_child(data, B_TRUE, DUP2_ERR, 1);
 }
 

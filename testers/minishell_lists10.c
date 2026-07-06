@@ -56,27 +56,25 @@ static t_line	*append_line(t_line *head, t_line *node)
 /*
 ** Builds the linked list that represents:
 **
-**   $CA$PI$BARA
+**   < file1$SHIT cat > out
 **
-**   The entire string = ONE single T_COMMAND node.
-**   content stores the full raw string exactly as typed.
-**   The expander will walk it left to right and expand each
-**   '$'-prefixed variable in sequence:
+**   "file1$SHIT" → T_INPUT        (type encodes "<")
+**                  unquoted → expander MUST expand $SHIT before
+**                  the file is opened by the executor.
+**                  e.g. if SHIT=42 → opens "file142"
+**   "cat"        → T_COMMAND      (no arguments)
+**   "out"        → T_OUTPUT_TRUNC (type encodes ">")
 **
-**     $CA    → value of env var CA
-**     $PI    → value of env var PI
-**     $BARA  → value of env var BARA
-**
-**   The concatenation of the three expanded values forms
-**   the actual command to execute.
-**   If any variable is unset, its expansion is an empty string.
+**   All cmd_nb 0 — single command, no pipes.
 */
 t_line	*build_line_list(void)
 {
 	t_line	*head;
 
 	head = NULL;
-	head = append_line(head, new_line_node(T_COMMAND, "$CA$PI$BARA", 0));
+	head = append_line(head, new_line_node(T_INPUT,        "file1$SHIT", 0));
+	head = append_line(head, new_line_node(T_COMMAND,      "cat",        0));
+	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "out",        0));
 	return (head);
 }
 
@@ -257,7 +255,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 
 	/* ── command list ───────────────────────────────────────────────────── */
-	printf("\n=== COMMAND LIST : $CA$PI$BARA ===\n\n");
+	printf("\n=== COMMAND LIST : < file1$SHIT cat > out ===\n\n");
 	line_list = build_line_list();
 	if (!line_list)
 		return (fprintf(stderr, "Error: malloc failure (line list)\n"), 1);

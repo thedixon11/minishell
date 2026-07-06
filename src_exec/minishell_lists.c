@@ -56,14 +56,11 @@ static t_line	*append_line(t_line *head, t_line *node)
 /*
 ** Builds the linked list that represents:
 **
-**   < file1$SHIT cat > out
+**   < file2 asdok > file3
 **
-**   "file1$SHIT" → T_INPUT        (type encodes "<")
-**                  unquoted → expander MUST expand $SHIT before
-**                  the file is opened by the executor.
-**                  e.g. if SHIT=42 → opens "file142"
-**   "cat"        → T_COMMAND      (no arguments)
-**   "out"        → T_OUTPUT_TRUNC (type encodes ">")
+**   "file2" → T_INPUT        (type encodes "<")
+**   "asdok" → T_COMMAND      (unknown command, no arguments)
+**   "file3" → T_OUTPUT_TRUNC (type encodes ">")
 **
 **   All cmd_nb 0 — single command, no pipes.
 */
@@ -72,9 +69,9 @@ t_line	*build_line_list(void)
 	t_line	*head;
 
 	head = NULL;
-	head = append_line(head, new_line_node(T_INPUT,        "file1$SHIT", 0));
-	head = append_line(head, new_line_node(T_COMMAND,      "cat",        0));
-	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "out",        0));
+	head = append_line(head, new_line_node(T_INPUT,        "file2", 0));
+	head = append_line(head, new_line_node(T_COMMAND,      "asdok", 0));
+	head = append_line(head, new_line_node(T_OUTPUT_TRUNC, "file3", 0));
 	return (head);
 }
 
@@ -255,7 +252,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 
 	/* ── command list ───────────────────────────────────────────────────── */
-	printf("\n=== COMMAND LIST : < file1$SHIT cat > out ===\n\n");
+	printf("\n=== COMMAND LIST : < file2 asdok > file3 ===\n\n");
 	line_list = build_line_list();
 	if (!line_list)
 		return (fprintf(stderr, "Error: malloc failure (line list)\n"), 1);
