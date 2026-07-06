@@ -8,11 +8,11 @@ void  dup2_rest(t_data *data, int current_cmd_nb)
   current = data->line_cmd;
   while (current != NULL && current->cmd_nb != current_cmd_nb)
 		current = current->next;
-	while (current != NULL && data->error == 0 && current->cmd_nb == current_cmd_nb)
+	while (current != NULL && data->error != -1 && current->cmd_nb == current_cmd_nb)
 	{
-		if (data->error == 0 && (current->type == T_INPUT || current->type == T_HEREDOC))
+		if (data->error != -1 && (current->type == T_INPUT || current->type == T_HEREDOC))
 			data->error = dup2(current->fd, STDIN_FILENO);
-		else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC)
+		else if (data->error != -1 && (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC))
 			data->error = dup2(current->fd, STDOUT_FILENO);
 		data->saved_errno = errno;
 	  current = current->next;
@@ -28,16 +28,16 @@ void  first_dup2_pipes(t_data *data, int current_cmd_nb)
   current = data->line_cmd;
   while (current != NULL && current->cmd_nb != current_cmd_nb)
 			current = current->next;
-  while (current != NULL && data->error == 0 && current->cmd_nb == current_cmd_nb)
+  while (current != NULL && data->error != -1 && current->cmd_nb == current_cmd_nb)
   {
-    if (current->type == T_PIPE_IN)
+    if (data->error != -1 && current->type == T_PIPE_IN)
 		  data->error = dup2(current->fd, STDIN_FILENO);
-    else if (data->error != 0 && current->type == T_PIPE_OUT)
+    else if (data->error != -1 && current->type == T_PIPE_OUT)
 			data->error = dup2(current->fd, STDOUT_FILENO);
 	data->saved_errno = errno;
     current = current->next;
   }
-  if (data->error != 0)
+  if (data->error == -1)
     ft_error_child(data, DUP2_ERR, 1);
 }
 

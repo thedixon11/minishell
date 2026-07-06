@@ -24,7 +24,7 @@ XPAND = val_manager.c \
 				env_var_manager.c \
 				dollar_manager.c
 
-TEST = minishell_lists.c
+TEST = minishell_lists1.c
 
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))

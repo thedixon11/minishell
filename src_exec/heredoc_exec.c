@@ -99,7 +99,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 				len_of_line);
 		data->saved_errno = errno;
 		ft_free((void**)&line_xpanded);
-		if (data->error != 0)
+		if (data->error == -1)
 			return (ft_error_parent_int(data, WRITE_ERR, 1));
 		line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 		data->saved_errno = errno;
