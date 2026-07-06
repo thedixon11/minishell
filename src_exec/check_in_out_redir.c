@@ -39,7 +39,7 @@ void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
 			current->fd = data->pipe_fd[1];
 		data->saved_errno = errno;
 		if (current->fd < 0 && current->type != T_COMMAND)
-			ft_error_child(data, B_TRUE, current->content_xpand[0], 1);
+			ft_error_child(data, current->content_xpand[0], 1);
 		current = current->next;
 	}
 }
@@ -67,7 +67,7 @@ t_bool	check_in_out_one_file(t_data *data, int current_cmd_nb)
 			data->failed_content = ft_strdup(current->content);
 			data->saved_errno = errno;
 			if (!data->failed_content)
-				ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+				ft_error_child(data, MALLOC_ERR, 1);
 			return (B_FALSE);
 		}
 		current = current->next;
@@ -78,6 +78,6 @@ t_bool	check_in_out_one_file(t_data *data, int current_cmd_nb)
 void	check_and_prepare_fds(t_data *data, int current_cmd_nb)
 {
 	if (check_in_out_one_file(data, current_cmd_nb) == B_FALSE)
-		ft_error_child(data, B_FALSE, data->failed_content, 1);
+		ft_error_child_amb_redir(data, data->failed_content, 1);
 	open_fd_in_line_cmd(data, current_cmd_nb);
 }

@@ -15,7 +15,7 @@ char  *go_until_dollar_hdoc(t_data *data, char *line, int *start)
 	second_block = ft_substr(line, *start, end - (*start));
 	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
+		return (ft_error_parent_char(data, MALLOC_ERR, 1));
 	*start = end;
 	return (second_block);
 }
@@ -37,13 +37,13 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 		first_block = ft_strdup(line);
 		data->saved_errno = errno;
 		if (!first_block)
-			return(ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
+			return(ft_error_parent_char(data, MALLOC_ERR, 1));
 		return (first_block);
 	}
 	first_block = ft_strdup("");
 	data->saved_errno = errno;
 	if (!first_block)
-		return(ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
+		return(ft_error_parent_char(data, MALLOC_ERR, 1));
 	while (line[i] != 0)
 	{
 		if (line[i] != 0 && line[i] != '$')
@@ -58,7 +58,7 @@ char  *expand_line_hdoc(t_data *data, char *line, t_bool xpand_or_not)
 			ft_free((void**)&second_block);
 			ft_free((void**)&temp);
 			if (!first_block)
-				return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
+				return (ft_error_parent_char(data, MALLOC_ERR, 1));
 		}
 		else 
 		{
@@ -87,7 +87,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 	data->saved_errno = errno;
 	if (line == NULL)
-		return (ft_error_parent_int(data, B_TRUE, MALLOC_ERR, 1));
+		return (ft_error_parent_int(data, MALLOC_ERR, 1));
 	line_xpanded = expand_line_hdoc(data, line, xpand_or_not);
 	ft_free((void**)&line);
 	if (!line_xpanded)
@@ -100,11 +100,11 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		data->saved_errno = errno;
 		ft_free((void**)&line_xpanded);
 		if (data->error != 0)
-			return (ft_error_parent_int(data, B_TRUE, WRITE_ERR, 1));
+			return (ft_error_parent_int(data, WRITE_ERR, 1));
 		line = get_next_line(STDIN_FILENO, heredoc->content, limiter_len);
 		data->saved_errno = errno;
 		if (line == NULL)
-			return (ft_error_parent_int(data, B_TRUE, MALLOC_ERR, 1));
+			return (ft_error_parent_int(data, MALLOC_ERR, 1));
 		line_xpanded = expand_line_hdoc(data, line, xpand_or_not);
 		ft_free((void**)&line);
 		if (!line_xpanded)
@@ -131,18 +131,18 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 	if (pipe(data->heredoc_pipe_fds) == -1)
 	{
 		data->saved_errno = errno;
-		return (ft_error_parent_int(data, B_TRUE, PIPE_ERR, 1));
+		return (ft_error_parent_int(data, PIPE_ERR, 1));
 	}
 	heredoc->fd = data->heredoc_pipe_fds[0];
 	temp = ft_strdup(heredoc->content);
 	data->saved_errno = errno;
 	if (!temp)
-		return (ft_error_parent_int(data, B_TRUE, MALLOC_ERR, 1));
+		return (ft_error_parent_int(data, MALLOC_ERR, 1));
 	heredoc->content = ft_strjoin(temp, "\n");
 	data->saved_errno = errno;
 	ft_free((void**)&temp);
 	if (!heredoc->content)
-		return (ft_error_parent_int(data, B_TRUE, MALLOC_ERR, 1));
+		return (ft_error_parent_int(data, MALLOC_ERR, 1));
 	return (0);
 }
 
@@ -171,7 +171,7 @@ int	heredoc_exec(t_data *data)
 				temp = ft_strdup(current->content);
 				data->saved_errno = errno;
 				if (!temp)
-					ft_error_parent_int(data, B_TRUE, MALLOC_ERR, 1);
+					ft_error_parent_int(data, MALLOC_ERR, 1);
 				current->content = delimiter_manager_hdoc(data, temp);
 				ft_free((void**)&temp);
 				if (!current->content)

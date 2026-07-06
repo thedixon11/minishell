@@ -12,12 +12,12 @@ char	*rebuild_value(t_data *data, t_env *current)
 	temp = ft_strjoin(current->name, "=");
 	data->saved_errno = errno;
 	if (!temp)
-		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+		ft_error_child(data, MALLOC_ERR, 1);
 	rebuild_value = ft_strjoin(temp, current->content);
 	data->saved_errno = errno;
 	ft_free((void**)&temp);
 	if (!rebuild_value)
-		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+		ft_error_child(data, MALLOC_ERR, 1);
 	return (rebuild_value);
 }
 
@@ -44,7 +44,7 @@ void	env_converter_ll_to_array(t_data *data, t_env *env)
 	data->cmd_data->env = ft_calloc(y + 1, sizeof(char *));
 	data->saved_errno = errno;
 	if (!data->cmd_data->env)
-		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+		ft_error_child(data, MALLOC_ERR, 1);
 	current = env;
 	y = 0;
 	while (current != NULL)

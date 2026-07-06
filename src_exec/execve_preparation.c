@@ -12,12 +12,12 @@ int	is_prog_existing_and_executable(t_data *data, char *path_to_check)
 	if (data != NULL && access(path_to_check, F_OK) != 0)
 	{
 		data->saved_errno = errno;
-		ft_error_child(data, B_TRUE, path_to_check, 1);
+		ft_error_child_cmd_not_found(data, path_to_check, 12);
 	}
 	if (data != NULL && access(path_to_check, X_OK) != 0)
 	{
 		data->saved_errno = errno;
-		ft_error_child(data, B_TRUE, path_to_check, 127);
+		ft_error_child_amb_redir(data, path_to_check, 127);
 	}
 	return (0);
 }
@@ -33,7 +33,7 @@ char	**create_path_array(t_data *data, char *path_to_split)
 	path_array = ft_split(path_to_split, ':');
 	data->saved_errno = errno;
 	if (!path_array)
-		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+		ft_error_child(data, MALLOC_ERR, 1);
 	return (path_array);
 }
 
@@ -52,14 +52,14 @@ char	*create_prog_fullname(t_data *data, t_cmd *cmd_data, char *prog_name)
 	temp = ft_strjoin("/", prog_name);
 	data->saved_errno = errno;
 	if (!temp)
-		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+		ft_error_child(data, MALLOC_ERR, 1);
 	while (cmd_data->path_array[y] != NULL)
 	{
 		prog_fullname = ft_strjoin(cmd_data->path_array[y], temp);
 		data->saved_errno = errno;
 		if (!prog_fullname)
-			ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
-		if (is_prog_existing_and_executable(data, prog_fullname) == 0)
+			ft_error_child(data, MALLOC_ERR, 1);
+		if (is_prog_existing_and_executable(NULL, prog_fullname) == 0)
 		{
 			ft_free((void**)&temp);
 			return (prog_fullname);
@@ -68,7 +68,7 @@ char	*create_prog_fullname(t_data *data, t_cmd *cmd_data, char *prog_name)
 		y++;
 	}
 	ft_free((void**)&temp);
-	ft_error_child(data, B_FALSE, "access command not found", 1); // WARNING: have to check that error
+	ft_error_child_cmd_not_found(data, prog_name, 127);
 	return (NULL);
 }
 
@@ -94,12 +94,12 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 	cmd_data = ft_calloc(1, sizeof(t_cmd));
 	data->saved_errno = errno;
 	if (!cmd_data)
-		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+		ft_error_child(data, MALLOC_ERR, 1);
 	data->cmd_data = cmd_data;
 	cmd_data->args_array = ft_arraydup(cmd_content);
 	data->saved_errno = errno;
 	if (!cmd_data->args_array)
-		ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+		ft_error_child(data, MALLOC_ERR, 1);
 	env_converter_ll_to_array(data, data->env);
 	while (current != NULL)
 	{
@@ -115,7 +115,7 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 		cmd_data->prog_fullname = ft_strdup(cmd_data->args_array[0]);
 		data->saved_errno = errno;
 		if (!cmd_data->prog_fullname)
-			ft_error_child(data, B_TRUE, MALLOC_ERR, 1);
+			ft_error_child(data, MALLOC_ERR, 1);
 	}
 	if (is_prog_existing_and_executable(data, cmd_data->prog_fullname) != 0)
 		return (NULL);

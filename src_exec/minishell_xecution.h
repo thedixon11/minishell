@@ -47,16 +47,15 @@ void	close_all_fd(t_line *line_cmd);
 void	free_line_cmd(t_line *line_cmd);
 void	free_env(t_env *env);
 void	free_cmd_data(t_cmd *cmd_data);
-int		ft_error(t_data *data, char *err_message, int code, t_scope scope);
-void	ft_error_child(t_data *data, t_bool do_i_perror, char *message,
-			int code);
 void	ft_free(void **ptr);
 void  wait_all_children(t_data *data);
 void  close_fd(int *fd);
 
 // ft_error
-void	ft_error_child(t_data *data, t_bool do_i_perror, char *message, int code);
-char	*ft_error_parent_char(t_data *data, t_bool do_i_perror, char *message, int code);
-int	ft_error_parent_int(t_data *data, t_bool do_i_perror, char *message, int code);
+void	ft_error_child_amb_redir(t_data *data, char *message, int code);
+void	ft_error_child_cmd_not_found(t_data *data, char *message, int code);
+void	ft_error_child(t_data *data, char *message, int code);
+char	*ft_error_parent_char(t_data *data, char *message, int code);
+int	ft_error_parent_int(t_data *data, char *message, int code);
 
 #endif

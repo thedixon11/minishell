@@ -16,7 +16,7 @@ char	*extract_quote_hdoc(t_data *data, char *old_del, int *start, char quote)
 	inside_quote = ft_substr(old_del, *start, end - (*start));
 	data->saved_errno = errno;
 	if (!inside_quote)
-		return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
+		return (ft_error_parent_char(data, MALLOC_ERR, 1));
 	*start = end + 1;
 	return (inside_quote);
 }
@@ -34,7 +34,7 @@ char	*go_until_quote_hdoc(t_data *data, char *old_del, int *start)
 	second_block = ft_substr(old_del, *start, end - (*start));
 	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
+		return (ft_error_parent_char(data, MALLOC_ERR, 1));
 	*start = end;
 	return (second_block);
 }
@@ -52,7 +52,7 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 	first_block = ft_strdup("");
 	data->saved_errno = errno;
 	if (!first_block)
-		return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));
+		return (ft_error_parent_char(data, MALLOC_ERR, 1));
 	while (old_del[i] != 0)
 	{
 		if (old_del[i] != '\'' && old_del[i] != '\"' && old_del[i] != 0)
@@ -67,7 +67,7 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 			ft_free((void**)&temp);
 			ft_free((void**)&second_block);
 			if (!first_block)
-				return (ft_error_parent_char(data, B_TRUE, MALLOC_ERR, 1));	
+				return (ft_error_parent_char(data, MALLOC_ERR, 1));	
 		}
 		else 
 		{
