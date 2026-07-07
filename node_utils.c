@@ -4,7 +4,7 @@ t_token	*new_node(char *value, t_type type)
 {
 	t_token *current;
 
-	current = malloc(sizeof(t_token)); //calloc !!!
+	current = calloc(1, sizeof(t_token)); //calloc !!!
 	if (!current)
 		return (NULL);
 	current->value = value;

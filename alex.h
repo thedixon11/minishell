@@ -7,6 +7,23 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+typedef struct s_command		//args 1 par commande entre pipe et struct redirection
+{
+	char				**args;
+	int					index;
+	struct s_command	*prev;
+	struct s_command	*next;
+	struct s_redir		*redir;
+}						t_command;
+
+typedef struct s_redir			// redir avec le file associe
+{
+	t_type			type;
+	char			*file;
+	struct s_redir	*prev;
+	struct s_redir	*next;
+}					t_redir;
+
 typedef enum e_type				// definition du type de chaq token
 {
 	WORD,
