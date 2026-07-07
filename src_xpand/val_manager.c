@@ -156,7 +156,8 @@ char	*expand_off_quote(t_data *data, char *content)
 
 int	val_manager(t_data *data)
 {
-	char	*temp;
+	char	*temp1;
+	char	*temp2;
 	int		y;
 	t_line	*current;
 
@@ -168,23 +169,27 @@ int	val_manager(t_data *data)
 		if (current->type == T_INPUT || current->type == T_OUTPUT_TRUNC
 			|| current->type == T_OUTPUT_APPEND || current->type == T_COMMAND)
 		{
-			temp = expand_off_quote(data, current->content);
-			if (!temp)
+			temp1 = expand_off_quote(data, current->content);
+			if (!temp1)
 				return (1);
-			current->content_xpand = ft_split(temp, ' ');
+			temp2 = ft_strtrim(temp1, " ");
+			ft_free((void**)&temp1);
+			if (!temp2)
+				return (1);
+			current->content_xpand = ft_split(temp2, ' ');
 			data->saved_errno = errno;
-			ft_free((void**)&temp);
+			ft_free((void**)&temp2);
 			if (!current->content_xpand)
 				return (ft_error_parent_int(data, MALLOC_ERR, 1));
 			while (current->content_xpand[y] != NULL)
 			{
-				temp = ft_strdup(current->content_xpand[y]);
+				temp1 = ft_strdup(current->content_xpand[y]);
 				data->saved_errno = errno;
-				if (!temp)
+				if (!temp1)
 					return (ft_error_parent_int(data, MALLOC_ERR, 1));
 				ft_free((void**)&current->content_xpand[y]);
-				current->content_xpand[y] = expand_in_quote(data, temp);
-				ft_free((void**)&temp);
+				current->content_xpand[y] = expand_in_quote(data, temp1);
+				ft_free((void**)&temp1);
 				if (!current->content_xpand[y])
 					return (1);
 				y++;

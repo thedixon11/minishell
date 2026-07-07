@@ -72,8 +72,7 @@ void	ft_error_child_amb_redir(t_data *data, char *message, int code)
 	exit(code);
 }
 
-void	ft_error_child(t_data *data, char *message,
-		int code)
+void	ft_error_child(t_data *data, char *message, int code)
 {
 	char	*error_to_print;
 	char	*temp1;

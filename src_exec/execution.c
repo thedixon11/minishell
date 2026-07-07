@@ -67,6 +67,13 @@ void	child_process(t_data *data, int current_cmd_nb)
   	current = data->line_cmd;
 	while (current->type != T_COMMAND || current->cmd_nb != current_cmd_nb)
 		current = current->next;
+	if (current->content_xpand[0][0] == 0)
+	{
+		if (ft_strchr(current->content, '"') != 0)
+			ft_error_child_cmd_not_found(data, "", 1);
+		free_and_close_life(data);
+		exit (0);
+	}
 	cmd_data = execve_preparation(data, current->content_xpand);
 	free_and_close_life(data);
 	if (execve(cmd_data->prog_fullname, cmd_data->args_array, cmd_data->env) == -1)

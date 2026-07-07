@@ -108,11 +108,6 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 			cmd_data->path_array = create_path_array(data, current->content);
 		current = current->next;
 	}
-  if (cmd_data->args_array[0] == NULL)
-  {
-    free_and_close_life(data);
-    exit (0);
-  }
 	if (ft_strchr(cmd_data->args_array[0], '/') == 0)
 		cmd_data->prog_fullname = create_prog_fullname(data, cmd_data,
 				cmd_content[0]);
