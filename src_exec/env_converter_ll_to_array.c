@@ -15,7 +15,7 @@ char	*rebuild_value(t_data *data, t_env *current)
 		ft_error_child(data, MALLOC_ERR, 1);
 	rebuild_value = ft_strjoin(temp, current->content);
 	data->saved_errno = errno;
-	ft_free((void**)&temp);
+	ft_free((void **)&temp);
 	if (!rebuild_value)
 		ft_error_child(data, MALLOC_ERR, 1);
 	return (rebuild_value);

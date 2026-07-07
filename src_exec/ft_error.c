@@ -12,11 +12,11 @@ int	ft_error_parent_int(t_data *data, char *message, int code)
 	temp2 = ft_strjoin(temp1, ": ");
 	temp3 = ft_strdup(strerror(data->saved_errno));
 	error_to_print = ft_strjoin(temp2, temp3);
-	ft_free((void**)&temp1);
-	ft_free((void**)&temp2);
-	ft_free((void**)&temp3);
-	ft_putendl_fd(error_to_print, STDERR_FILENO);	
-	ft_free((void**)&error_to_print);
+	ft_free((void **)&temp1);
+	ft_free((void **)&temp2);
+	ft_free((void **)&temp3);
+	ft_putendl_fd(error_to_print, STDERR_FILENO);
+	ft_free((void **)&error_to_print);
 	data->saved_errno = 0;
 	data->code = code;
 	return (1);
@@ -28,16 +28,16 @@ char	*ft_error_parent_char(t_data *data, char *message, int code)
 	char	*temp1;
 	char	*temp2;
 	char	*temp3;
-	
+
 	temp1 = ft_strjoin("minishell: ", message);
 	temp2 = ft_strjoin(temp1, ": ");
 	temp3 = ft_strdup(strerror(data->saved_errno));
 	error_to_print = ft_strjoin(temp2, temp3);
-	ft_free((void**)&temp1);
-	ft_free((void**)&temp2);
-	ft_free((void**)&temp3);
-	ft_putendl_fd(error_to_print, STDERR_FILENO);	
-	ft_free((void**)&error_to_print);
+	ft_free((void **)&temp1);
+	ft_free((void **)&temp2);
+	ft_free((void **)&temp3);
+	ft_putendl_fd(error_to_print, STDERR_FILENO);
+	ft_free((void **)&error_to_print);
 	data->saved_errno = 0;
 	data->code = code;
 	return (NULL);
@@ -49,7 +49,7 @@ void	ft_error_child_cmd_not_found(t_data *data, char *message, int code)
 
 	error_to_print = ft_strjoin(message, ": command not found");
 	ft_putendl_fd(error_to_print, STDERR_FILENO);
-	ft_free((void**)&error_to_print);
+	ft_free((void **)&error_to_print);
 	free_and_close_life(data);
 	if (data->cmd_data != NULL)
 		free_cmd_data(data->cmd_data);
@@ -63,9 +63,9 @@ void	ft_error_child_amb_redir(t_data *data, char *message, int code)
 
 	temp1 = ft_strjoin("minishell: ", message);
 	error_to_print = ft_strjoin(temp1, ": ambiguous redirection");
-	ft_free((void**)&temp1);
+	ft_free((void **)&temp1);
 	ft_putendl_fd(error_to_print, STDERR_FILENO);
-	ft_free((void**)&error_to_print);
+	ft_free((void **)&error_to_print);
 	free_and_close_life(data);
 	if (data->cmd_data != NULL)
 		free_cmd_data(data->cmd_data);
@@ -83,11 +83,11 @@ void	ft_error_child(t_data *data, char *message, int code)
 	temp2 = ft_strjoin(temp1, ": ");
 	temp3 = ft_strdup(strerror(data->saved_errno));
 	error_to_print = ft_strjoin(temp2, temp3);
-	ft_free((void**)&temp1);
-	ft_free((void**)&temp2);
-	ft_free((void**)&temp3);
-	ft_putendl_fd(error_to_print, STDERR_FILENO);	
-	ft_free((void**)&error_to_print);
+	ft_free((void **)&temp1);
+	ft_free((void **)&temp2);
+	ft_free((void **)&temp3);
+	ft_putendl_fd(error_to_print, STDERR_FILENO);
+	ft_free((void **)&error_to_print);
 	free_and_close_life(data);
 	if (data->cmd_data != NULL)
 		free_cmd_data(data->cmd_data);

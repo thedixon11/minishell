@@ -1,7 +1,15 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
 
-// TODO: have to add the fact he will just check the nodes of the right number cmd
+void	move_current_to_start(t_data *data, t_line **current)
+{
+	*current = data->line_cmd;
+	while (*current != NULL && *current->cmd_nb != data->current_cmd_nb)
+		*current = *current->next;
+}
+
+// TODO: have to add the fact he will just check the nodes of the 
+// right number cmd
 
 // NOTE: The function open_fd_in_line_cmd will open all fds, depending on what
 // do we have for elements in the command. We will add the fds in the node.
@@ -14,14 +22,12 @@
 // e) OUTPUT REDIRECTION APPEND -> open an output file;
 // f) HEREDOC -> create a fd with pipe function
 
-void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
+void	open_fd_in_line_cmd(t_data *data)
 {
 	t_line	*current;
 
-	current = data->line_cmd;
-	while (current != NULL && current->cmd_nb != current_cmd_nb)
-		current = current->next;
-	while (current != NULL && current->cmd_nb == current_cmd_nb)
+	move_current_to_start(data, &current);
+	while (current != NULL && current->cmd_nb == data->current_cmd_nb)
 	{
 		if (current->type == T_PIPE_IN)
 			current->fd = data->old_read_fd;
@@ -44,16 +50,14 @@ void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb)
 	}
 }
 
-t_bool	check_in_out_one_file(t_data *data, int current_cmd_nb)
+t_bool	check_in_out_one_file(t_data *data)
 {
 	t_line	*current;
 	int		y;
 
 	y = 0;
-	current = data->line_cmd;
-	while (current != NULL && current->cmd_nb != current_cmd_nb)
-		current = current->next;
-	while (current != NULL && current->cmd_nb == current_cmd_nb)
+	move_current_to_start(data, &current, data->current_cmd_nb);
+	while (current != NULL && current->cmd_nb == data->current_cmd_nb)
 	{
 		y = 0;
 		if (current->type == T_INPUT || current->type == T_OUTPUT_APPEND
@@ -75,9 +79,9 @@ t_bool	check_in_out_one_file(t_data *data, int current_cmd_nb)
 	return (B_TRUE);
 }
 
-void	check_and_prepare_fds(t_data *data, int current_cmd_nb)
+void	check_and_prepare_fds(t_data *data)
 {
-	if (check_in_out_one_file(data, current_cmd_nb) == B_FALSE)
+	if (check_in_out_one_file(data) == B_FALSE)
 		ft_error_child_amb_redir(data, data->failed_content, 1);
-	open_fd_in_line_cmd(data, current_cmd_nb);
+	open_fd_in_line_cmd(data);
 }

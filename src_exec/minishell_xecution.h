@@ -7,10 +7,10 @@
 // execution functions
 int	execution(t_data *data);
 int	execute_cmds(t_data *data);
-void	parent_process(t_data *data, int current_cmd_nb);
-void	child_process(t_data *data, int current_cmd_nb);
-void  dup2_rest(t_data *data, int current_cmd_nb);
-void  first_dup2_pipes(t_data *data, int current_cmd_nb);
+void	parent_process(t_data *data);
+void	child_process(t_data *data);
+void  dup2_rest(t_data *data);
+void  first_dup2_pipes(t_data *data);
 
 // heredoc functions
 int	heredoc_exec(t_data *data);
@@ -25,9 +25,9 @@ char	*go_until_quote_hdoc(t_data *data, char *old_del, int *i);
 char	*extract_quote_hdoc(t_data *data, char *old_del, int *i, char quote);
 
 // check in and out redirections
-void	check_and_prepare_fds(t_data *data, int current_cmd_nb);
-t_bool	check_in_out_one_file(t_data *data, int current_cmd_nb);
-void	open_fd_in_line_cmd(t_data *data, int current_cmd_nb);
+void	check_and_prepare_fds(t_data *data);
+t_bool	check_in_out_one_file(t_data *data);
+void	open_fd_in_line_cmd(t_data *data);
 
 // environment convertert from linked list to env_converter_ll_to_array
 void	env_converter_ll_to_array(t_data *data, t_env *env);

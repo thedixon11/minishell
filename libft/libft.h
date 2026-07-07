@@ -69,6 +69,8 @@ char	*ft_strrm(const char *s, size_t len);
 char	**ft_arraydup(char **tab);
 int		ft_arraychr(char **tab, char c);
 void	ft_free_tab(char ***tab);
+void	ft_close_fd(int *fd);
+void	ft_free(void **ptr);
 
 //put_fd_functions
 void	ft_putchar_fd(char c, int fd);
