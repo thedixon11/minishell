@@ -23,28 +23,28 @@ int	is_prog_existing_and_executable(t_data *data, char *path_to_check)
 	return (0);
 }
 
-char	**find_path_array(t_data *data)
+char	**find_path_tab(t_data *data)
 {
 	t_env	*current;
-	char	**path_array;
+	char	**path_tab;
 
 	current = data->env;
 	while (current != NULL)
 	{
 		if (ft_strncmp(current->name, "PATH", 5) == 0)
-			path_array = create_path_array(data, current->content);
+			path_tab = create_path_tab(data, current->content);
 		current = current->next;
 	}
-	return (path_array);
+	return (path_tab);
 }
 
 // NOTE: Before executing the command, we have to prepare the material
 // to use execve. For that, we need :
 // a) complete programm name;
-// b) array with args (is treated and created while expansion)
-// c) array with all cmds path (original is in a str, have to convert it
-//  to an array, and without the "PATH=");
-// d) environment converted from linked list to array;
+// b) tab with args (is treated and created while expansion)
+// c) tab with all cmds path (original is in a str, have to convert it
+//  to a tab, and without the "PATH=");
+// d) environment converted from linked list to tab;
 
 t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 {
@@ -57,12 +57,12 @@ t_cmd	*execve_preparation(t_data *data, char **cmd_content)
 	if (!cmd_data)
 		ft_error_child(data, MALLOC_ERR, 1);
 	data->cmd_data = cmd_data;
-	cmd_data->args_array = ft_arraydup(cmd_content);
+	cmd_data->args_tab = ft_arraydup(cmd_content);
 	data->saved_errno = errno;
-	if (!cmd_data->args_array)
+	if (!cmd_data->args_tab)
 		ft_error_child(data, MALLOC_ERR, 1);
 	env_converter_ll_to_array(data, data->env);
-	cmd->data->path_array = find_path_array(data);
+	cmd_data->path_tab = find_path_tab(data);
 	cmd_data->prog_fullname = prog_name_prep(data, cmd_data, cmd_content);
 	if (is_prog_existing_and_executable(data, cmd_data->prog_fullname) != 0)
 		return (NULL);

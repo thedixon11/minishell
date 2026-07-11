@@ -64,8 +64,8 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			*prog_fullname;
-	char			**args_array;
-	char			**path_array;
+	char			**args_tab;
+	char			**path_tab;
 	char			**env;
 }					t_cmd;
 
@@ -87,6 +87,7 @@ typedef struct s_data
 	int				code;
 	char			*failed_content;
 	t_cmd			*cmd_data;
+	int				limiter_len;
 }					t_data;
 
 #endif /*MINISHELL_STRUCT_H*/

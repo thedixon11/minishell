@@ -4,10 +4,10 @@ void	free_cmd_data(t_cmd *cmd_data)
 {
 	if (cmd_data->prog_fullname != NULL)
 		ft_free((void **)&cmd_data->prog_fullname);
-	if (cmd_data->args_array != NULL)
-		ft_free_tab(&cmd_data->args_array);
-	if (cmd_data->path_array != NULL)
-		ft_free_tab(&cmd_data->path_array);
+	if (cmd_data->args_tab != NULL)
+		ft_free_tab(&cmd_data->args_tab);
+	if (cmd_data->path_tab != NULL)
+		ft_free_tab(&cmd_data->path_tab);
 	if (cmd_data->env != NULL)
 		ft_free_tab(&cmd_data->env);
 }
@@ -62,11 +62,7 @@ void	close_all_fd(t_line *line_cmd)
 	current = line_cmd;
 	while (current != NULL)
 	{
-		if (current->fd > -1)
-		{
-			close(current->fd);
-			current->fd = -1;
-		}
+		ft_close_fd(&current->fd);
 		current = current->next;
 	}
 }

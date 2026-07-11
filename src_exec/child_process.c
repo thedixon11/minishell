@@ -45,12 +45,29 @@ void	first_dup2_pipes(t_data *data)
 		ft_error_child(data, DUP2_ERR, 1);
 }
 
-void	move_current_to_cmd(t_data *data, t_line **current)
+void	check_cmd_is_not_empty(t_data *data, t_line *current)
 {
+	if (current->content_xpand == NULL)
+	{
+		free_and_close_life(data);
+		exit(0);
+	}
+	if (current->content_xpand[0][0] == 0)
+	{
+		if (ft_strchr(current->content, '"') != 0)
+			ft_error_child_cmd_not_found(data, "", 1);
+	}
+}
+
+t_line	*move_current_to_cmd(t_data *data)
+{
+	t_line	*current;
+
 	current = data->line_cmd;
-	while (current->type != T_COMMAND
-		|| current->cmd_nb != data->current_cmd_nb)
+	while (current != NULL && (current->type != T_COMMAND
+			|| current->cmd_nb != data->current_cmd_nb))
 		current = current->next;
+	return (current);
 }
 
 // NOTE: The child process has four missions:
@@ -72,25 +89,15 @@ void	child_process(t_data *data)
 	t_line	*current;
 	t_cmd	*cmd_data;
 
-	close(data->pipe_fd[0]);
+	ft_close_fd(&data->pipe_fd[0]);
 	check_and_prepare_fds(data);
 	first_dup2_pipes(data);
 	dup2_rest(data);
-	move_current_to_cmd(data, &current);
-	if (current->content_xpand[0][0] == 0)
-	{
-		if (ft_strchr(current->content, '"') != 0)
-			ft_error_child_cmd_not_found(data, "", 1);
-		free_and_close_life(data);
-		exit(0);
-	}
+	current = move_current_to_cmd(data);
+	check_cmd_is_not_empty(data, current);
 	cmd_data = execve_preparation(data, current->content_xpand);
 	free_and_close_life(data);
-	if (execve(cmd_data->prog_fullname, cmd_data->args_array,
-			cmd_data->env) == -1)
-	{
-		data->saved_errno = errno;
-		ft_error_child(data, EXECVE_ERR, 1);
-	}
-	exit(0);
+	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
+	data->saved_errno = errno;
+	ft_error_child(data, EXECVE_ERR, 1);
 }

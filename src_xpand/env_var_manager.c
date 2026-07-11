@@ -17,6 +17,7 @@ char	*env_var_checker(t_data *data, t_env *env, char *var_env)
 
 	len = ft_strlen(var_env) + 1;
 	current = env;
+	xpansion_result = NULL;
 	while (current != NULL)
 	{
 		if (ft_strncmp(var_env, current->name, len) == 0)
@@ -79,7 +80,7 @@ char	*env_var_manager(t_data *data, char *str, int *i)
 	if (!var_env)
 		return (NULL);
 	xpansion_result = env_var_checker(data, data->env, var_env);
-	ft_free((void**)&var_env);
+	ft_free((void **)&var_env);
 	if (!xpansion_result)
 		return (NULL);
 	return (xpansion_result);

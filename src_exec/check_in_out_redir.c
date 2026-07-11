@@ -1,11 +1,14 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
 
-void	move_current_to_start(t_data *data, t_line **current)
+t_line	*move_current_to_start(t_data *data)
 {
-	*current = data->line_cmd;
-	while (*current != NULL && *current->cmd_nb != data->current_cmd_nb)
-		*current = *current->next;
+	t_line	*current;
+
+	current = data->line_cmd;
+	while (current != NULL && current->cmd_nb != data->current_cmd_nb)
+		current = current->next;
+	return (current);
 }
 
 // TODO: have to add the fact he will just check the nodes of the 
@@ -26,7 +29,7 @@ void	open_fd_in_line_cmd(t_data *data)
 {
 	t_line	*current;
 
-	move_current_to_start(data, &current);
+	current = move_current_to_start(data);
 	while (current != NULL && current->cmd_nb == data->current_cmd_nb)
 	{
 		if (current->type == T_PIPE_IN)
@@ -56,7 +59,7 @@ t_bool	check_in_out_one_file(t_data *data)
 	int		y;
 
 	y = 0;
-	move_current_to_start(data, &current, data->current_cmd_nb);
+	current = move_current_to_start(data);
 	while (current != NULL && current->cmd_nb == data->current_cmd_nb)
 	{
 		y = 0;

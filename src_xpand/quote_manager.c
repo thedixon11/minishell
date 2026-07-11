@@ -9,12 +9,13 @@
 //
 char	*second_block_not_dollar(t_data *data, char *str, int *start)
 {
-	int	end;
-	int	len;
-  char *second_block;
- 
+	int		end;
+	int		len;
+	char	*second_block;
+
 	end = *start;
 	len = 0;
+	second_block = NULL;
 	while (str[end] != 0 && str[end] != '$')
 		end++;
 	len = end - *start;
@@ -32,42 +33,31 @@ char	*second_block_not_dollar(t_data *data, char *str, int *start)
 // situation, and then to join the first block (already treated) with second
 // block. This fusion becomes the new first block and we repeat the process.
 
-char	*quote_expansion(t_data *data, char *inside_quote)
+char	*quote_expansion(t_data *data, char *in_quote)
 {
-	char	*first_block;
-	char	*second_block;
-	char	*temp;
+	char	*first;
+	char	*second;
 	int		i_quote;
 
 	i_quote = 0;
-	first_block = ft_strdup("");
+	second = NULL;
+	first = ft_strdup("");
 	data->saved_errno = errno;
-	if (!first_block)
+	if (!first)
 		return (ft_error_parent_char(data, MALLOC_ERR, 1));
-	while (inside_quote[i_quote] != 0)
+	while (in_quote[i_quote] != 0)
 	{
-		if (inside_quote[i_quote] != '$')
-			second_block = second_block_not_dollar(data, inside_quote, &i_quote);
-		else if (inside_quote[i_quote] == '$')
-			second_block = dollar_manager(data, inside_quote, &i_quote,
+		if (in_quote[i_quote] != '$')
+			second = second_block_not_dollar(data, in_quote, &i_quote);
+		else if (in_quote[i_quote] == '$')
+			second = dollar_manager(data, in_quote, &i_quote,
 					Q_DOUBLE);
-		if (second_block != NULL)
-		{
-			temp = first_block;
-			first_block = ft_strjoin(temp, second_block);
-			data->saved_errno = errno;
-			ft_free((void**)&second_block);
-			ft_free((void**)&temp);
-			if (!first_block)
-				return (ft_error_parent_char(data, MALLOC_ERR, 1));
-		}
+		if (second != NULL)
+			first = fusion_first_second_block(data, first, second);
 		else
-		{
-			ft_free((void**)&first_block);
-			return (NULL);
-		}
+			return (ft_free((void **)&first), NULL);
 	}
-	return (first_block);
+	return (first);
 }
 
 // NOTE: with extract_quote, we'll extract from right after the entry quote,
@@ -81,6 +71,7 @@ char	*extract_quote(t_data *data, char *value, int *i_value, char quote)
 
 	(*i_value)++;
 	end = *i_value;
+	inside_quote = NULL;
 	while (value[end] != quote)
 		end++;
 	len = end - *i_value;
@@ -99,12 +90,17 @@ char	*extract_quote(t_data *data, char *value, int *i_value, char quote)
 //		Otherwise, we'll return the extracted inside quote content.
 //
 // NOTE: the value of *i is the location of the entry quote.
+//
+// WARNING: have to check if the else return NULL condition is useful
+// or not
 
 char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 {
 	char	*inside_quote;
 	char	*quote_result;
 
+	inside_quote = NULL;
+	quote_result = NULL;
 	inside_quote = extract_quote(data, value, i_value, quote);
 	if (!inside_quote)
 		return (NULL);
@@ -118,8 +114,8 @@ char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 	else if (quote == '\"')
 		quote_result = quote_expansion(data, inside_quote);
 	else
-		return (NULL);	// WARNING: is that condition really useful ??
-	ft_free((void**)&inside_quote);
+		return (NULL);
+	ft_free((void **)&inside_quote);
 	if (!quote_result)
 		return (NULL);
 	return (quote_result);

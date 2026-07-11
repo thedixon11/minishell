@@ -1,6 +1,19 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
-#include <unistd.h>
+
+char	*fusion_first_second_block(t_data *data, char *first, char *second)
+{
+	char	*temp;
+
+	temp = first;
+	first = ft_strjoin(temp, second);
+	data->saved_errno = errno;
+	ft_free((void **)&second);
+	ft_free((void **)&temp);
+	if (!first)
+		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+	return (first);
+}
 
 // NOTE: will extract inside the quote
 
@@ -39,41 +52,52 @@ char	*go_until_quote_hdoc(t_data *data, char *old_del, int *start)
 	return (second_block);
 }
 
-// NOTE: delimiter manager will treat the quotes of the delimiter and removed them
+// NOTE: go_until_dollar_hdoc will create a block until the
+// next dollar. It's an util of expand_line_hdoc.
+
+char	*go_until_dollar_hdoc(t_data *data, char *line, int *start)
+{
+	int		end;
+	char	*second_block;
+
+	end = *start;
+	while (line[end] != 0 && line[end] != '$')
+		end++;
+	second_block = ft_substr(line, *start, end - (*start));
+	data->saved_errno = errno;
+	if (!second_block)
+		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+	*start = end;
+	return (second_block);
+}
+
+// NOTE: delimiter manager will treat the quotes of the delimiter and
+// removed them
 
 char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 {
-	char	*first_block;
-	char	*second_block;
-	char	*temp;
+	char	*first;
+	char	*second;
 	int		i;
 
 	i = 0;
-	first_block = ft_strdup("");
+	first = ft_strdup("");
 	data->saved_errno = errno;
-	if (!first_block)
+	if (!first)
 		return (ft_error_parent_char(data, MALLOC_ERR, 1));
-	while (old_del[i] != 0)
+	while (old_del[i] != 0 && first != NULL)
 	{
 		if (old_del[i] != '\'' && old_del[i] != '\"' && old_del[i] != 0)
-			second_block = go_until_quote_hdoc(data, old_del, &i);
+			second = go_until_quote_hdoc(data, old_del, &i);
 		else if (old_del[i] == '\'' || old_del[i] != '\"')
-			second_block = extract_quote_hdoc(data, old_del, &i, old_del[i]);
-		if (second_block != NULL)
+			second = extract_quote_hdoc(data, old_del, &i, old_del[i]);
+		if (second != NULL)
+			first = fusion_first_second_block(data, first, second);
+		else
 		{
-			temp = first_block;
-			first_block = ft_strjoin(temp, second_block);
-			data->saved_errno = errno;
-			ft_free((void**)&temp);
-			ft_free((void**)&second_block);
-			if (!first_block)
-				return (ft_error_parent_char(data, MALLOC_ERR, 1));	
-		}
-		else 
-		{
-			ft_free((void**)&first_block);
+			ft_free((void **)&first);
 			return (NULL);
 		}
 	}
-	return (first_block);
+	return (first);
 }

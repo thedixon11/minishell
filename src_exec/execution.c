@@ -9,11 +9,11 @@
 void	parent_process(t_data *data)
 {
 	if (data->current_cmd_nb > 0)
-		close(data->old_read_fd);
+		ft_close_fd(&data->old_read_fd);
 	if (data->current_cmd_nb <= data->max_cmd_nb)
 	{
 		data->old_read_fd = data->pipe_fd[0];
-		close(data->pipe_fd[1]);
+		ft_close_fd(&data->pipe_fd[1]);
 	}
 }
 
@@ -54,7 +54,7 @@ int	execute_cmds(t_data *data)
 
 	while (data->current_cmd_nb <= data->max_cmd_nb)
 	{
-		if (pipe(data->pipe_fd) == -1)
+		if (data->max_cmd_nb > 0 && pipe(data->pipe_fd) == -1)
 		{
 			data->saved_errno = errno;
 			return (ft_error_parent_int(data, PIPE_ERR, 1));
@@ -71,7 +71,7 @@ int	execute_cmds(t_data *data)
 	}
 	wait_all_children(data);
 	if (data->old_read_fd >= 0)
-		close(data->old_read_fd);
+		ft_close_fd(&data->old_read_fd);
 	return (0);
 }
 
@@ -85,6 +85,9 @@ int	execution(t_data *data)
 	int	error;
 	int	code;
 
+	data->pipe_fd[0] = -1;
+	data->pipe_fd[1] = -1;
+	data->old_read_fd = -1;
 	error = val_manager(data);
 	if (error == 0)
 		error = heredoc_exec(data);

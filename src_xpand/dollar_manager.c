@@ -1,6 +1,33 @@
 #include "../minishell_general.h"
 #include <unistd.h>
 
+char	*dollar_is_error_code(t_data *data, int *i)
+{
+	char	*result;
+
+	result = ft_calloc(2, sizeof(char));
+	data->saved_errno = errno;
+	if (!result)
+		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+	result[0] = data->code;
+	*i += 2;
+	return (result);
+}
+
+char	*dollar_not_alphanum_and_err(t_data *data, char *str, int *i)
+{
+	char	*result;
+
+	result = ft_calloc(3, sizeof(char));
+	data->saved_errno = errno;
+	if (!result)
+		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+	result[0] = '$';
+	result[1] = str[*i + 1];
+	*i += 2;
+	return (result);
+}
+
 // NOTE: It's the entry point to deal with dollars. Managing the dollars depends
 //	on which value is right after it. There is 5 possiblities :
 //	1) a quote (single or double), and we are treating out of quotes (Q_NONE);
@@ -33,16 +60,7 @@ char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 		return (NULL);
 	}
 	else if (str[*i + 1] == '?')
-	{
-		// result = find_exit_error();
-		result = ft_calloc(2, sizeof(char));
-		data->saved_errno = errno;
-		if (!result)
-			return (ft_error_parent_char(data, MALLOC_ERR, 1));
-		result[0] = data->code;
-		*i += 2;
-		return (result);
-	}
+		return (dollar_is_error_code(data, i));
 	else if (ft_isalpha(str[*i + 1]) == 1 || str[*i + 1] == '_')
 	{
 		result = env_var_manager(data, str, i);
@@ -51,14 +69,5 @@ char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 		return (result);
 	}
 	else
-	{
-		result = ft_calloc(3, sizeof(char));
-		data->saved_errno = errno;
-		if (!result)
-			return (ft_error_parent_char(data, MALLOC_ERR, 1));
-		result[0] = '$';
-		result[1] = str[*i + 1];
-		*i += 2;
-		return (result);
-	}
+		return (dollar_not_alphanum_and_err(data, str, i));
 }

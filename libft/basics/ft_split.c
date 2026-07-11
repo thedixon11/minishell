@@ -22,7 +22,7 @@ static size_t	ft_len(char const *s, char c, size_t start)
 	return (end - start);
 }
 
-static void	*ft_free(char **tab)
+static void	*ft_free_split(char **tab)
 {
 	size_t	i;
 
@@ -51,7 +51,7 @@ static char	**xtab(char const *s, char c, char **tab)
 		{
 			tab[y] = ft_substr(s, start, ft_len(s, c, start));
 			if (!tab[y])
-				return (ft_free(tab));
+				return (ft_free_split(tab));
 			y++;
 			start += ft_len(s, c, start);
 		}

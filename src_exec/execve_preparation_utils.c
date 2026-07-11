@@ -1,22 +1,22 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
 
-// NOTE: the function create_path_array will split the PATH string that
+// NOTE: the function create_path_tab will split the PATH string that
 // is in the environment, with ':' as separators and removing the
 // "PATH=" at the beginning.
 
-char	**create_path_array(t_data *data, char *path_to_split)
+char	**create_path_tab(t_data *data, char *path_to_split)
 {
-	char	**path_array;
+	char	**path_tab;
 
-	path_array = ft_split(path_to_split, ':');
+	path_tab = ft_split(path_to_split, ':');
 	data->saved_errno = errno;
-	if (!path_array)
+	if (!path_tab)
 		ft_error_child(data, MALLOC_ERR, 1);
-	return (path_array);
+	return (path_tab);
 }
 
-char	*join_path_prog(char *path, char *prog_name)
+char	*join_path_prog(t_data *data, char *path, char *prog_name)
 {
 	char	*temp;
 	char	*prog_fullname;
@@ -25,9 +25,9 @@ char	*join_path_prog(char *path, char *prog_name)
 	data->saved_errno = errno;
 	if (!temp)
 		ft_error_child(data, MALLOC_ERR, 1);
-	prog_fullname = ft_strjoin(cmd_data->path_array[y], temp);
+	prog_fullname = ft_strjoin(path, temp);
 	data->saved_errno = errno;
-	ft_free((void **)temp);
+	ft_free((void **)&temp);
 	if (!prog_fullname)
 		ft_error_child(data, MALLOC_ERR, 1);
 	return (prog_fullname);
@@ -44,9 +44,9 @@ char	*check_prog_in_path(t_data *data, t_cmd *cmd_data, char *prog_name)
 	char	*prog_fullname;
 
 	y = 0;
-	while (cmd_data->path_array[y] != NULL)
+	while (cmd_data->path_tab[y] != NULL)
 	{
-		prog_fullname = join_path_prog(cmd_data->path_array[y], prog_name);
+		prog_fullname = join_path_prog(data, cmd_data->path_tab[y], prog_name);
 		if (is_prog_existing_and_executable(NULL, prog_fullname) == 0)
 			return (prog_fullname);
 		ft_free((void **)&prog_fullname);
@@ -66,16 +66,14 @@ char	*prog_name_prep(t_data *data, t_cmd *cmd_data, char **cmd_content)
 {
 	char	*prog_fullname;
 
-	if (ft_strchr(cmd_data->args_array[0], '/') == 0)
-		cmd_data->prog_fullname = check_prog_in_path(data, cmd_data,
-				cmd_content[0]);
+	if (ft_strchr(cmd_data->args_tab[0], '/') == 0)
+		prog_fullname = check_prog_in_path(data, cmd_data, cmd_content[0]);
 	else
 	{
-		cmd_data->prog_fullname = ft_strdup(cmd_data->args_array[0]);
+		prog_fullname = ft_strdup(cmd_data->args_tab[0]);
 		data->saved_errno = errno;
-		if (!cmd_data->prog_fullname)
+		if (!prog_fullname)
 			ft_error_child(data, MALLOC_ERR, 1);
 	}
 	return (prog_fullname);
 }
-
