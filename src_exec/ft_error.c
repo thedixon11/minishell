@@ -56,7 +56,7 @@ void	ft_error_child_cmd_not_found(t_data *data, char *message, int code)
 	exit(code);
 }
 
-void	ft_error_child_amb_redir(t_data *data, char *message, int code)
+int	ft_error_parent_amb_redir(t_data *data, char *message, int code)
 {
 	char	*temp1;
 	char	*error_to_print;
@@ -66,10 +66,9 @@ void	ft_error_child_amb_redir(t_data *data, char *message, int code)
 	ft_free((void **)&temp1);
 	ft_putendl_fd(error_to_print, STDERR_FILENO);
 	ft_free((void **)&error_to_print);
-	free_and_close_life(data);
-	if (data->cmd_data != NULL)
-		free_cmd_data(data->cmd_data);
-	exit(code);
+	data->saved_errno = 0;
+	data->code = code;
+	return (1);
 }
 
 void	ft_error_child(t_data *data, char *message, int code)

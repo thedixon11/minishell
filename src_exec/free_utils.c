@@ -54,23 +54,3 @@ void	free_line_cmd(t_line *line_cmd)
 		ft_free_tab(&current->content_xpand);
 	ft_free((void **)&current);
 }
-
-void	close_all_fd(t_line *line_cmd)
-{
-	t_line	*current;
-
-	current = line_cmd;
-	while (current != NULL)
-	{
-		ft_close_fd(&current->fd);
-		current = current->next;
-	}
-}
-
-void	free_and_close_life(t_data *data)
-{
-	close_all_fd(data->line_cmd);
-	free_line_cmd(data->line_cmd);
-	free_env(data->env);
-	ft_free((void **)&data);
-}

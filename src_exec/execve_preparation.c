@@ -18,7 +18,7 @@ int	is_prog_existing_and_executable(t_data *data, char *path_to_check)
 	if (data != NULL && access(path_to_check, X_OK) != 0)
 	{
 		data->saved_errno = errno;
-		ft_error_child_amb_redir(data, path_to_check, 127);
+		ft_error_child_cmd_not_found(data, path_to_check, 12);
 	}
 	return (0);
 }

@@ -88,6 +88,8 @@ typedef struct s_data
 	char			*failed_content;
 	t_cmd			*cmd_data;
 	int				limiter_len;
+	int				saved_stdin;
+	int				saved_stdout;
 }					t_data;
 
 #endif /*MINISHELL_STRUCT_H*/

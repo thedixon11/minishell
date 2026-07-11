@@ -273,7 +273,7 @@ int	main(int argc, char **argv, char **envp)
 		return (fprintf(stderr, "Error: malloc failure (env list)\n"), 1);
 	print_env_list(env_list);
 	data = data_creation(env_list, line_list);
-	code = execution(data);
+	code = execution_start(data);
 	// free_line_list(line_list);
 	// free_env_list(env_list);
 	printf("\n");

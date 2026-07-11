@@ -10,17 +10,21 @@ TEST_OBJ_DIR = obj_test
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-EXEC =	check_in_out_redir.c \
-			env_converter_ll_to_array.c \
-			child_process.c \
-			execution.c \
-			execution_utils.c \
-			execve_preparation.c \
-			execve_preparation_utils.c \
-			heredoc_exec.c \
-			heredoc_exec_utils.c \
-			ft_error.c \
-			write_on_fd.c
+EXEC =	child_process.c \
+		classic_execution.c \
+		close_fd_utils.c \
+		env_converter_ll_to_array.c \
+		execute_cmds.c \
+		execution_start.c \
+		execve_preparation.c \
+		execve_preparation_utils.c \
+		free_utils.c \
+		ft_error.c \
+		heredoc_exec.c \
+		heredoc_exec_utils.c \
+		manage_redirections.c \
+		some_utils.c \
+		write_on_fd.c
 
 XPAND = val_manager.c \
 				val_manager_utils.c \
@@ -28,7 +32,7 @@ XPAND = val_manager.c \
 				env_var_manager.c \
 				dollar_manager.c
 
-TEST = minishell_lists14.c
+TEST = minishell_lists1.c
 
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
