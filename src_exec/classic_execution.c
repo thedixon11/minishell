@@ -37,7 +37,7 @@ int	time_to_pipe(t_data *data)
 
 int	classic_execution(t_data *data)
 {
-	if (time_to_pipe(data) == 1)
+	if (data->current_cmd_nb < data->max_cmd_nb && time_to_pipe(data) == 1)
 		return (1);
 	if (manage_redirections(data) == 1)
 		return (1);

@@ -44,6 +44,7 @@ typedef struct s_line
 	char			*content;
 	char			**content_xpand;
 	int				fd;
+	int				*fd_of_pipe;
 	int				cmd_nb;
 	struct s_line	*prev;
 	struct s_line	*next;

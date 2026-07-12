@@ -16,7 +16,10 @@ void	close_line_cmd_fds(t_data *data)
 	current = data->line_cmd;
 	while (current != NULL)
 	{
-		ft_close_fd(&current->fd);
+		if (current->type != T_PIPE_IN && current->type != T_PIPE_OUT)
+			ft_close_fd(&current->fd);
+		else
+			ft_close_fd(current->fd_of_pipe);
 		current = current->next;
 	}
 }

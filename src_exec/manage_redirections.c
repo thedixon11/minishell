@@ -36,9 +36,9 @@ int	first_patch_pipes_redir(t_data *data)
 		&& current->cmd_nb == data->current_cmd_nb)
 	{
 		if (data->error != -1 && current->type == T_PIPE_IN)
-			data->error = dup2(current->fd, STDIN_FILENO);
+			data->error = dup2(*current->fd_of_pipe, STDIN_FILENO);
 		else if (data->error != -1 && current->type == T_PIPE_OUT)
-			data->error = dup2(current->fd, STDOUT_FILENO);
+			data->error = dup2(*current->fd_of_pipe, STDOUT_FILENO);
 		data->saved_errno = errno;
 		current = current->next;
 	}
@@ -55,7 +55,7 @@ int	open_fd_in_line_cmd(t_data *data)
 	while (current != NULL && current->cmd_nb == data->current_cmd_nb)
 	{
 		if (current->type == T_PIPE_IN)
-			current->fd = data->old_read_fd;
+			current->fd_of_pipe = &data->old_read_fd;
 		else if (current->type == T_INPUT)
 			current->fd = open(current->content, O_RDONLY);
 		else if (current->type == T_HEREDOC)
@@ -67,7 +67,7 @@ int	open_fd_in_line_cmd(t_data *data)
 			current->fd = open(current->content, O_WRONLY | O_CREAT | O_TRUNC,
 					0644);
 		else if (current->type == T_PIPE_OUT)
-			current->fd = data->pipe_fd[1];
+			current->fd_of_pipe = &data->pipe_fd[1];
 		data->saved_errno = errno;
 		if (current->fd < 0 && current->type != T_COMMAND)
 			return (ft_error_parent_int(data, current->content_xpand[0], 1));

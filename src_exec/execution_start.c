@@ -1,5 +1,19 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
+#include <stdalign.h>
+
+void	set_fd_pipe_zero(t_data *data)
+{
+	t_line	*current;
+
+	current = data->line_cmd;
+	while (current != NULL)
+	{
+		if (current->type == T_PIPE_IN || current->type == T_PIPE_OUT)
+			current->fd = 0;
+		current = current->next;
+	}
+}
 
 int	store_stdin_stdout(t_data *data)
 {
@@ -20,6 +34,7 @@ int	execution_start(t_data *data)
 	data->pipe_fd[0] = -1;
 	data->pipe_fd[1] = -1;
 	data->old_read_fd = -1;
+	set_fd_pipe_zero(data);
 	error = store_stdin_stdout(data);
 	if (error == 0)
 		error = val_manager(data);

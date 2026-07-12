@@ -8,13 +8,13 @@ void	close_used_fd(t_data *data)
 	current = move_current_to_start(data);
 	while (current != NULL && current->cmd_nb == data->current_cmd_nb)
 	{
-		if (current->type == T_INPUT || current->type == T_PIPE_IN
-			|| current->type == T_HEREDOC)
+		if (current->type == T_INPUT || current->type == T_HEREDOC)
 			ft_close_fd(&current->fd);
 		else if (current->type == T_OUTPUT_APPEND 
-				|| current->type == T_OUTPUT_APPEND
-				|| current->type == T_PIPE_OUT)
+				|| current->type == T_OUTPUT_TRUNC)
 			ft_close_fd(&current->fd);
+		else if (current->type == T_PIPE_IN || current->type == T_PIPE_OUT)
+			ft_close_fd(current->fd_of_pipe);
 		current = current->next;		
 	}
 }
