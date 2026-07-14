@@ -43,6 +43,7 @@ int	execution_start(t_data *data)
 	if (error == 0)
 		error = execute_cmds(data);
 	code = data->code;
+	reset_redir_patch(data);
 	free_and_close_life(data);
 	return (code);
 }

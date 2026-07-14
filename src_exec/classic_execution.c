@@ -5,10 +5,10 @@ void	parent_process(t_data *data)
 {
 	if (data->current_cmd_nb > 0)
 		ft_close_fd(&data->old_read_fd);
-	if (data->current_cmd_nb <= data->max_cmd_nb)
+	if (data->current_cmd_nb < data->max_cmd_nb)
 	{
 		data->old_read_fd = data->pipe_fd[0];
-		ft_close_fd(&data->pipe_fd[1]);
+		//ft_close_fd(&data->pipe_fd[1]);
 	}
 }
 

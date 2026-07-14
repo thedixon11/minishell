@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include "minishell_xecution.h"
 
 void	close_data_fds(t_data *data)
 {
@@ -14,7 +15,8 @@ void	close_line_cmd_fds(t_data *data)
 	t_line	*current;
 
 	current = data->line_cmd;
-	while (current != NULL)
+	current = move_current_to_start(data);
+	while (current != NULL && current->cmd_nb == data->current_cmd_nb)
 	{
 		if (current->type != T_PIPE_IN && current->type != T_PIPE_OUT)
 			ft_close_fd(&current->fd);
