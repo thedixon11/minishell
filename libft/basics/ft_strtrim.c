@@ -59,6 +59,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 	size_t	end;
 	size_t	len;
 
+	if (s1[0] == 0)
+		return (ft_strdup(""));
+	if (!s1)
+		return (NULL);
 	start = findstart(s1, set);
 	end = findend(s1, set);
 	len = end - start + 1;

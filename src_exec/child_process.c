@@ -42,7 +42,6 @@ void	child_process(t_data *data)
 	prog_fullname =	prog_name_prep(data, path_tab, args_tab);
 	data->cmd_data.prog_fullname = prog_fullname;
 	is_prog_existing_and_executable(data, prog_fullname);
-
 	free_and_close_life(data);
 	execve(prog_fullname, args_tab, env);
 	data->saved_errno = errno;

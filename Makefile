@@ -51,9 +51,11 @@ all: $(NAME)
 
 $(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT) -o $(NAME)
+	clear
+	valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes ./xcution
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -C $(LIBFT_DIR)
 
 $(EXEC_OBJ_DIR)/%.o: $(EXEC_DIR)/%.c
 	@mkdir -p $(EXEC_OBJ_DIR)

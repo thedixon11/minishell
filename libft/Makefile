@@ -38,11 +38,11 @@ INCLUDE = -I. -I$(PRINTF_DIR) -I$(GNL_DIR) -I$(LIBFT_DIR)
 all:	$(NAME)
 
 $(NAME): $(OBJ)
-	$(AR) $(NAME) $(OBJ)
+	@$(AR) $(NAME) $(OBJ)
 
 $(OBJ_DIR)/%.o:%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
 	rm -rf $(OBJ_DIR)
