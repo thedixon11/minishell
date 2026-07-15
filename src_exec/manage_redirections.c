@@ -1,5 +1,6 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
+#include <unistd.h>
 
 int	patch_others_redir(t_data *data)
 {
@@ -13,11 +14,10 @@ int	patch_others_redir(t_data *data)
 	{
 		if (data->error != -1 && (current->type == T_INPUT
 				|| current->type == T_HEREDOC))
-			data->error = dup2(current->fd, STDIN_FILENO);
+			dup2_process(data, &current->fd, STDIN_FILENO);
 		else if (data->error != -1 && (current->type == T_OUTPUT_APPEND
 				|| current->type == T_OUTPUT_TRUNC))
-			data->error = dup2(current->fd, STDOUT_FILENO);
-		data->saved_errno = errno;
+			dup2_process(data, &current->fd, STDOUT_FILENO);
 		current = current->next;
 	}
 	if (data->error == -1)
@@ -36,10 +36,9 @@ int	first_patch_pipes_redir(t_data *data)
 		&& current->cmd_nb == data->current_cmd_nb)
 	{
 		if (data->error != -1 && current->type == T_PIPE_IN)
-			data->error = dup2(*current->fd_of_pipe, STDIN_FILENO);
+			dup2_process(data, current->fd_of_pipe, STDIN_FILENO);
 		else if (data->error != -1 && current->type == T_PIPE_OUT)
-			data->error = dup2(*current->fd_of_pipe, STDOUT_FILENO);
-		data->saved_errno = errno;
+			dup2_process(data, current->fd_of_pipe, STDOUT_FILENO);
 		current = current->next;
 	}
 	if (data->error == -1)
@@ -58,8 +57,6 @@ int	open_fd_in_line_cmd(t_data *data)
 			current->fd_of_pipe = &data->old_read_fd;
 		else if (current->type == T_INPUT)
 			current->fd = open(current->content, O_RDONLY);
-		else if (current->type == T_HEREDOC)
-			current->fd = data->heredoc_pipe_fds[0];
 		else if (current->type == T_OUTPUT_APPEND)
 			current->fd = open(current->content, O_WRONLY | O_CREAT | O_APPEND,
 					0644);

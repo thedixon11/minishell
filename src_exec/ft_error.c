@@ -43,19 +43,6 @@ char	*ft_error_parent_char(t_data *data, char *message, int code)
 	return (NULL);
 }
 
-void	ft_error_child_cmd_not_found(t_data *data, char *message, int code)
-{
-	char	*error_to_print;
-
-	error_to_print = ft_strjoin(message, ": command not found");
-	ft_putendl_fd(error_to_print, STDERR_FILENO);
-	ft_free((void **)&error_to_print);
-	free_and_close_life(data);
-	if (data->cmd_data != NULL)
-		free_cmd_data(data->cmd_data);
-	exit(code);
-}
-
 int	ft_error_parent_amb_redir(t_data *data, char *message, int code)
 {
 	char	*temp1;
@@ -71,6 +58,17 @@ int	ft_error_parent_amb_redir(t_data *data, char *message, int code)
 	return (1);
 }
 
+void	ft_error_child_cmd_not_found(t_data *data, char *message, int code)
+{
+	char	*error_to_print;
+
+	error_to_print = ft_strjoin(message, ": command not found");
+	ft_putendl_fd(error_to_print, STDERR_FILENO);
+	ft_free((void **)&error_to_print);
+	free_cmd_data(data);
+	free_and_close_life(data);
+	exit(code);
+}
 void	ft_error_child(t_data *data, char *message, int code)
 {
 	char	*error_to_print;
@@ -87,8 +85,7 @@ void	ft_error_child(t_data *data, char *message, int code)
 	ft_free((void **)&temp3);
 	ft_putendl_fd(error_to_print, STDERR_FILENO);
 	ft_free((void **)&error_to_print);
+	free_cmd_data(data);
 	free_and_close_life(data);
-	if (data->cmd_data != NULL)
-		free_cmd_data(data->cmd_data);
 	exit(code);
 }

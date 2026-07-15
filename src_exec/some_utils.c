@@ -1,6 +1,21 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
 
+void	free_cmd_data(t_data *data)
+{
+	ft_free_tab(&data->cmd_data.args_tab);
+	ft_free_tab(&data->cmd_data.path_tab);
+	ft_free_tab(&data->cmd_data.env);
+	ft_free((void **)&data->cmd_data.prog_fullname);
+}
+
+void	dup2_process(t_data *data, int *fd1, int fd2)
+{
+	data->error = dup2(*fd1, fd2);
+	data->saved_errno = errno;
+	ft_close_fd(fd1);
+}
+
 t_line	*move_current_to_start(t_data *data)
 {
 	t_line	*current;

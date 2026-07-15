@@ -12,12 +12,12 @@ char	*rebuild_value(t_data *data, t_env *current)
 	temp = ft_strjoin(current->name, "=");
 	data->saved_errno = errno;
 	if (!temp)
-		ft_error_child(data, MALLOC_ERR, 1);
+		return (NULL);	
 	rebuild_value = ft_strjoin(temp, current->content);
 	data->saved_errno = errno;
 	ft_free((void **)&temp);
 	if (!rebuild_value)
-		ft_error_child(data, MALLOC_ERR, 1);
+		return (NULL);
 	return (rebuild_value);
 }
 
@@ -29,9 +29,10 @@ char	*rebuild_value(t_data *data, t_env *current)
 // 2) have to rebuild the values
 // (we have to join name, '=' and content together)
 
-void	env_converter_ll_to_array(t_data *data, t_env *env)
+char	**env_converter_ll_to_array(t_data *data, t_env *env)
 {
 	t_env	*current;
+	char	**converted_env;
 	int		y;
 
 	y = 0;
@@ -41,16 +42,22 @@ void	env_converter_ll_to_array(t_data *data, t_env *env)
 		current = current->next;
 		y++;
 	}
-	data->cmd_data->env = ft_calloc(y + 1, sizeof(char *));
+	converted_env = ft_calloc(y + 1, sizeof(char *));
 	data->saved_errno = errno;
-	if (!data->cmd_data->env)
+	if (!converted_env)
 		ft_error_child(data, MALLOC_ERR, 1);
 	current = env;
 	y = 0;
 	while (current != NULL)
 	{
-		data->cmd_data->env[y] = rebuild_value(data, current);
+		converted_env[y] = rebuild_value(data, current);
+		if (!converted_env)
+		{
+			ft_free_tab(&converted_env);
+			ft_error_child(data, MALLOC_ERR, 1);
+		}
 		current = current->next;
 		y++;
 	}
+	return (converted_env);
 }

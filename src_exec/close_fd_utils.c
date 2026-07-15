@@ -3,8 +3,6 @@
 
 void	close_data_fds(t_data *data)
 {
-	ft_close_fd(&data->saved_stdin);
-	ft_close_fd(&data->saved_stdout);
 	ft_close_fd(&data->old_read_fd);
 	ft_close_fd(&data->pipe_fd[0]);
 	ft_close_fd(&data->pipe_fd[1]);

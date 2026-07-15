@@ -30,25 +30,24 @@ int	check_ambiguous_redir(t_data *data);
 int	manage_redirections(t_data *data);
 
 //execute_cmds
-void	close_used_fd(t_data *data);
+void	save_pipe_rd_to_old_read_fd(t_data *data);
 void	wait_all_children(t_data *data);
 int	reset_redir_patch(t_data *data);
 int	execute_cmds(t_data *data);
 
 //env_converter_ll_to_array
 char	*rebuild_value(t_data *data, t_env *current);
-void	env_converter_ll_to_array(t_data *data, t_env *env);
+char	**env_converter_ll_to_array(t_data *data, t_env *env);
 
 //execve_preparation
 int	is_prog_existing_and_executable(t_data *data, char *path_to_check);
 char	**find_path_tab(t_data *data);
-t_cmd	*execve_preparation(t_data *data, char **cmd_content);
 
 //execve_preparation_utils
 char	**create_path_tab(t_data *data, char *path_to_split);
 char	*join_path_prog(t_data *data, char *path, char *prog_name);
-char	*check_prog_in_path(t_data *data, t_cmd *cmd_data, char *prog_name);
-char	*prog_name_prep(t_data *data, t_cmd *cmd_data, char **cmd_content);
+char	*check_prog_in_path(t_data *data, char **path_tab, char *prog_name);
+char	*prog_name_prep(t_data *data, char **path_tab, char **cmd_content);
 
 //heredoc_exec
 int	create_heredoc_fd(t_data *data, t_line *heredoc);
@@ -71,13 +70,14 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not);
 t_line	*move_current_to_start(t_data *data);
 t_line	*move_current_to_cmd(t_data *data);
 void	free_and_close_life(t_data *data);
+void	dup2_process(t_data *data, int *fd1, int fd2);
+void	free_cmd_data(t_data *data);
 
 //close_fd_utils
 void	close_data_fds(t_data *data);
 void	close_line_cmd_fds(t_data *data);
 
 //heredoc_exec_utils
-void	free_cmd_data(t_cmd *cmd_data);
 void	free_env(t_env *env);
 void	free_line_cmd(t_line *line_cmd);
 

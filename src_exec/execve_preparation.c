@@ -1,6 +1,20 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
 
+void	check_cmd_is_not_empty(t_data *data, t_line *current)
+{
+	if (current->content_xpand == NULL)
+	{
+		free_and_close_life(data);
+		exit(0);
+	}
+	if (current->content_xpand[0][0] == 0)
+	{
+		if (ft_strchr(current->content, '"') != 0)
+			ft_error_child_cmd_not_found(data, "", 1);
+	}
+}
+
 // NOTE: here we check if the programm exists and is executable
 // with the function access
 
@@ -36,35 +50,4 @@ char	**find_path_tab(t_data *data)
 		current = current->next;
 	}
 	return (path_tab);
-}
-
-// NOTE: Before executing the command, we have to prepare the material
-// to use execve. For that, we need :
-// a) complete programm name;
-// b) tab with args (is treated and created while expansion)
-// c) tab with all cmds path (original is in a str, have to convert it
-//  to a tab, and without the "PATH=");
-// d) environment converted from linked list to tab;
-
-t_cmd	*execve_preparation(t_data *data, char **cmd_content)
-{
-	t_cmd	*cmd_data;
-	t_env	*current;
-
-	current = data->env;
-	cmd_data = ft_calloc(1, sizeof(t_cmd));
-	data->saved_errno = errno;
-	if (!cmd_data)
-		ft_error_child(data, MALLOC_ERR, 1);
-	data->cmd_data = cmd_data;
-	cmd_data->args_tab = ft_arraydup(cmd_content);
-	data->saved_errno = errno;
-	if (!cmd_data->args_tab)
-		ft_error_child(data, MALLOC_ERR, 1);
-	env_converter_ll_to_array(data, data->env);
-	cmd_data->path_tab = find_path_tab(data);
-	cmd_data->prog_fullname = prog_name_prep(data, cmd_data, cmd_content);
-	if (is_prog_existing_and_executable(data, cmd_data->prog_fullname) != 0)
-		return (NULL);
-	return (cmd_data);
 }

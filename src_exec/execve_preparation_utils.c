@@ -38,15 +38,15 @@ char	*join_path_prog(t_data *data, char *path, char *prog_name)
 // strjoin each directory of PATH with programm name, and check
 // if it exists and is executable
 
-char	*check_prog_in_path(t_data *data, t_cmd *cmd_data, char *prog_name)
+char	*check_prog_in_path(t_data *data, char **path_tab, char *prog_name)
 {
 	size_t	y;
 	char	*prog_fullname;
 
 	y = 0;
-	while (cmd_data->path_tab[y] != NULL)
+	while (path_tab[y] != NULL)
 	{
-		prog_fullname = join_path_prog(data, cmd_data->path_tab[y], prog_name);
+		prog_fullname = join_path_prog(data, path_tab[y], prog_name);
 		if (is_prog_existing_and_executable(NULL, prog_fullname) == 0)
 			return (prog_fullname);
 		ft_free((void **)&prog_fullname);
@@ -62,15 +62,20 @@ char	*check_prog_in_path(t_data *data, t_cmd *cmd_data, char *prog_name)
 // Then I have to check if the programm exists and is executable or not
 // (directly or by see if it's in the PATH)
 
-char	*prog_name_prep(t_data *data, t_cmd *cmd_data, char **cmd_content)
+char	*prog_name_prep(t_data *data, char **path_tab, char **args_tab)
 {
 	char	*prog_fullname;
+	t_line	*current;
+	char	**cmd_content;
 
-	if (ft_strchr(cmd_data->args_tab[0], '/') == 0)
-		prog_fullname = check_prog_in_path(data, cmd_data, cmd_content[0]);
+	current = move_current_to_cmd(data);
+	cmd_content = current->content_xpand;
+
+	if (ft_strchr(args_tab[0], '/') == 0)
+		prog_fullname = check_prog_in_path(data, path_tab, cmd_content[0]);
 	else
 	{
-		prog_fullname = ft_strdup(cmd_data->args_tab[0]);
+		prog_fullname = ft_strdup(args_tab[0]);
 		data->saved_errno = errno;
 		if (!prog_fullname)
 			ft_error_child(data, MALLOC_ERR, 1);

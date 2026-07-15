@@ -1,17 +1,5 @@
 #include "../minishell_general.h"
 
-void	free_cmd_data(t_cmd *cmd_data)
-{
-	if (cmd_data->prog_fullname != NULL)
-		ft_free((void **)&cmd_data->prog_fullname);
-	if (cmd_data->args_tab != NULL)
-		ft_free_tab(&cmd_data->args_tab);
-	if (cmd_data->path_tab != NULL)
-		ft_free_tab(&cmd_data->path_tab);
-	if (cmd_data->env != NULL)
-		ft_free_tab(&cmd_data->env);
-}
-
 void	free_env(t_env *env)
 {
 	t_env	*current;

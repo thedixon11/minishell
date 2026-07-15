@@ -80,6 +80,6 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 			return (1);
 	}
 	ft_free((void **)&line);
-	close(data->heredoc_pipe_fds[1]);
+	ft_close_fd(&data->heredoc_pipe_fds[1]);
 	return (0);
 }

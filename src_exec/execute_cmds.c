@@ -17,6 +17,12 @@ void	close_used_fd(t_data *data)
 			ft_close_fd(current->fd_of_pipe);
 		current = current->next;		
 	}
+	ft_close_fd(&data->pipe_fd[1]);
+}
+void	save_pipe_rd_to_old_read_fd(t_data *data)
+{
+	if (data->current_cmd_nb < data->max_cmd_nb)
+		data->old_read_fd = data->pipe_fd[0];
 }
 
 void	wait_all_children(t_data *data)
@@ -59,9 +65,9 @@ int	execute_cmds(t_data *data)
 			builtin_execution(data);
 		else if (classic_execution(data) == 1)
 			return (1);*/
-		classic_execution(data);
-		parent_process(data);
-		close_used_fd(data);
+		if (classic_execution(data) == 1)
+			close_used_fd(data);
+		save_pipe_rd_to_old_read_fd(data);
 		data->current_cmd_nb++;
 	}
 	wait_all_children(data);

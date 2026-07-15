@@ -10,7 +10,10 @@ void	set_fd_pipe_zero(t_data *data)
 	while (current != NULL)
 	{
 		if (current->type == T_PIPE_IN || current->type == T_PIPE_OUT)
+		{
 			current->fd = 0;
+			current->fd_of_pipe = NULL;
+		}
 		current = current->next;
 	}
 }
@@ -44,6 +47,8 @@ int	execution_start(t_data *data)
 		error = execute_cmds(data);
 	code = data->code;
 	reset_redir_patch(data);
+	ft_close_fd(&data->saved_stdin);
+	ft_close_fd(&data->saved_stdout);
 	free_and_close_life(data);
 	return (code);
 }

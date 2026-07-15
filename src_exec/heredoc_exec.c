@@ -66,9 +66,9 @@ int	heredoc_exec(t_data *data)
 				return (1);
 			if (ft_strchr(current->content, '\'') == NULL
 				&& ft_strchr(current->content, '"') == NULL)
-				data->error = write_on_fd(data, current, B_TRUE);
-			else
 				data->error = no_quotes_in_delimiter(data, current);
+			else
+				data->error = write_on_fd(data, current, B_TRUE);
 		}
 		current = current->next;
 	}
