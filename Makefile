@@ -32,7 +32,7 @@ XPAND = val_manager.c \
 				env_var_manager.c \
 				dollar_manager.c
 
-TEST = minishell_lists3.c
+TEST = minishell_lists15.c
 
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
@@ -45,6 +45,7 @@ OBJS_TEST := $(patsubst $(TEST_DIR)/%.c,$(TEST_OBJ_DIR)/%.o,$(TEST))
 CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -g
+VFLAGS = --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes ./xcution
 INCLUDE = -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(LIBFT_DIR)/include
 
 all: $(NAME)
@@ -52,7 +53,7 @@ all: $(NAME)
 $(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT) -o $(NAME)
 	clear
-	valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes ./xcution
+	valgrind $(VFLAGS)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
@@ -68,6 +69,10 @@ $(XPAND_OBJ_DIR)/%.o: $(XPAND_DIR)/%.c
 $(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(TEST_OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
+ma: $(NAME)
+	clear
+	valgrind $(VFLAGS)
 
 clean:
 	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR)

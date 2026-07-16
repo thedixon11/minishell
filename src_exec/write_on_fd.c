@@ -1,5 +1,6 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
+#include <unistd.h>
 
 // NOTE: expand_line_hdoc will expand the STDIN_FILENO input content
 // before writing it in the READ FD if xpand_or_not is TRUE. Otherwise, it
@@ -38,6 +39,10 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	char	*line;
 	char	*line_xpanded;
 
+	data->error = write(STDOUT_FILENO, "> ", 2);
+	data->saved_errno = errno;
+	if (data->error == -1)
+		return (ft_error_parent_char(data, WRITE_ERR, 1));
 	line = get_next_line(STDIN_FILENO, heredoc->content, data->limiter_len);
 	data->saved_errno = errno;
 	if (line == NULL)

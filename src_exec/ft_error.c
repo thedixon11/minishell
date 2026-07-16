@@ -49,6 +49,7 @@ int	ft_error_parent_amb_redir(t_data *data, char *message, int code)
 	char	*error_to_print;
 
 	temp1 = ft_strjoin("minishell: ", message);
+	ft_free((void **) &message);
 	error_to_print = ft_strjoin(temp1, ": ambiguous redirection");
 	ft_free((void **)&temp1);
 	ft_putendl_fd(error_to_print, STDERR_FILENO);

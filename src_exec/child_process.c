@@ -3,10 +3,14 @@
 
 void	free_child_process(char ***args_tab, char ***env, char ***path_tab, char **prog_fullname)
 {
-	ft_free_tab(args_tab);
-	ft_free_tab(env);
-	ft_free_tab(path_tab);
-	ft_free((void **) prog_fullname);
+	if (**args_tab != NULL)
+		ft_free_tab(args_tab);
+	if (**env != NULL)
+		ft_free_tab(env);
+	if (**path_tab != NULL)
+		ft_free_tab(path_tab);
+	if (*prog_fullname != NULL)
+		ft_free((void **) prog_fullname);
 }
 
 char	**create_args_tab(t_data *data)

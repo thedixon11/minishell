@@ -20,6 +20,7 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 	}
 	heredoc->fd = data->heredoc_pipe_fds[0];
 	temp = ft_strdup(heredoc->content);
+	ft_free((void **)&heredoc->content);
 	data->saved_errno = errno;
 	if (!temp)
 		return (ft_error_parent_int(data, MALLOC_ERR, 1));
@@ -39,6 +40,7 @@ int	no_quotes_in_delimiter(t_data *data, t_line *current)
 	data->saved_errno = errno;
 	if (!temp)
 		return (ft_error_parent_int(data, MALLOC_ERR, 1));
+	ft_free((void **)&current->content);
 	current->content = delimiter_manager_hdoc(data, temp);
 	ft_free((void **)&temp);
 	if (!current->content)
