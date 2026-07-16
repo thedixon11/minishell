@@ -1,6 +1,7 @@
 void	manage_value_export(t_data *data, t_line *cmd, char *value)
 {
 	int		y;
+	t_env	
 
 	y = 1;
 }
