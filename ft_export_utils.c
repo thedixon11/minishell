@@ -1,3 +1,5 @@
+#include "../minishell_general.h"
+
 char	*get_content_var_env(char *name_n_value)
 {
 	int start;
@@ -35,4 +37,30 @@ char	*get_name_var_env(char *name_n_value)
 	if (!name)
 		ft_error_parent_char();
 	return (name);
+}
+
+int how_much_args(char **cmd_args)
+{
+	int	y;
+
+	y = 1;
+	while (cmd_args[y] != NULL)
+		y++;
+	return (y);
+}
+
+t_bool	check_var_env_name(char	*name)
+{
+	int	i;
+
+	i = 1;
+	if (name[0] != '_' || ft_isalpha(name[0]) != 1)
+		return (B_FALSE);
+	while (name[i] != 0)
+	{
+		if (name[i] != '_' || ft_isalnum(name[i]) != 1)
+			return (B_FALSE);
+		i++;
+	}
+	return (B_TRUE);
 }
