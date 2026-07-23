@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include "minishell_builtin.h"
 
 int	create_new_var_env(t_data *data, t_env *env, char *name, char *content)
 {
@@ -6,14 +7,20 @@ int	create_new_var_env(t_data *data, t_env *env, char *name, char *content)
 	t_env	*new_var_env;
 
 	new_var_env = ft_calloc(1, sizeof(t_env *));
-	new_var_env->name = ft_strdup(name);
-	data->saved_errno = errno;
-	if (!new_var_env->name)
-		return (ft_error_parent_int(data, MALLOC_ERR, 1));
-	new_var_env->content = ft_strdup(content);
-	data->saved_errno = errno;
-	if (!new_var_env->content)
-		return (ft_free((void **)&new_var_env->name), ft_error_parent_int(data, MALLOC_ERR, 1));
+	if (name != NULL)
+	{
+		new_var_env->name = ft_strdup(name);
+		data->saved_errno = errno;
+		if (!new_var_env->name)
+			return (ft_error_parent_int(data, MALLOC_ERR, 1));
+	}
+	if (content != NULL)
+	{
+		new_var_env->content = ft_strdup(content);
+		data->saved_errno = errno;
+		if (!new_var_env->content)
+			return (ft_free((void **)&new_var_env->name), ft_error_parent_int(data, MALLOC_ERR, 1));
+	}
 	current = env;
 	while (current->next != NULL)
 		current = current->next;
@@ -57,13 +64,14 @@ void	ft_export(t_data *data, t_env *env, char **cmd_args)
 	int	y;
 	char	*name;
 	char	*content;
+	char	**c_env;
 
 
 	y = 1;
 	current = NULL;
 	if (how_much_args(cmd_args) == 1)
 		export_no_args(data, env);
-	while (current != NULL)
+	while (cmd_args[y] != NULL)
 	{
 		name = get_name_var_env(data, cmd_args[y]);
 		content = get_content_var_env(data, cmd_args[y]);
@@ -75,7 +83,8 @@ void	ft_export(t_data *data, t_env *env, char **cmd_args)
 			replace_content_value(data, current, content);
 		else
 			create_new_var_env(data, env, name, content);
-
 		y++;
 	}
+	c_env = env_converter_ll_to_array(data, env);
+	print_environment(c_env);
 }

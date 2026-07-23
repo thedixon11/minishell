@@ -9,6 +9,14 @@ char	*rebuild_value(t_data *data, t_env *current)
 	char	*temp;
 	char	*rebuild_value;
 
+	if (current->content == NULL)
+	{
+		rebuild_value = ft_strdup(current->name);
+		data->saved_errno = errno;
+		if (!rebuild_value)
+			return (NULL);
+		return (rebuild_value);
+	}
 	temp = ft_strjoin(current->name, "=");
 	data->saved_errno = errno;
 	if (!temp)

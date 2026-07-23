@@ -53,11 +53,11 @@ t_bool	check_var_env_name(char	*name)
 	int	i;
 
 	i = 1;
-	if (name[0] != '_' || ft_isalpha(name[0]) != 1)
+	if (name[0] != '_' && ft_isalpha(name[0]) != 1)
 		return (B_FALSE);
 	while (name[i] != 0)
 	{
-		if (name[i] != '_' || ft_isalnum(name[i]) != 1)
+		if (name[i] != '_' && ft_isalnum(name[i]) != 1)
 			return (B_FALSE);
 		i++;
 	}

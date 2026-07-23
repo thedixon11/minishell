@@ -6,7 +6,7 @@ void	swap_values(char ***env, int i, int j)
 
 	temp = env[0][i];
 	env[0][i] = env[0][j];
-	env[0][j] = temp&;
+	env[0][j] = temp;
 }
 
 void	print_environment(char **env)
