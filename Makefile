@@ -2,9 +2,11 @@ NAME = xcution
 
 XPAND_DIR = src_xpand
 EXEC_DIR = src_exec
+BUILTIN_DIR = src_builtin
 TEST_DIR = src_test
 XPAND_OBJ_DIR = obj_xpand
 EXEC_OBJ_DIR = obj_exec
+BUILTIN_OBJ_DIR = obj_builtin
 TEST_OBJ_DIR = obj_test
 
 LIBFT_DIR = ./libft
@@ -32,26 +34,32 @@ XPAND = val_manager.c \
 				env_var_manager.c \
 				dollar_manager.c
 
+BUILTIN = ft_export.c \
+		  ft_export_print.c \
+		  ft_export_utils.c \
+
 TEST = minishell_lists15.c
 
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
+BUILTIN := $(addprefix $(BUILTIN_DIR)/,$(BUILTIN))
 TEST := $(addprefix $(TEST_DIR)/,$(TEST))
 
 OBJS_XPAND := $(patsubst $(XPAND_DIR)/%.c,$(XPAND_OBJ_DIR)/%.o,$(XPAND))
 OBJS_EXEC := $(patsubst $(EXEC_DIR)/%.c,$(EXEC_OBJ_DIR)/%.o,$(EXEC))
+OBJS_BUILTIN := $(patsubst $(BUILTIN_DIR)/%.c,$(BUILTIN_OBJ_DIR)/%.o,$(BUILTIN))
 OBJS_TEST := $(patsubst $(TEST_DIR)/%.c,$(TEST_OBJ_DIR)/%.o,$(TEST))
 
 CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -g
 VFLAGS = --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes ./xcution
-INCLUDE = -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(LIBFT_DIR)/include
+INCLUDE = -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(BUILTIN_DIR)/include -I$(LIBFT_DIR)/include
 
 all: $(NAME)
 
 $(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT)
-	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(LIBFT) -o $(NAME)
 	clear
 	valgrind $(VFLAGS)
 
@@ -64,6 +72,10 @@ $(EXEC_OBJ_DIR)/%.o: $(EXEC_DIR)/%.c
 
 $(XPAND_OBJ_DIR)/%.o: $(XPAND_DIR)/%.c
 	@mkdir -p $(XPAND_OBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
+$(BUILTIN_OBJ_DIR)/%.o: $(BUILTIN_DIR)/%.c
+	@mkdir -p $(BUILTIN_OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.c

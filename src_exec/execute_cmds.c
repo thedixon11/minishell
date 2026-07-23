@@ -60,11 +60,10 @@ int	execute_cmds(t_data *data)
 	{
 		if (reset_redir_patch(data) == 1)
 			return (1);
-		/*
 		if (exec_builtin_or_not(data) == B_TRUE)
 			builtin_execution(data);
 		else if (classic_execution(data) == 1)
-			return (1);*/
+			return (1);
 		if (classic_execution(data) == 1)
 			close_used_fd(data);
 		save_pipe_rd_to_old_read_fd(data);
