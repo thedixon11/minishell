@@ -67,6 +67,7 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not);
 int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not);
 
 //some_utils
+t_bool	exec_builtin_or_not(t_data *data);
 t_line	*move_current_to_start(t_data *data);
 t_line	*move_current_to_cmd(t_data *data);
 void	free_and_close_life(t_data *data);

@@ -37,8 +37,9 @@ XPAND = val_manager.c \
 BUILTIN = ft_export.c \
 		  ft_export_print.c \
 		  ft_export_utils.c \
+		  builtin_exec.c
 
-TEST = minishell_lists15.c
+TEST = minishell_lists16.c
 
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
@@ -58,10 +59,11 @@ INCLUDE = -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(BUILTIN_DIR)/include 
 
 all: $(NAME)
 
-$(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(LIBFT)
+$(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(LIBFT) -o $(NAME)
 	clear
-	valgrind $(VFLAGS)
+	#valgrind $(VFLAGS)
+	#./xcution
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
@@ -87,7 +89,7 @@ ma: $(NAME)
 	valgrind $(VFLAGS)
 
 clean:
-	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR)
+	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR) $(BUILTIN_OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean

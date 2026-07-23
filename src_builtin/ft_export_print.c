@@ -6,7 +6,7 @@ void	swap_values(char ***env, int i, int j)
 
 	temp = env[0][i];
 	env[0][i] = env[0][j];
-	env[0][j] = temp;
+	env[0][j] = temp&;
 }
 
 void	print_environment(char **env)
@@ -26,26 +26,26 @@ void	export_no_args(t_data *data, t_env *env)
 	int	i;
 	int	j;
 	int	size;
-	char	**env;
+	char	**c_env;
 
 	i = 0;
 	j = 1;
 	size = 0;
-	env_converter_ll_to_array(data, env);
-	env = data->cmd_data->env;
-	while (env[i] != NULL)
+	c_env = env_converter_ll_to_array(data, env);
+	while (c_env[i] != NULL)
 	{
-		j = 0;
-		size = ft_strlen(env[i]) + 1;
-		while (env[j] != NULL && ft_strncmp(env[i], env[j], size) <= 0)
+		j = i + 1;
+		size = ft_strlen(c_env[i]) + 1;
+		while (c_env[j] != NULL && ft_strncmp(c_env[i], c_env[j], size) <= 0)
 			j++;
-		if (env[j] != NULL && ft_strncmp(env[i], env[j], size) > 0)
+		if (c_env[j] != NULL && ft_strncmp(c_env[i], c_env[j], size) > 0)
 		{
-			swap_values(&env, i, j);
+			swap_values(&c_env, i, j);
 			i = 0;
 		}
-		j = 0;
+		else
+			i++;
 	}
-	print_environment(env);
-	ft_free_tab(&data->cmd_data->env);
+	print_environment(c_env);
+	ft_free_tab(&c_env);
 }
