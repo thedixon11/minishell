@@ -10,6 +10,7 @@ int	create_new_var_env(t_data *data, t_env *env, char *name, char *content);
 int	replace_content_value(t_data *data, t_env *current, char *content);
 t_env	*does_var_env_exist(t_env *env, char *name);
 void	ft_export(t_data *data, t_env *env, char **cmd_args);
+void	print_var_error(char *identifier);
 
 //ft_export_utils
 char	*get_content_var_env(t_data *data, char *name_n_value);

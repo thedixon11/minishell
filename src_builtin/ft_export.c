@@ -6,7 +6,7 @@ int	create_new_var_env(t_data *data, t_env *env, char *name, char *content)
 	t_env	*current;
 	t_env	*new_var_env;
 
-	new_var_env = ft_calloc(1, sizeof(t_env *));
+	new_var_env = ft_calloc(1, sizeof(t_env));
 	if (name != NULL)
 	{
 		new_var_env->name = ft_strdup(name);
@@ -58,6 +58,11 @@ t_env	*does_var_env_exist(t_env *env, char *name)
 	return (NULL);
 }
 
+void	print_var_error(char *identifier)
+{
+	ft_printf("%s : not a valid identifier\n", identifier);
+}
+
 void	ft_export(t_data *data, t_env *env, char **cmd_args)
 {
 	t_env	*current;
@@ -76,16 +81,24 @@ void	ft_export(t_data *data, t_env *env, char **cmd_args)
 		name = get_name_var_env(data, cmd_args[y]);
 		content = get_content_var_env(data, cmd_args[y]);
 		if (check_var_env_name(name) == B_FALSE)
-			//print_var_env_error(name);
-			return ;
+		{
+			print_var_error(cmd_args[y]);
+			ft_free((void **)&name);
+			ft_free((void**)&content);
+			y++;
+			continue ;
+		}	
 		current = does_var_env_exist(env, name);
 		if (current != NULL)
 			replace_content_value(data, current, content);
 		else
 			create_new_var_env(data, env, name, content);
+		ft_free((void **)&name);
+		ft_free((void**)&content);
 		y++;
 	}
 	ft_printf("\n\n");
 	c_env = env_converter_ll_to_array(data, env);
 	print_environment(c_env);
+	ft_free_tab(&c_env);
 }

@@ -39,7 +39,7 @@ BUILTIN = ft_export.c \
 		  ft_export_utils.c \
 		  builtin_exec.c
 
-TEST = minishell_lists16.c
+TEST = minishell_lists23.c
 
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
@@ -62,8 +62,8 @@ all: $(NAME)
 $(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(LIBFT) -o $(NAME)
 	clear
-	#valgrind $(VFLAGS)
-	#./xcution
+	valgrind $(VFLAGS)
+	@#./xcution
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
