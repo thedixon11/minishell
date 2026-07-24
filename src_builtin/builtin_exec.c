@@ -17,7 +17,7 @@ t_bool	exec_builtin_or_not(t_data *data)
 	return (B_FALSE);
 }
 
-void	builtin_execution(t_data *data)
+int	builtin_execution(t_data *data, t_bool do_i_parent)
 {
 	t_line	*current;
 	int		size;
@@ -26,6 +26,9 @@ void	builtin_execution(t_data *data)
 	while (current != NULL && current->type != T_COMMAND)
 		current = current->next;
 	size = ft_strlen(current->content_xpand[0]) + 1;
-	if (ft_strncmp(current->content_xpand[0], "export", size) == 0)
-		ft_export(data, current->content_xpand);
+	if (ft_strncmp(current->content_xpand[0], "export", size) == 0 && do_i_parent == B_TRUE)
+		return (ft_export(data, current->content_xpand));
+	if (ft_strncmp(current->content_xpand[0], "echo", size) == 0 && do_i_parent == B_FALSE)
+		return (ft_echo(data, current->content_xpand));
+	return (0);
 }

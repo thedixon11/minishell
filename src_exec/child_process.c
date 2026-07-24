@@ -27,15 +27,12 @@ char	**create_args_tab(t_data *data)
 	return (args_tab);
 }
 
-void	child_process(t_data *data)
+void	child_no_builtin(t_data *data)
 {
 	char	**args_tab;
 	char	**env;
 	char	**path_tab;
 	char	*prog_fullname;
-
-	ft_close_fd(&data->saved_stdin);
-	ft_close_fd(&data->saved_stdout);
 
 	args_tab = create_args_tab(data);
 	data->cmd_data.args_tab = args_tab;
@@ -50,5 +47,20 @@ void	child_process(t_data *data)
 	execve(prog_fullname, args_tab, env);
 	data->saved_errno = errno;
 	ft_error_child(data, EXECVE_ERR, 1);
+}
+
+void	child_process(t_data *data)
+{
+	char	**args_tab;
+	char	**env;
+	char	**path_tab;
+	char	*prog_fullname;
+	int		builtin_or_not;
+
+	ft_close_fd(&data->saved_stdin);
+	ft_close_fd(&data->saved_stdout);
+	if (builtin_execution(data, B_FALSE) == 0)
+		child_no_builtin(data);	
+	free_and_close_life(data);
 }
 

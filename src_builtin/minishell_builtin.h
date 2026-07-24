@@ -3,7 +3,7 @@
 
 //builtin_exec
 t_bool	exec_builtin_or_not(t_data *data);
-void	builtin_execution(t_data *data);
+int	builtin_execution(t_data *data, t_bool do_i_parent);
 
 //ft_export
 int		create_new_var_env(t_data *data, char *name, char *content);
@@ -26,4 +26,7 @@ void	print_environment(char **env);
 void	export_no_args(t_data *data);
 int		add_quotes_content(t_data *data, char ***c_env);
 
+//ft_echo
+void	ft_echo(t_data *data, char **args_cmd);
+t_bool	skip_option_n(t_data *data, char **args_cmd, int *y);
 #endif

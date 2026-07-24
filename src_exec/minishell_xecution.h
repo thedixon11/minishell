@@ -14,6 +14,7 @@ int	classic_execution(t_data *data);
 //child_process
 void	check_cmd_is_not_empty(t_data *data, t_line *current);
 void	child_process(t_data *data);
+void	child_no_builtin(t_data *data);
 
 //ft_error
 int	ft_error_parent_int(t_data *data, char *message, int code);
