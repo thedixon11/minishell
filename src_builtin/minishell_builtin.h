@@ -21,5 +21,6 @@ t_bool	check_var_env_name(char	*name);
 void	swap_values(char ***env, int i, int j);
 void	print_environment(char **env);
 void	export_no_args(t_data *data, t_env *env);
+int	add_quotes_content(t_data *data, char ***c_env);
 
 #endif

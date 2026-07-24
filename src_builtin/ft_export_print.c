@@ -1,4 +1,32 @@
 #include "../minishell_general.h"
+#include "minishell_builtin.h"
+
+int	add_quotes_content(t_data *data, char ***c_env)
+{
+	int	y;
+	char	*temp1;
+	char	*temp2;
+	char	*temp3;
+
+	y = 0;
+	while (c_env[0][y] != NULL)
+	{
+		temp1 = get_name_var_env(data, c_env[0][y]);
+		temp2 = get_content_var_env(data, c_env[0][y]);
+		if (temp2 != NULL)
+		{
+			temp3 = ft_strsrrnd(temp2, "\"");
+			ft_free((void **)&temp2);
+			temp2 = ft_strjoin("=", temp3);
+			ft_free((void **) &temp3);
+			temp3 = ft_strjoin(temp1, temp2);
+			ft_free((void **)&c_env[0][y]);
+			c_env[0][y] = temp3;
+		}
+		y++;	
+	}
+	return (0);
+}
 
 void	swap_values(char ***env, int i, int j)
 {
@@ -32,6 +60,7 @@ void	export_no_args(t_data *data, t_env *env)
 	j = 1;
 	size = 0;
 	c_env = env_converter_ll_to_array(data, env);
+	add_quotes_content(data, &c_env);
 	while (c_env[i] != NULL)
 	{
 		j = i + 1;

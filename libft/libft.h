@@ -6,7 +6,7 @@
 /*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 17:32:58 by jvasconc          #+#    #+#             */
-/*   Updated: 2026/07/11 10:08:57 by jvasconc         ###   ########.fr       */
+/*   Updated: 2026/07/24 08:30:17 by jvasconc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char	**ft_split(char const *s, char c);
 char	**ft_split_squote(char const *s, char c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strrm(const char *s, size_t len);
+char	*ft_strsrrnd(char *str, char *set);
 
 //array_function
 char	**ft_arraydup(char **tab);

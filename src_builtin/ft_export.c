@@ -85,6 +85,7 @@ void	ft_export(t_data *data, t_env *env, char **cmd_args)
 			create_new_var_env(data, env, name, content);
 		y++;
 	}
+	ft_printf("\n\n");
 	c_env = env_converter_ll_to_array(data, env);
 	print_environment(c_env);
 }
