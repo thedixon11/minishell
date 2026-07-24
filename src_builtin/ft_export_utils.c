@@ -1,9 +1,14 @@
 #include "../minishell_general.h"
 
+void	print_var_error(char *identifier)
+{
+	ft_printf("%s : not a valid identifier\n", identifier);
+}
+
 char	*get_content_var_env(t_data *data, char *name_n_value)
 {
-	int start;
-	int	end;
+	int		start;
+	int		end;
 	char	*content;
 
 	start = 0;
@@ -22,10 +27,9 @@ char	*get_content_var_env(t_data *data, char *name_n_value)
 	return (content);
 }
 
-
 char	*get_name_var_env(t_data *data, char *name_n_value)
 {
-	int	len;
+	int		len;
 	char	*name;
 
 	len = 0;
@@ -38,7 +42,7 @@ char	*get_name_var_env(t_data *data, char *name_n_value)
 	return (name);
 }
 
-int how_much_args(char **cmd_args)
+int	how_much_args(char **cmd_args)
 {
 	int	y;
 
