@@ -91,6 +91,8 @@ typedef struct s_data
 	int				limiter_len;
 	int				saved_stdin;
 	int				saved_stdout;
+	char			*old_cwd;
+	char			*cwd;
 }					t_data;
 
 #endif /*MINISHELL_STRUCT_H*/
