@@ -51,12 +51,6 @@ void	child_no_builtin(t_data *data)
 
 void	child_process(t_data *data)
 {
-	char	**args_tab;
-	char	**env;
-	char	**path_tab;
-	char	*prog_fullname;
-	int		builtin_or_not;
-
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
 	if (builtin_execution(data, B_FALSE) == 0)
