@@ -67,7 +67,7 @@ void	repl_create_var(t_data *data, char *name, char *content, t_env *current)
 		create_new_var_env(data, name, content);
 }
 
-void	ft_export(t_data *data, char **cmd_args)
+int	ft_export(t_data *data, char **cmd_args)
 {
 	t_env	*current;
 	int		y;
@@ -90,4 +90,5 @@ void	ft_export(t_data *data, char **cmd_args)
 		ft_free((void **)&content);
 		y++;
 	}
+	return (0);
 }

@@ -37,6 +37,7 @@ XPAND = val_manager.c \
 BUILTIN = ft_export.c \
 		  ft_export_print.c \
 		  ft_export_utils.c \
+		  ft_echo.c \
 		  builtin_exec.c
 
 TEST = minishell_lists24.c

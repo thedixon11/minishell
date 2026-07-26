@@ -61,7 +61,7 @@ int	execute_cmds(t_data *data)
 		if (reset_redir_patch(data) == 1)
 			return (1);
 		if (exec_builtin_or_not(data) == B_TRUE)
-			builtin_execution(data);
+			builtin_execution(data, B_TRUE);
 		else if (classic_execution(data) == 1)
 			return (1);
 		//if (classic_execution(data) == 1)		// BUG: je dois voir si pertinent ou pas

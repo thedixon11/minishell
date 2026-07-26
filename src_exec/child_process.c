@@ -56,5 +56,6 @@ void	child_process(t_data *data)
 	if (builtin_execution(data, B_FALSE) == 0)
 		child_no_builtin(data);	
 	free_and_close_life(data);
+	exit (0);
 }
 

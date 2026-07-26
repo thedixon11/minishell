@@ -9,7 +9,7 @@ int	builtin_execution(t_data *data, t_bool do_i_parent);
 int		create_new_var_env(t_data *data, char *name, char *content);
 int		replace_content_value(t_data *data, t_env *current, char *content);
 t_env	*does_var_env_exist(t_data *data, char *name);
-void	ft_export(t_data *data, char **cmd_args);
+int	ft_export(t_data *data, char **cmd_args);
 void	print_var_error(char *identifier);
 void	repl_create_var(t_data *data, char *name,
 			char *content, t_env *current);
@@ -27,6 +27,6 @@ void	export_no_args(t_data *data);
 int		add_quotes_content(t_data *data, char ***c_env);
 
 //ft_echo
-void	ft_echo(t_data *data, char **args_cmd);
-t_bool	skip_option_n(t_data *data, char **args_cmd, int *y);
+int	ft_echo(t_data *data, char **args_cmd);
+t_bool	skip_option_n(char **args_cmd, int *y);
 #endif
