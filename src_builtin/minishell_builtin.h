@@ -29,4 +29,11 @@ int		add_quotes_content(t_data *data, char ***c_env);
 //ft_echo
 int	ft_echo(t_data *data, char **args_cmd);
 t_bool	skip_option_n(char **args_cmd, int *y);
+
+//ft_cd
+int	update_env_wd(t_data *data);
+int	update_data_wd(t_data *data, char *pathname);
+int	change_cwd_to_home(t_data *data);
+int	check_nb_args_cd(t_data *data, char **cmd_args);
+int	ft_cd(t_data *data, char **cmd_args);
 #endif

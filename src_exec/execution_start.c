@@ -1,6 +1,5 @@
 #include "../minishell_general.h"
 #include "minishell_xecution.h"
-#include <stdalign.h>
 
 void	set_fd_pipe_zero(t_data *data)
 {
@@ -33,6 +32,7 @@ int	execution_start(t_data *data)
 {
 	int	error;
 	int	code;
+	char	*check_dir;
 
 	data->pipe_fd[0] = -1;
 	data->pipe_fd[1] = -1;
@@ -47,6 +47,11 @@ int	execution_start(t_data *data)
 		error = execute_cmds(data);
 	code = data->code;
 	reset_redir_patch(data);
+	check_dir = getcwd(NULL, 0);
+	ft_printf("|\ncwd = %s\n", check_dir);
+	ft_free((void **)&check_dir);
+	ft_printf("cwd data = %s\n", data->cwd);
+	ft_printf("oldcwd data = %s\n", data->old_cwd);
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
 	free_and_close_life(data);

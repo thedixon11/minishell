@@ -14,6 +14,8 @@ t_bool	exec_builtin_or_not(t_data *data)
 		return (B_FALSE);
 	if (ft_strncmp(current->content_xpand[0], "export", size) == 0)
 		return (B_TRUE);
+	if (ft_strncmp(current->content_xpand[0], "cd", size) == 0)
+		return (B_TRUE);
 	return (B_FALSE);
 }
 

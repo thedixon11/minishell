@@ -47,5 +47,7 @@ void	free_and_close_life(t_data *data)
 	close_data_fds(data);
 	free_line_cmd(data->line_cmd);
 	free_env(data->env);
+	ft_free((void **)&data->cwd);
+	ft_free((void **)&data->old_cwd);
 	ft_free((void **)&data);
 }
