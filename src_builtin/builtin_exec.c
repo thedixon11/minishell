@@ -30,9 +30,11 @@ int	builtin_execution(t_data *data, t_bool do_i_parent)
 	size = ft_strlen(current->content_xpand[0]) + 1;
 	if (ft_strncmp(current->content_xpand[0], "export", size) == 0 && do_i_parent == B_TRUE)
 		return (ft_export(data, current->content_xpand));
-	if (ft_strncmp(current->content_xpand[0], "cd", size) == 0 && do_i_parent == B_TRUE)
+	else if (ft_strncmp(current->content_xpand[0], "cd", size) == 0 && do_i_parent == B_TRUE)
 		return (ft_cd(data, current->content_xpand));
-	if (ft_strncmp(current->content_xpand[0], "echo", size) == 0 && do_i_parent == B_FALSE)
+	else if (ft_strncmp(current->content_xpand[0], "echo", size) == 0 && do_i_parent == B_FALSE)
 		return (ft_echo(data, current->content_xpand));
+	else if (ft_strncmp(current->content_xpand[0], "pwd", size) == 0 && do_i_parent == B_FALSE)
+		return (ft_pwd(data, current->content_xpand));
 	return (0);
 }
