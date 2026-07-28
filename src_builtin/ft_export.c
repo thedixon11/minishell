@@ -90,5 +90,6 @@ int	ft_export(t_data *data, char **cmd_args)
 		ft_free((void **)&content);
 		y++;
 	}
+	export_no_args(data);
 	return (0);
 }

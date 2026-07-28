@@ -20,11 +20,11 @@ int	add_quotes_content(t_data *data, char ***c_env)
 			temp2 = ft_strjoin("=", temp3);
 			ft_free((void **) &temp3);
 			temp3 = ft_strjoin(temp1, temp2);
-			ft_free((void **)&temp1);
 			ft_free((void **)&temp2);
 			ft_free((void **)&c_env[0][y]);
 			c_env[0][y] = temp3;
 		}
+		ft_free((void **)&temp1);
 		y++;
 	}
 	return (0);
