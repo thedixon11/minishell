@@ -24,13 +24,12 @@ int	time_to_pipe(t_data *data)
 	return (0);
 }
 
-int	classic_execution(t_data *data)
+void	classic_execution(t_data *data)
 {
 	if (data->current_cmd_nb < data->max_cmd_nb && time_to_pipe(data) == 1)
-		return (1);
+		return ;
 	if (manage_redirections(data) == 1)
-		return (1);
+		return ;
 	if (time_to_fork_and_exec(data) == 1)
-		return (1);
-	return (0);
+		return ;
 }

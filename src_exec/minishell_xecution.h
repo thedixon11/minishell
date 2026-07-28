@@ -9,7 +9,7 @@ int	execution_start(t_data *data);
 void	parent_process(t_data *data);
 int	time_to_fork_and_exec(t_data *data);
 int	time_to_pipe(t_data *data);
-int	classic_execution(t_data *data);
+void	classic_execution(t_data *data);
 
 //child_process
 void	check_cmd_is_not_empty(t_data *data, t_line *current);

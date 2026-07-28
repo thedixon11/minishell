@@ -45,7 +45,7 @@ BUILTIN = ft_export.c \
 		  ft_pwd.c \
 		  builtin_exec.c
 
-TEST = minishell_lists1.c
+TEST = minishell_lists16.c
 
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
@@ -60,16 +60,13 @@ OBJS_TEST := $(patsubst $(TEST_DIR)/%.c,$(TEST_OBJ_DIR)/%.o,$(TEST))
 CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -g
-VFLAGS = --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes ./xcution
+VFLAGS = --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes
 INCLUDE = -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(BUILTIN_DIR)/include -I$(LIBFT_DIR)/include
 
 all: $(NAME)
 
 $(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(LIBFT) -o $(NAME)
-	@clear
-	valgrind $(VFLAGS)
-	@#./xcution
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
@@ -90,10 +87,6 @@ $(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(TEST_OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-ma: $(NAME)
-	clear
-	valgrind $(VFLAGS)
-
 clean:
 	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR) $(BUILTIN_OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
@@ -103,5 +96,7 @@ fclean: clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
+	@clear
+	valgrind $(VFLAGS) ./$(NAME)
 
 .PHONY: all clean fclean re

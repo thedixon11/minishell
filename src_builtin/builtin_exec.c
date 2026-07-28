@@ -41,6 +41,8 @@ t_bool	is_echo_pwd_env(t_data *data)
 	t_line	*current;
 
 	current = move_current_to_cmd(data);
+	if (!current->content_xpand)
+		return (B_FALSE);
 	if (ft_strncmp(current->content_xpand[0], "echo", 5) == 0)
 		return (B_FALSE);
 	else if (ft_strncmp(current->content_xpand[0], "pwd", 4) == 0)
@@ -56,6 +58,8 @@ t_bool	is_it_builtin(t_data *data)
 	t_line	*current;
 
 	current = move_current_to_cmd(data);
+	if (!current->content_xpand)
+		return (B_FALSE);
 	if (ft_strncmp(current->content_xpand[0], "echo", 5) == 0)
 		return (B_TRUE);
 	else if (ft_strncmp(current->content_xpand[0], "cd", 3) == 0)

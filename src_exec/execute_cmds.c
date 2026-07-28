@@ -26,7 +26,7 @@ t_bool	do_i_parent(t_data *data)
 		return (B_FALSE);
 	if (is_echo_pwd_env(data) == B_FALSE)
 		return (B_FALSE);
-	if (is_there_pipes(data) == B_FALSE)
+	if (is_there_pipes(data) == B_TRUE)
 		return (B_FALSE);
 	return (B_TRUE);
 }
@@ -74,8 +74,9 @@ int	execute_cmds(t_data *data)
 			return (1);
 		if (do_i_parent(data) == B_TRUE)
 			execute_builtin_parent(data);
-		else if (classic_execution(data) == 1)
-			return (1);
+		else
+			classic_execution(data);
+		close_used_fd(data);
 		save_pipe_rd_to_old_read_fd(data);
 		data->current_cmd_nb++;
 	}
