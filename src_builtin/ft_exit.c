@@ -21,7 +21,7 @@ int	ft_exit(t_data *data, char **cmd_args)
 		exit(exit_code);
 	else if (y > 2)
 		return (ft_error_parent_int(data, "too much args bro", 1));
-	if (ft_atol(cmd_args[1]) > INT_MAX || ft_atol(cmd_args[1] < INT_MIN))	
+	if (ft_atol(cmd_args[1]) > INT_MAX || ft_atol(cmd_args[1]) < INT_MIN)	
 		exit(ft_error_parent_int(data, "args should be only num please", 2));
 	exit_code = ft_atoi(cmd_args[1]) % 256;
 	free_and_close_life(data);

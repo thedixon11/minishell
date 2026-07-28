@@ -53,8 +53,10 @@ void	child_process(t_data *data)
 {
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
-	if (builtin_execution(data, B_FALSE) == 0)
-		child_no_builtin(data);	
+	if (is_it_builtin(data) == B_FALSE)
+		child_no_builtin(data);
+	else
+		execute_builtin(data);
 	free_and_close_life(data);
 	exit (0);
 }

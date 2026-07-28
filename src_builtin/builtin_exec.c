@@ -1,40 +1,83 @@
 #include "../minishell_general.h"
+#include "minishell_builtin.h"
 
-t_bool	exec_builtin_or_not(t_data *data)
+void	execute_builtin(t_data *data)
 {
 	t_line	*current;
-	int		size;
 
-	size = 0;
+	current = move_current_to_cmd(data);
+	if (ft_strncmp(current->content_xpand[0], "echo", 5) == 0)
+		ft_echo(data, current->content_xpand);
+	else if (ft_strncmp(current->content_xpand[0], "cd", 3) == 0)
+		ft_cd(data, current->content_xpand);
+	else if (ft_strncmp(current->content_xpand[0], "pwd", 4) == 0)
+		ft_pwd();
+	else if (ft_strncmp(current->content_xpand[0], "export", 7) == 0)
+		ft_export(data, current->content_xpand);
+	else if (ft_strncmp(current->content_xpand[0], "unset", 6) == 0)
+		ft_unset(data, current->content_xpand);
+	else if (ft_strncmp(current->content_xpand[0], "env", 4) == 0)
+		ft_env(data, current->content_xpand);
+	else if (ft_strncmp(current->content_xpand[0], "exit", 5) == 0)
+		ft_exit(data, current->content_xpand);
+}
+
+t_bool	is_there_pipes(t_data *data)
+{
+	t_line	*current;
+
 	current = data->line_cmd;
-	while (current != NULL && current->type != T_COMMAND)
+	while (current != NULL)
+	{
+		if (current->type == T_PIPE_IN || current->type == T_PIPE_OUT)
+			return (B_TRUE);
 		current = current->next;
-	size = ft_strlen(current->content_xpand[0]) + 1;
-	if (current == NULL)
-		return (B_FALSE);
-	if (ft_strncmp(current->content_xpand[0], "export", size) == 0)
-		return (B_TRUE);
-	if (ft_strncmp(current->content_xpand[0], "cd", size) == 0)
-		return (B_TRUE);
+	}
 	return (B_FALSE);
 }
 
-int	builtin_execution(t_data *data, t_bool do_i_parent)
+t_bool	is_echo_pwd_env(t_data *data)
 {
 	t_line	*current;
-	int		size;
 
-	current = data->line_cmd;
-	while (current != NULL && current->type != T_COMMAND)
-		current = current->next;
-	size = ft_strlen(current->content_xpand[0]) + 1;
-	if (ft_strncmp(current->content_xpand[0], "export", size) == 0 && do_i_parent == B_TRUE)
-		return (ft_export(data, current->content_xpand));
-	else if (ft_strncmp(current->content_xpand[0], "cd", size) == 0 && do_i_parent == B_TRUE)
-		return (ft_cd(data, current->content_xpand));
-	else if (ft_strncmp(current->content_xpand[0], "echo", size) == 0 && do_i_parent == B_FALSE)
-		return (ft_echo(data, current->content_xpand));
-	else if (ft_strncmp(current->content_xpand[0], "pwd", size) == 0 && do_i_parent == B_FALSE)
-		return (ft_pwd(data, current->content_xpand));
+	current = move_current_to_cmd(data);
+	if (ft_strncmp(current->content_xpand[0], "echo", 5) == 0)
+		return (B_FALSE);
+	else if (ft_strncmp(current->content_xpand[0], "pwd", 4) == 0)
+		return (B_FALSE);
+	else if (ft_strncmp(current->content_xpand[0], "env", 4) == 0)
+		return (B_FALSE);
+	else
+	 return (B_TRUE);
+}
+
+t_bool	is_it_builtin(t_data *data)
+{
+	t_line	*current;
+
+	current = move_current_to_cmd(data);
+	if (ft_strncmp(current->content_xpand[0], "echo", 5) == 0)
+		return (B_TRUE);
+	else if (ft_strncmp(current->content_xpand[0], "cd", 3) == 0)
+		return (B_TRUE);
+	else if (ft_strncmp(current->content_xpand[0], "pwd", 4) == 0)
+		return (B_TRUE);
+	else if (ft_strncmp(current->content_xpand[0], "export", 7) == 0)
+		return (B_TRUE);
+	else if (ft_strncmp(current->content_xpand[0], "unset", 6) == 0)
+		return (B_TRUE);
+	else if (ft_strncmp(current->content_xpand[0], "env", 4) == 0)
+		return (B_TRUE);
+	else if (ft_strncmp(current->content_xpand[0], "exit", 5) == 0)
+		return (B_TRUE);
+	else
+		return (B_FALSE);
+}
+
+int	execute_builtin_parent(t_data *data)
+{
+	if (manage_redirections(data) == 1)
+		return (1);
+	execute_builtin(data);
 	return (0);
 }

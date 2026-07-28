@@ -31,6 +31,8 @@ int	check_ambiguous_redir(t_data *data);
 int	manage_redirections(t_data *data);
 
 //execute_cmds
+void	close_used_fd(t_data *data);
+t_bool	do_i_parent(t_data *data);
 void	save_pipe_rd_to_old_read_fd(t_data *data);
 void	wait_all_children(t_data *data);
 int	reset_redir_patch(t_data *data);

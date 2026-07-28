@@ -39,9 +39,13 @@ BUILTIN = ft_export.c \
 		  ft_export_utils.c \
 		  ft_echo.c \
 		  ft_cd.c \
+		  ft_env.c \
+		  ft_exit.c \
+		  ft_unset.c \
+		  ft_pwd.c \
 		  builtin_exec.c
 
-TEST = minishell_lists25.c
+TEST = minishell_lists1.c
 
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
