@@ -10,11 +10,13 @@ int	ft_exit(t_data *data, char **cmd_args)
 	x = 0;
 	y = 1;
 	exit_code = data->code;
+	if (ft_isdigit(cmd_args[1][x]) != 1)
 	{
-		if (ft_isdigit(cmd_args[1][x]) != 1)
-			exit(ft_error_parent_int(data, "args should be only num please", 2));
-		x++;
+			ft_error_parent_int(data, "args should be only num please", 2);
+			free_and_close_life(data);
+			exit(2);
 	}
+	x++;
 	while (cmd_args[y] != NULL)
 		y++;
 	if (y == 1)

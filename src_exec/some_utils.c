@@ -44,6 +44,8 @@ t_line	*move_current_to_cmd(t_data *data)
 void	free_and_close_life(t_data *data)
 {
 	close_line_cmd_fds(data);
+	ft_close_fd(&data->saved_stdin);
+	ft_close_fd(&data->saved_stdout);
 	close_data_fds(data);
 	free_line_cmd(data->line_cmd);
 	free_env(data->env);

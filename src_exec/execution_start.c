@@ -52,8 +52,6 @@ int	execution_start(t_data *data)
 	ft_free((void **)&check_dir);
 	ft_printf("cwd data = %s\n", data->cwd);
 	ft_printf("oldcwd data = %s\n", data->old_cwd);
-	ft_close_fd(&data->saved_stdin);
-	ft_close_fd(&data->saved_stdout);
 	free_and_close_life(data);
 	return (code);
 }

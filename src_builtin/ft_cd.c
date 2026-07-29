@@ -44,10 +44,7 @@ int	update_data_wd(t_data *data, char *pathname)
 	if (!data->old_cwd)
 		return (ft_free((void**)&temp_oldcwd), ft_error_parent_int(data, MALLOC_ERR, 1));
 	ft_free((void **)&data->cwd);
-	data->cwd = ft_strdup(pathname);
-	data->saved_errno = errno;
-	if (!data->cwd)
-		return (ft_error_parent_int(data, MALLOC_ERR, 1));
+	data->cwd = getcwd(NULL, 0);
 	update_env_wd(data);
 	return (ft_free((void **)&temp_oldcwd), 0);
 }
