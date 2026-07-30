@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
 
 // NOTE: rebuld_value have the mission to fusion name of all env_var with their
 // respective content and '=' between them.

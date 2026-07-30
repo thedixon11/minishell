@@ -1,6 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
-#include <unistd.h>
 
 int	patch_others_redir(t_data *data)
 {

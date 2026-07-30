@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
 
 // NOTE: To create an heredoc, we cannot use functions like open, because we
 // don't have a file to open. We need to do it by creating a pipe, which

@@ -5,6 +5,8 @@
 # include "./src_exec/minishell_xecution.h"
 # include "./src_xpand/minishell_xpansion.h"
 # include "./src_builtin/minishell_builtin.h"
+# include "./src_heredoc/minishell_heredoc.h"
+# include "./src_errors/minishell_errors.h"
 
 # define MALLOC_ERR "malloc error"
 # define DUP2_ERR "dup2 error"

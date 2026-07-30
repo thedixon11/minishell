@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include <unistd.h>
 
 char	*dollar_is_error_code(t_data *data, int *i)
 {

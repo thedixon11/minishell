@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
 
 void	check_cmd_is_not_empty(t_data *data, t_line *current)
 {

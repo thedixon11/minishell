@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
 
 void	free_cmd_data(t_data *data)
 {

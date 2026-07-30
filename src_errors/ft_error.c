@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
 
 int	ft_error_parent_int(t_data *data, char *message, int code)
 {

@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
 
 void	set_fd_pipe_zero(t_data *data)
 {

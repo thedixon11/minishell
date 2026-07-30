@@ -1,6 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
-#include <unistd.h>
 
 // NOTE: expand_line_hdoc will expand the STDIN_FILENO input content
 // before writing it in the READ FD if xpand_or_not is TRUE. Otherwise, it
