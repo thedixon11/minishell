@@ -87,7 +87,7 @@ typedef struct s_data
 	int				error;
 	int				code;
 	char			*failed_content;
-	t_cmd			cmd_data;
+	t_cmd			*cmd_data;
 	int				limiter_len;
 	int				saved_stdin;
 	int				saved_stdout;

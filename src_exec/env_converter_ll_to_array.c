@@ -1,5 +1,24 @@
 #include "../minishell_general.h"
 
+char	**initialize_converted_env(t_env *env)
+{
+	char	**converted_env;
+	t_env	*current;
+	int	i;
+	
+	i = 0;
+	current = env;
+	while (current != NULL)
+	{
+		i++;
+		current = current->next;
+	}
+	converted_env = ft_calloc(i + 1, sizeof(char *));
+	if (!converted_env)
+		error_libft_int(data, "ft_calloc", B_FALSE);
+	return (converted_env);
+}
+
 // NOTE: rebuld_value have the mission to fusion name of all env_var with their
 // respective content and '=' between them.
 
@@ -42,17 +61,10 @@ char	**env_converter_ll_to_array(t_data *data, t_env *env)
 	char	**converted_env;
 	int		y;
 
-	y = 0;
 	current = env;
-	while (current != NULL)
-	{
-		current = current->next;
-		y++;
-	}
-	converted_env = ft_calloc(y + 1, sizeof(char *));
-	data->saved_errno = errno;
+	converted_env = initialize_converted_env(env);
 	if (!converted_env)
-		ft_error_child(data, MALLOC_ERR, 1);
+		return (NULL);
 	current = env;
 	y = 0;
 	while (current != NULL)

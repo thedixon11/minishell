@@ -1,5 +1,39 @@
 #include "../minishell_general.h"
 
+int	error_libft_int(t_data *data, char *function, t_bool do_i_exit)
+{
+	write(2, "minishell: ", 11);
+	write(2, function, ft_strlen(function));
+	write(2, MALLOC_ERR, ft_strlen(MALLOC_ERR));
+	write(2, "\n", 1);
+	if (do_i_exit == B_TRUE)
+	{
+		free_and_close_life(data);
+		exit (1);
+	}
+	data->code = 1;
+	return (1);
+}
+
+char	*error_libft_char(t_data *data, char *function, t_bool do_i_exit)
+{
+	write(2, "minishell: ", 11);
+	write(2, function, ft_strlen(function));
+	write(2, MALLOC_ERR, ft_strlen(MALLOC_ERR));
+	write(2, "\n", 1);
+	if (do_i_exit == B_TRUE)
+	{
+		free_and_close_life(data);
+		exit (1);
+	}
+	data->code = 1;
+	return (NULL);
+}
+
+
+
+
+
 int	ft_error_parent_int(t_data *data, char *message, int code)
 {
 	char	*error_to_print;

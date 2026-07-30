@@ -12,10 +12,11 @@ int	time_to_pipe(t_data *data);
 void	classic_execution(t_data *data);
 
 //child_process
-void	check_cmd_is_not_empty(t_data *data, t_line *current);
 void	child_process(t_data *data);
 void	child_no_builtin(t_data *data);
-
+void	create_args_tab(t_data *data, t_cmd *cmd_data);
+void	check_cmd_is_not_empty(t_data *data, t_line *current);
+	
 //manage_redirections
 int	patch_others_redir(t_data *data);
 int	first_patch_pipes_redir(t_data *data);
@@ -36,21 +37,20 @@ char	*rebuild_value(t_data *data, t_env *current);
 char	**env_converter_ll_to_array(t_data *data, t_env *env);
 
 //execve_preparation
-int	is_prog_existing_and_executable(t_data *data, char *path_to_check);
-char	**find_path_tab(t_data *data);
+void	find_path_tab(t_data *data, t_cmd *cmd_data);
+void	create_path_tab(t_data *data, t_cmd *cmd_data, char *path_to_split);
+int	is_prog_existing_and_executable(t_data *data, t_cmd *cmd_data);
 
 //execve_preparation_utils
-char	**create_path_tab(t_data *data, char *path_to_split);
-char	*join_path_prog(t_data *data, char *path, char *prog_name);
-char	*check_prog_in_path(t_data *data, char **path_tab, char *prog_name);
-char	*prog_name_prep(t_data *data, char **path_tab, char **cmd_content);
+void	prog_name_prep(t_data *data, t_cmd *cmd_data);
+void	check_prog_in_path(t_data *data, t_cmd *cmd_data, char *prog_name);
+void	join_path_prog(t_data *data, t_cmd *cmd_data, char *path, char *prog_name);
 
 //some_utils
-t_bool	exec_builtin_or_not(t_data *data);
 t_line	*move_current_to_start(t_data *data);
 t_line	*move_current_to_cmd(t_data *data);
 void	free_and_close_life(t_data *data);
 void	dup2_process(t_data *data, int *fd1, int fd2);
-void	free_cmd_data(t_data *data);
+int	env_ll_len(t_env *ll_start);
 
 #endif
