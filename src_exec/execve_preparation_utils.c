@@ -6,11 +6,11 @@ void	join_path_prog(t_data *data, t_cmd *cmd_data, char *path, char *prog_name)
 
 	temp = ft_strjoin("/", prog_name);
 	if (!temp)
-		error_libft_int(data, "ft_strjoin", B_TRUE);
+		error_int(data, I_STRJOIN, LIBFT_ERR, 1);
 	cmd_data->prog_fullname = ft_strjoin(path, temp);
 	ft_free((void **)&temp);
 	if (!cmd_data->prog_fullname)
-		error_libft_int(data, "ft_strjoin", B_TRUE);
+		error_int(data, I_STRJOIN, LIBFT_ERR, 1);
 }
 
 // NOTE: In the situation the programm can't be a relative/absolute,
@@ -32,7 +32,7 @@ void	check_prog_in_path(t_data *data, t_cmd *cmd_data, char *prog_name)
 		y++;
 	}
 	ft_free((void **)&cmd_data->prog_fullname);
-	ft_error_child_cmd_not_found(data, prog_name, 127);
+  error_int(data, prog_name, CMD_ERR, 127);
 }
 
 // NOTE: For the programm name, I have first to figure out if it could be
@@ -51,6 +51,6 @@ void	prog_name_prep(t_data *data, t_cmd *cmd_data)
 	{
 		cmd_data->prog_fullname = ft_strdup(cmd_data->args_tab[0]);
 		if (!cmd_data->prog_fullname)
-			error_libft_int(data, "ft_strdup", B_TRUE);
+			error_int(data, I_STRDUP, LIBFT_ERR, 1);
 	}
 }

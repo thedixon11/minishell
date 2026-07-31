@@ -42,9 +42,8 @@ char	*quote_expansion(t_data *data, char *in_quote)
 	i_quote = 0;
 	second = NULL;
 	first = ft_strdup("");
-	data->saved_errno = errno;
 	if (!first)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 	while (in_quote[i_quote] != 0)
 	{
 		if (in_quote[i_quote] != '$')
@@ -76,10 +75,9 @@ char	*extract_quote(t_data *data, char *value, int *i_value, char quote)
 		end++;
 	len = end - *i_value;
 	inside_quote = ft_substr(value, *i_value, len);
-	data->saved_errno = errno;
 	*i_value = end + 1;
 	if (!inside_quote)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	return (inside_quote);
 }
 
@@ -107,14 +105,13 @@ char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 	if (quote == '\'')
 	{
 		quote_result = ft_strdup(inside_quote);
-		data->saved_errno = errno;
 		if (!quote_result)
-			return (ft_error_parent_char(data, MALLOC_ERR, 1));
+			return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 	}
 	else if (quote == '\"')
 		quote_result = quote_expansion(data, inside_quote);
 	else
-		return (NULL);
+		return (ft_free((void **)&inside_quote), NULL);
 	ft_free((void **)&inside_quote);
 	if (!quote_result)
 		return (NULL);

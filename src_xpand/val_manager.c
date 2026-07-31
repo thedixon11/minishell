@@ -20,9 +20,8 @@ char	*expand_in_quote(t_data *data, char *row)
 	i = 0;
 	second = NULL;
 	first = ft_strdup("");
-	data->saved_errno = errno;
 	if (!first)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 	while (row[i] != 0 && first != NULL)
 	{
 		if (row[i] != '"' && row[i] != '\'')
@@ -56,9 +55,8 @@ char	*expand_off_quote(t_data *data, char *content)
 	i = 0;
 	second = NULL;
 	first = ft_strdup("");
-	data->saved_errno = errno;
 	if (!first)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1);
 	while (content[i] != 0 && first != NULL)
 	{
 		if (content[i] != 0 && content[i] != '$')
@@ -83,9 +81,8 @@ int	content_splitted_manager(t_data *data, char **content_to_xpand)
 	while (content_to_xpand[y] != NULL)
 	{
 		temp = ft_strdup(content_to_xpand[y]);
-		data->saved_errno = errno;
 		if (!temp)
-			return (ft_error_parent_int(data, MALLOC_ERR, 1));
+			return (error_int(data, I_STRDUP, LIBFT_ERR, 1));
 		ft_free((void **)&content_to_xpand[y]);
 		content_to_xpand[y] = expand_in_quote(data, temp);
 		ft_free((void **)&temp);
@@ -108,7 +105,7 @@ char	*manage_before_split(t_data *data, char *content)
 	temp2 = ft_strtrim(temp1, " ");
 	ft_free((void **)&temp1);
 	if (!temp2)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_STRTRIM, LIBFT_ERR, 1));
 	return (temp2);
 }
 
@@ -135,10 +132,9 @@ int	val_manager(t_data *data)
 			if (temp[0] == 0)
 				return (ft_free((void **)&temp), 0);
 			current->content_xpand = ft_split(temp, ' ');
-			data->saved_errno = errno;
 			ft_free((void **)&temp);
 			if (!current->content_xpand)
-				return (ft_error_parent_int(data, MALLOC_ERR, 1));
+				return (error_int(data, I_SPLIT, LIBFT_ERR, 1));
 			if (content_splitted_manager(data, current->content_xpand) == 1)
 				return (1);
 		}

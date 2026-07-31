@@ -23,17 +23,15 @@ char	*env_var_checker(t_data *data, t_env *env, char *var_env)
 		if (ft_strncmp(var_env, current->name, len) == 0)
 		{
 			xpansion_result = ft_strdup(current->content);
-			data->saved_errno = errno;
 			if (!xpansion_result)
-				return (ft_error_parent_char(data, MALLOC_ERR, 1));
+				return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 			return (xpansion_result);
 		}
 		current = current->next;
 	}
 	xpansion_result = ft_strdup("");
-	data->saved_errno = errno;
 	if (!xpansion_result)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 	return (xpansion_result);
 }
 
@@ -56,9 +54,8 @@ char	*extract_env_var(t_data *data, char *str, int *i)
 		end++;
 	len = end - *i;
 	var_env = ft_substr(str, *i, len);
-	data->saved_errno = errno;
 	if (!var_env)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	*i = end;
 	return (var_env);
 }

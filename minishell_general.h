@@ -8,12 +8,27 @@
 # include "./src_heredoc/minishell_heredoc.h"
 # include "./src_errors/minishell_errors.h"
 
-# define MALLOC_ERR "malloc error"
-# define DUP2_ERR "dup2 error"
-# define FORK_ERR "fork error"
-# define PIPE_ERR "pipe error"
-# define EXECVE_ERR "execve error"
-# define WRITE_ERR "write error"
-# define CMD_ERR "Command not found or not executable"
+// List of items
+# define I_CALLOC "ft_calloc"
+# define I_STRJOIN "ft_strjoin"
+# define I_SPLIT "ft_split"
+# define I_STRDUP "ft_strdup"
+# define I_PRINTF "ft_printf"
+# define I_STRSRRND "ft_strsrrnd"
+# define I_STRTRIM "ft_strtrim"
+# define I_SUBSTR "ft_substr"
+# define I_ARRAYDUP "ft_arraydup"
+# define I_PUTENDL_FD "ft_putendl_fd"
+# define I_GNL "get_next_line"
+# define I_DUP "dup"
+# define I_DUP2 "dup2"
+# define I_WRITE "write"
+# define I_PIPE "pipe"
+# define I_EXECVE "execve"
+# define I_FORK "fork"
+
+// List of error messages
+# define LIBFT_ERR "function execution failed"
+# define CMD_ERR "Command not found"
 
 #endif /*MINISHELL_GENERAL_H*/

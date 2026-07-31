@@ -1,35 +1,42 @@
 #include "../minishell_general.h"
 
-int	error_libft_int(t_data *data, char *function, t_bool do_i_exit)
+int	error_int(t_data *data, char *item, char *message, int code)
 {
 	write(2, "minishell: ", 11);
-	write(2, function, ft_strlen(function));
-	write(2, MALLOC_ERR, ft_strlen(MALLOC_ERR));
+	write(2, item, ft_strlen(function));
+  write(2, ": ", 2);
+	write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
-	if (do_i_exit == B_TRUE)
+	if (data->do_i_exit == B_TRUE)
 	{
 		free_and_close_life(data);
-		exit (1);
+		exit (code);
 	}
-	data->code = 1;
+  data->code = code;
 	return (1);
 }
 
-char	*error_libft_char(t_data *data, char *function, t_bool do_i_exit)
+char	*error_char(t_data *data, char *item, char *message, int code)
 {
 	write(2, "minishell: ", 11);
-	write(2, function, ft_strlen(function));
-	write(2, MALLOC_ERR, ft_strlen(MALLOC_ERR));
+	write(2, item, ft_strlen(item));
+  write(2, ": ", 2);
+	write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
-	if (do_i_exit == B_TRUE)
+	if (data->do_i_exit == B_TRUE)
 	{
 		free_and_close_life(data);
-		exit (1);
+		exit (code);
 	}
-	data->code = 1;
+	data->code = code;
 	return (NULL);
 }
 
+
+int error_no_errno(t_data *data, char *item, t_bool do_i_exit)
+{
+
+}
 
 
 

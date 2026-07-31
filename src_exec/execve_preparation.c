@@ -13,15 +13,9 @@ int	is_prog_existing_and_executable(t_data *data, t_cmd *cmd_data)
 	if (data == NULL && access(path_to_check, X_OK) != 0)
 		return (-1);
 	if (data != NULL && access(path_to_check, F_OK) != 0)
-	{
-		data->saved_errno = errno;
-		ft_error_child_cmd_not_found(data, path_to_check, 12);
-	}
+    error_int(data, path_to_check, CMD_ERR, 127);
 	if (data != NULL && access(path_to_check, X_OK) != 0)
-	{
-		data->saved_errno = errno;
-		ft_error_child_cmd_not_found(data, path_to_check, 12);
-	}
+    error_int(data, path_to_check, CMD_ERR, 127);
 	return (0);
 }
 
@@ -33,7 +27,7 @@ void	create_path_tab(t_data *data, t_cmd *cmd_data, char *path_to_split)
 {
 	cmd_data->path_tab = ft_split(path_to_split, ':');
 	if (!cmd_data->path_tab)
-		error_libft_int(data, "ft_split", B_TRUE);
+		error_int(data, I_SPLIT, LIBFT_ERR, 1);
 }
 
 void	find_path_tab(t_data *data, t_cmd *cmd_data)

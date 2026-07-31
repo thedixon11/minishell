@@ -5,9 +5,8 @@ char	*dollar_is_error_code(t_data *data, int *i)
 	char	*result;
 
 	result = ft_calloc(2, sizeof(char));
-	data->saved_errno = errno;
 	if (!result)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_CALLOC, LIBFT_ERR, 1);
 	result[0] = data->code;
 	*i += 2;
 	return (result);
@@ -18,9 +17,8 @@ char	*dollar_not_alphanum_and_err(t_data *data, char *str, int *i)
 	char	*result;
 
 	result = ft_calloc(3, sizeof(char));
-	data->saved_errno = errno;
 	if (!result)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_CALLOC, LIBFT_ERR, 1));
 	result[0] = '$';
 	result[1] = str[*i + 1];
 	*i += 2;

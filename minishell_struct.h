@@ -91,6 +91,7 @@ typedef struct s_data
 	int				limiter_len;
 	int				saved_stdin;
 	int				saved_stdout;
+  t_bool    do_i_exit;
 	char			*old_cwd;
 	char			*cwd;
 }					t_data;

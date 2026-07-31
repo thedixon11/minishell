@@ -31,9 +31,8 @@ char	*go_until_dollar(t_data *data, char *content, int *start)
 			jump_quoted_content(content, &end);
 	}
 	second = ft_substr(content, *start, end - (*start));
-	data->saved_errno = errno;
 	if (!second)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	*start = end;
 	return (second);
 }
@@ -51,9 +50,8 @@ char	*go_until_quote(t_data *data, char *content, int *start)
 	while (content[end] != 0 && content[end] != '\'' && content[end] != '"')
 		end++;
 	second = ft_substr(content, *start, end - (*start));
-	data->saved_errno = errno;
 	if (!second)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	*start = end;
 	return (second);
 }

@@ -13,32 +13,26 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 	char	*temp;
 
 	if (pipe(data->heredoc_pipe_fds) == -1)
-	{
-		data->saved_errno = errno;
-		return (ft_error_parent_int(data, PIPE_ERR, 1));
-	}
+		return (error_int(data, I_PIPE, strerror(errno), 1));
 	heredoc->fd = data->heredoc_pipe_fds[0];
 	temp = ft_strdup(heredoc->content);
 	ft_free((void **)&heredoc->content);
-	data->saved_errno = errno;
 	if (!temp)
-		return (ft_error_parent_int(data, MALLOC_ERR, 1));
+		return (error_int(data, I_STRDUP, LIBFT_ERR, 1));
 	heredoc->content = ft_strjoin(temp, "\n");
-	data->saved_errno = errno;
 	ft_free((void **)&temp);
 	if (!heredoc->content)
-		return (ft_error_parent_int(data, MALLOC_ERR, 1));
+		return (error_int(data, I_STRJOIN, LIBFT_ERR, 1));
 	return (0);
 }
 
-int	no_quotes_in_delimiter(t_data *data, t_line *current)
+int	quotes_in_delimiter(t_data *data, t_line *current)
 {
 	char	*temp;
 
 	temp = ft_strdup(current->content);
-	data->saved_errno = errno;
 	if (!temp)
-		return (ft_error_parent_int(data, MALLOC_ERR, 1));
+		return (error_int(data, I_STRDUP, LIBFT_ERR, 1));
 	ft_free((void **)&current->content);
 	current->content = delimiter_manager_hdoc(data, temp);
 	ft_free((void **)&temp);
@@ -56,24 +50,26 @@ int	no_quotes_in_delimiter(t_data *data, t_line *current)
 
 int	heredoc_exec(t_data *data)
 {
+  int error;
 	t_line	*current;
 
+  error = 0;
 	current = data->line_cmd;
 	while (current != NULL && data->error == 0)
 	{
-		if (current->type == T_HEREDOC && data->error == 0)
+		if (current->type == T_HEREDOC && error == 0)
 		{
 			if (create_heredoc_fd(data, current) == 1)
 				return (1);
-			if (ft_strchr(current->content, '\'') == NULL
-				&& ft_strchr(current->content, '"') == NULL)
-				data->error = no_quotes_in_delimiter(data, current);
+			if (ft_strchr(current->content, '\'') != NULL
+				&& ft_strchr(current->content, '"') != NULL)
+				error = quotes_in_delimiter(data, current);
 			else
-				data->error = write_on_fd(data, current, B_TRUE);
+				error = write_on_fd(data, current, B_TRUE);
 		}
 		current = current->next;
 	}
-	if (data->error != 0)
+	if (error != 0)
 		return (1);
 	return (0);
 }

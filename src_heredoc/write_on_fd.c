@@ -12,9 +12,8 @@ char	*expand_line_hdoc(t_data *data, char *line)
 
 	i = 0;
 	first = ft_strdup("");
-	data->saved_errno = errno;
 	if (!first)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 	while (line[i] != 0)
 	{
 		if (line[i] != 0 && line[i] != '$')
@@ -37,20 +36,17 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	char	*line;
 	char	*line_xpanded;
 
-	data->error = write(STDOUT_FILENO, "> ", 2);
-	data->saved_errno = errno;
-	if (data->error == -1)
-		return (ft_error_parent_char(data, WRITE_ERR, 1));
+	if (write(STDOUT_FILENO, "> ", 2) == -1)
+		return (error_char(data, I_WRITE, strerror(errno), 1);
 	line = get_next_line(STDIN_FILENO, heredoc->content, data->limiter_len);
-	data->saved_errno = errno;
 	if (line == NULL)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_GNL, LIBFT_ERR, 1));
 	if (xpand_or_not == B_FALSE)
 		return (line);
 	line_xpanded = expand_line_hdoc(data, line);
 	ft_free((void **)&line);
 	if (!line_xpanded)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (NULL);
 	return (line_xpanded);
 }
 
@@ -73,11 +69,12 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	while (ft_strncmp(line, heredoc->content, data->limiter_len) != 0)
 	{
 		len_of_line = ft_strlen(line);
-		data->error = write(data->heredoc_pipe_fds[1], line, len_of_line);
-		data->saved_errno = errno;
-		ft_free((void **)&line);
-		if (data->error == -1)
-			return (ft_error_parent_int(data, WRITE_ERR, 1));
+    if (write(data->heredoc_pipe_fds[1], line, len_of_line) == -1)
+    {
+      error_int(data, I_WRITE, strerror(errno), 1);
+      return (ft_free((void **)&line), 1);
+    }
+    ft_free((void **)&line);
 		line = create_line(data, heredoc, xpand_or_not);
 		if (!line)
 			return (1);

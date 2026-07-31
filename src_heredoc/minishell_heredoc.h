@@ -3,7 +3,7 @@
 
 //heredoc_exec
 int	heredoc_exec(t_data *data);
-int	no_quotes_in_delimiter(t_data *data, t_line *current);
+int	quotes_in_delimiter(t_data *data, t_line *current);
 int	create_heredoc_fd(t_data *data, t_line *heredoc);
 
 //heredoc_exec_utils

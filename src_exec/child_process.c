@@ -22,16 +22,17 @@ void	create_args_tab(t_data *data, t_cmd *cmd_data)
 	check_cmd_is_not_empty(data, current);
 	cmd_data->args_tab = ft_arraydup(current->content_xpand);
 	if (!cmd_data->args_tab)
-		error_libft_int(data, "ft_calloc", B_TRUE);
+    error_int(data, I_ARRAYDUP, LIBFT_ERR, 1);
 }
 
 void	child_no_builtin(t_data *data)
 {
 	t_cmd	*cmd_data;
 
+  cmd_data->do_i_exit = B_TRUE;
 	cmd_data = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd_data)
-		error_libft_int(data, "ft_calloc", B_TRUE);
+		error_int(data, I_CALLOC, LIBFT_ERR, 1);
 	data->cmd_data = cmd_data;
 	create_args_tab(data, cmd_data);
 	cmd_data->env = env_converter_ll_to_array(data, data->env);
@@ -40,8 +41,7 @@ void	child_no_builtin(t_data *data)
 	is_prog_existing_and_executable(data, cmd_data);
 	free_and_close_life(data);
 	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
-	data->saved_errno = errno;
-	ft_error_child(data, EXECVE_ERR, 1);
+	error_int(data, I_EXECVE, strerror(errno), 1);
 }
 
 void	child_process(t_data *data)

@@ -6,11 +6,10 @@ char	*fusion_first_second_block(t_data *data, char *first, char *second)
 
 	temp = first;
 	first = ft_strjoin(temp, second);
-	data->saved_errno = errno;
 	ft_free((void **)&second);
 	ft_free((void **)&temp);
 	if (!first)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_STRJOIN, LIBFT_ERR, 1));
 	return (first);
 }
 
@@ -26,9 +25,8 @@ char	*extract_quote_hdoc(t_data *data, char *old_del, int *start, char quote)
 	while (old_del[end] != quote)
 		end++;
 	inside_quote = ft_substr(old_del, *start, end - (*start));
-	data->saved_errno = errno;
 	if (!inside_quote)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	*start = end + 1;
 	return (inside_quote);
 }
@@ -44,9 +42,8 @@ char	*go_until_quote_hdoc(t_data *data, char *old_del, int *start)
 	while (old_del[end] != '\'' && old_del[end] != '"' && old_del[end] != 0)
 		end++;
 	second_block = ft_substr(old_del, *start, end - (*start));
-	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	*start = end;
 	return (second_block);
 }
@@ -63,9 +60,8 @@ char	*go_until_dollar_hdoc(t_data *data, char *line, int *start)
 	while (line[end] != 0 && line[end] != '$')
 		end++;
 	second_block = ft_substr(line, *start, end - (*start));
-	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	*start = end;
 	return (second_block);
 }
@@ -81,9 +77,8 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 
 	i = 0;
 	first = ft_strdup("");
-	data->saved_errno = errno;
 	if (!first)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 	while (old_del[i] != 0 && first != NULL)
 	{
 		if (old_del[i] != '\'' && old_del[i] != '\"' && old_del[i] != 0)

@@ -1,8 +1,8 @@
 #ifndef MINISHELL_ERRORS_H
 # define MINISHELL_ERRORS_H
 
-int	error_libft_int(t_data *data, char *function, t_bool do_i_exit);
-char	*error_libft_char(t_data *data, char *function, t_bool do_i_exit);
+int	error_int(t_data *data, char *item, char *message, int code);
+char	*error_char(t_data *data, char *item, char *message, int code);
 
 //ft_error
 void	ft_error_child(t_data *data, char *message, int code);
