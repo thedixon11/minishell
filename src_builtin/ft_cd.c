@@ -11,17 +11,15 @@ int	update_env_wd(t_data *data)
 		{
 			ft_free((void **)&current->content);
 			current->content = ft_strdup(data->cwd);
-			data->saved_errno = errno;
 			if (!current->content)
-				return (ft_error_parent_int(data, MALLOC_ERR, 1));
+				return (error_int(data, I_STRDUP, LIBFT_ERR, 1));
 		}
 		else if (ft_strncmp(current->name, "OLDPWD", 7) == 0)
 		{
 			ft_free((void **)&current->content);
 			current->content = ft_strdup(data->old_cwd);
-			data->saved_errno = errno;
 			if (!current->content)
-				return (ft_error_parent_int(data, MALLOC_ERR, 1));
+				return (error_int(data, I_STRDUP, LIBFT_ERR, 1));
 		}
 		current = current->next;
 	}
@@ -33,20 +31,23 @@ int	update_data_wd(t_data *data, char *pathname)
 	char	*temp_oldcwd;
 
 	temp_oldcwd = getcwd(NULL, 0);
+	if (!temp_oldcwd)
+		error_int(data, I_CD, strerror(errno), 1);
 	data->error = chdir(pathname);
 	data->saved_errno = errno;
 	if (data->error == -1)
 		return (ft_free((void**)&temp_oldcwd), 
-		  ft_error_parent_int(data, "not a directory", 2));	
+		  error_int(data, I_CD, strerror(data->saved_errno), 1);
 	ft_free((void **)&data->old_cwd);
 	data->old_cwd = ft_strdup(temp_oldcwd);
-	data->saved_errno = errno;
 	if (!data->old_cwd)
-		return (ft_free((void**)&temp_oldcwd), ft_error_parent_int(data, MALLOC_ERR, 1));
+		return (ft_free((void**)&temp_oldcwd), error_int(data, I_CD, LIBFT_ERR, 1));
+	ft_free((void **)&temp_oldcwd);
 	ft_free((void **)&data->cwd);
 	data->cwd = getcwd(NULL, 0);
-	update_env_wd(data);
-	return (ft_free((void **)&temp_oldcwd), 0);
+	if (!data->cwd)
+		return (error_int(data, I_CD, strerror(errno), 1));
+	return (update_env_wd(data));
 }
 
 int	change_cwd_to_home(t_data *data)
@@ -64,7 +65,7 @@ int	change_cwd_to_home(t_data *data)
 		}
 		current = current->next;
 	}
-	return (ft_error_parent_int(data, "no HOME set up", 18));
+	return (error_int(data, I_CD, CD_NO_HOME, 1));
 }
 
 int	check_nb_args_cd(t_data *data, char **cmd_args)
@@ -75,7 +76,7 @@ int	check_nb_args_cd(t_data *data, char **cmd_args)
 	while (cmd_args[y] != NULL)
 		y++;
 	if (y > 2)
-		return (ft_error_parent_int(data, "too much args bro in cd", 1));
+		return (error_int(data, I_CD, CD_ARGS_ERR, 1));
 	else if (y == 1)
 		return (3);
 	return (0);

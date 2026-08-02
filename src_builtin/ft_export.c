@@ -77,7 +77,7 @@ int	ft_export(t_data *data, char **cmd_args)
 	y = 1;
 	current = NULL;
 	if (how_much_args(cmd_args) == 1)
-		export_no_args(data);
+		return (export_no_args(data));
 	while (cmd_args[y] != NULL)
 	{
 		name = get_name_var_env(data, cmd_args[y]);

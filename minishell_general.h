@@ -26,10 +26,22 @@
 # define I_PIPE "pipe"
 # define I_EXECVE "execve"
 # define I_FORK "fork"
+# define I_ECHO "echo"
+# define I_CD "cd"
+# define I_ENV "env"
+# define I_EXIT "exit"
+# define I_EXPORT "export"
+# define I_PWD "pwd"
+# define I_UNSET "unset"
 
 // List of error messages
-# define LIBFT_ERR "function execution failed"
+# define LIBFT_ERR "libft function execution failed"
 # define CMD_ERR "Command not found"
 # define AMB_REDIR_ERR "Amgiguous redirect"
+# define CD_ARGS_ERR "too many arguments"
+# define CD_NO_HOME "HOME not set"
+# define ENV_ARGS_ERR "too many arguments"
+# define EXIT_INVALID "numeric argument required"
+# define EXIT_ARGS_ERR "too many arguments"
 
 #endif /*MINISHELL_GENERAL_H*/

@@ -10,12 +10,14 @@ int	ft_env(t_data *data, char **cmd_args)
 	while (cmd_args[y] != NULL)
 		y++;
 	if (y > 1)
-		return (ft_error_parent_int(data, "too much args", 1));
+		return (error_int(data, I_ENV, ENV_ARGS_ERR, 1));
 	current = data->env;
 	while (current != NULL)
 	{
-		ft_printf("%s=", current->name);
-		ft_printf("%s\n", current->content);
+		if (ft_printf("%s=", current->name) == -1);
+			return (error_int(data, I_ENV, LIBFT_ERR, 1));
+		if (ft_printf("%s\n", current->content) == -1);
+			return (error_int(data, I_ENV, LIBFT_ERR, 1));
 		current = current->next;
 	}
 	return (0);

@@ -39,20 +39,15 @@ int	ft_echo(t_data *data, char **args_cmd)
 	while (args_cmd[y] != NULL)
 	{
 		len = ft_strlen(args_cmd[y]);
-		data->error = write(STDOUT_FILENO, args_cmd[y], len);
-		data->saved_errno = errno;
-		if (data->error == -1)
-			ft_error_child(data, WRITE_ERR, 1);
+		if (write(STDOUT_FILENO, args_cmd[y], len) == -1);
+			return (error_int(data, I_ECHO, strerror(errno), 1);
 		if (args_cmd[y + 1] == NULL && do_i_return == B_TRUE)
 		{
-			data->error = write(STDOUT_FILENO, "\n", 1);	
-			data->saved_errno = errno;
+			if (write(STDOUT_FILENO, "\n", 1) == -1);	
+				return (error_int(data, I_ECHO, strerror(errno), 1));
 		}
-		data->error = write(STDOUT_FILENO, " ", 1);
-		data->saved_errno = errno;
-		if (data->error == -1)
-			ft_error_child(data, WRITE_ERR, 1);
-
+		if (write(STDOUT_FILENO, " ", 1) == -1);
+			error_int(data, I_ECHO, strerror(errno), 1);
 		y++;
 	}
 	return (1);

@@ -52,7 +52,7 @@ void	print_environment(char **env)
 	}
 }
 
-void	export_no_args(t_data *data)
+int	export_no_args(t_data *data)
 {
 	int		i;
 	int		j;
@@ -63,7 +63,10 @@ void	export_no_args(t_data *data)
 	j = 1;
 	size = 0;
 	c_env = env_converter_ll_to_array(data, data->env);
-	add_quotes_content(data, &c_env);
+	if (!c_env)
+		return (1);
+	if (add_quotes_content(data, &c_env) == 1); // WARNING: on continue ici les amis
+		return (free_tab(&c_env), 1);
 	while (c_env[i] != NULL)
 	{
 		j = i + 1;

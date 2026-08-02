@@ -1,6 +1,6 @@
 #include "../minishell_general.h"
 
-char	**initialize_converted_env(t_env *env)
+char	**initialize_converted_env(t_data *data, t_env *env)
 {
 	char	**converted_env;
 	t_env	*current;
@@ -15,7 +15,7 @@ char	**initialize_converted_env(t_env *env)
 	}
 	converted_env = ft_calloc(i + 1, sizeof(char *));
 	if (!converted_env)
-		error_libft_int(data, "ft_calloc", B_FALSE);
+		error_int(data, I_CALLOC, LIBFT_ERR, 1);
 	return (converted_env);
 }
 
@@ -27,23 +27,22 @@ char	*rebuild_value(t_data *data, t_env *current)
 	char	*temp;
 	char	*rebuild_value;
 
+	temp = NULL;
+	rebuild_value = NULL;
 	if (current->content == NULL)
 	{
 		rebuild_value = ft_strdup(current->name);
-		data->saved_errno = errno;
 		if (!rebuild_value)
-			return (NULL);
+			return (error_char(data, I_STRDUP, LIBFT_ERR, 1);
 		return (rebuild_value);
 	}
 	temp = ft_strjoin(current->name, "=");
-	data->saved_errno = errno;
 	if (!temp)
-		return (NULL);	
+		return (error_char(data, I_STRJOIN, LIBFT_ERR, 1));
 	rebuild_value = ft_strjoin(temp, current->content);
-	data->saved_errno = errno;
 	ft_free((void **)&temp);
 	if (!rebuild_value)
-		return (NULL);
+		return (error_int(data, I_STRJOIN, LIBFT_ERR, 1));
 	return (rebuild_value);
 }
 
@@ -62,7 +61,7 @@ char	**env_converter_ll_to_array(t_data *data, t_env *env)
 	int		y;
 
 	current = env;
-	converted_env = initialize_converted_env(env);
+	converted_env = initialize_converted_env(data, env);
 	if (!converted_env)
 		return (NULL);
 	current = env;
@@ -73,7 +72,7 @@ char	**env_converter_ll_to_array(t_data *data, t_env *env)
 		if (!converted_env)
 		{
 			ft_free_tab(&converted_env);
-			ft_error_child(data, MALLOC_ERR, 1);
+			break ;
 		}
 		current = current->next;
 		y++;
