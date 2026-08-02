@@ -1,13 +1,13 @@
 #include "../minishell_general.h"
+#include <string.h>
 
 int	time_to_fork_and_exec(t_data *data)
 {
 	int	pid;
 
 	pid = fork();
-	data->saved_errno = errno;
 	if (pid == -1)
-		return (ft_error_parent_int(data, FORK_ERR, 1));
+		return (error_int(data, I_FORK, strerror(errno), 1);
 	else if (pid == 0)
 		child_process(data);
 	return (0);
@@ -16,10 +16,7 @@ int	time_to_fork_and_exec(t_data *data)
 int	time_to_pipe(t_data *data)
 {
 	if (data->max_cmd_nb > 0 && pipe(data->pipe_fd) == -1)
-	{
-		data->saved_errno = errno;
-		return (ft_error_parent_int(data, PIPE_ERR, 1));
-	}
+		return (error_int(data, I_PIPE, strerror(errno), 1);
 	return (0);
 }
 

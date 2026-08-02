@@ -30,5 +30,6 @@
 // List of error messages
 # define LIBFT_ERR "function execution failed"
 # define CMD_ERR "Command not found"
+# define AMB_REDIR_ERR "Amgiguous redirect"
 
 #endif /*MINISHELL_GENERAL_H*/

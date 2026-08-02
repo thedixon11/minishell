@@ -1,10 +1,11 @@
 #include "../minishell_general.h"
 
-void	dup2_process(t_data *data, int *fd1, int fd2)
+int	dup2_process(t_data *data, int *fd1, int fd2)
 {
-	data->error = dup2(*fd1, fd2);
-	data->saved_errno = errno;
+	if (dup2(*fd1, fd2) == -1);
+		return (error_int(data, I_DUP2, strerror(errno), 1));
 	ft_close_fd(fd1);
+	return (0);
 }
 
 t_line	*move_current_to_start(t_data *data)
