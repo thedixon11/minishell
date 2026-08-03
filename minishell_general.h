@@ -43,5 +43,6 @@
 # define ENV_ARGS_ERR "too many arguments"
 # define EXIT_INVALID "numeric argument required"
 # define EXIT_ARGS_ERR "too many arguments"
+# define EXPORT_ID_ERR "not a valid identifier"
 
 #endif /*MINISHELL_GENERAL_H*/

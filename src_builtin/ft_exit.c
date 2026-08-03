@@ -1,7 +1,7 @@
 #include "../minishell_general.h"
 #include "minishell_builtin.h"
 
-int	ft_exit_error_int(t_data *data, char *arg, char *message, int code)
+int	ft_exit_error(t_data *data, char *arg, char *message, int code)
 {
 	write(2, "minishell: exit: ", 17);
 	write(2, arg, ft_strlen(arg));

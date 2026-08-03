@@ -1,8 +1,16 @@
 #include "../minishell_general.h"
 
-void	print_var_error(char *identifier)
+void	ft_export_error(t_data *data, char *identifier, char *name)
 {
-	ft_printf("%s : not a valid identifier\n", identifier);
+	write(2, "minishell: export: ", 19);
+	write(2, "\'", 1);
+	write(2, identifier, ft_strlen(identifier));
+	write(2, "\'", 1);
+	write(2, EXPORT_ID_ERR, ft_strlen(EXPORT_ID_ERR));
+	write(1, "\n", 1);	
+	data->saved_errno = 0;
+	data->error = 0;
+	data->code = code;
 }
 
 char	*get_content_var_env(t_data *data, char *name_n_value)
@@ -15,15 +23,19 @@ char	*get_content_var_env(t_data *data, char *name_n_value)
 	while (name_n_value [start] != 0 && name_n_value[start] != '=')
 		start++;
 	if (name_n_value[start] == 0)
-		return (NULL);
+	{
+		content = ft_strdup("");
+		if (!content)
+			return (error_char(data, I_EXPORT, LIBFT_ERR, 1));
+		return (content);
+	}
 	start++;
 	end = start;
 	while (name_n_value[end] != 0)
 		end++;
 	content = ft_substr(name_n_value, start, end - start);
-	data->saved_errno = errno;
 	if (!content)
-		ft_error_parent_char(data, MALLOC_ERR, 1);
+		return (error_char(data, I_EXPORT, LIBFT_ERR, 1));
 	return (content);
 }
 
@@ -36,9 +48,8 @@ char	*get_name_var_env(t_data *data, char *name_n_value)
 	while (name_n_value[len] != 0 && name_n_value[len] != '=')
 		len++;
 	name = ft_substr(name_n_value, 0, len);
-	data->saved_errno = errno;
 	if (!name)
-		ft_error_parent_char(data, MALLOC_ERR, 1);
+		return (error_char(data, I_EXPORT, LIBFT_ERR, 1));
 	return (name);
 }
 
@@ -52,17 +63,27 @@ int	how_much_args(char **cmd_args)
 	return (y);
 }
 
-t_bool	check_var_env_name(char	*name)
+t_bool	check_var_env_name(t_data *data, char **name, char *identifier, int *y)
 {
 	int	i;
 
 	i = 1;
 	if (name[0] != '_' && ft_isalpha(name[0]) != 1)
+	{
+		ft_export_error(data, identifier, name);
+		ft_free((void **)name);
+		(*y)++;
 		return (B_FALSE);
+	}
 	while (name[i] != 0)
 	{
 		if (name[i] != '_' && ft_isalnum(name[i]) != 1)
+		{
+			ft_export_error(data, identifier, name);
+			ft_free((void **)name);
+			(*y)++;
 			return (B_FALSE);
+		}
 		i++;
 	}
 	return (B_TRUE);
