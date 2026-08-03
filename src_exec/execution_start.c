@@ -20,7 +20,7 @@ int	store_stdin_stdout(t_data *data)
 {
 	data->saved_stdin = dup(STDIN_FILENO);
 	if (data->saved_stdin == -1)
-		return (error_int(data, I_DUP, strerror(errno), 1);
+		return (error_int(data, I_DUP, strerror(errno), 1));
 	data->saved_stdout = dup(STDOUT_FILENO);
 	if (data->saved_stdout == -1)
 		return (error_int(data, I_DUP, strerror(errno), 1));

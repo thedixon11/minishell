@@ -35,7 +35,7 @@
 # define I_UNSET "unset"
 
 // List of error messages
-# define LIBFT_ERR "libft function execution failed"
+# define LIBFT_ERR "Libft function execution failed"
 # define CMD_ERR "Command not found"
 # define AMB_REDIR_ERR "Amgiguous redirect"
 # define CD_ARGS_ERR "too many arguments"

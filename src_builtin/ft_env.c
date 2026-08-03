@@ -14,9 +14,9 @@ int	ft_env(t_data *data, char **cmd_args)
 	current = data->env;
 	while (current != NULL)
 	{
-		if (ft_printf("%s=", current->name) == -1);
+		if (ft_printf("%s=", current->name) == -1)
 			return (error_int(data, I_ENV, LIBFT_ERR, 1));
-		if (ft_printf("%s\n", current->content) == -1);
+		if (ft_printf("%s\n", current->content) == -1)
 			return (error_int(data, I_ENV, LIBFT_ERR, 1));
 		current = current->next;
 	}

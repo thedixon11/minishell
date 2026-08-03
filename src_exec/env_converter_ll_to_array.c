@@ -33,7 +33,7 @@ char	*rebuild_value(t_data *data, t_env *current)
 	{
 		rebuild_value = ft_strdup(current->name);
 		if (!rebuild_value)
-			return (error_char(data, I_STRDUP, LIBFT_ERR, 1);
+			return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 		return (rebuild_value);
 	}
 	temp = ft_strjoin(current->name, "=");
@@ -42,7 +42,7 @@ char	*rebuild_value(t_data *data, t_env *current)
 	rebuild_value = ft_strjoin(temp, current->content);
 	ft_free((void **)&temp);
 	if (!rebuild_value)
-		return (error_int(data, I_STRJOIN, LIBFT_ERR, 1));
+		return (error_char(data, I_STRJOIN, LIBFT_ERR, 1));
 	return (rebuild_value);
 }
 

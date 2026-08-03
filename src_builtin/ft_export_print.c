@@ -9,9 +9,9 @@ char	*add_quotes_content_util(t_data *data, char **name, char **content)
 	ft_free((void **)content);
 	if (!result)
 		return (ft_free((void **)name), error_char(data, I_EXPORT, LIBFT_ERR, 1));
-	content = ft_strjoin("=", result);
+	*content = ft_strjoin("=", result);
 	ft_free((void **) &result);
-	if (!content)
+	if (!*content)
 		return (ft_free((void **)name), error_char(data, I_EXPORT, LIBFT_ERR, 1));
 	result = ft_strjoin(*name, *content);
 	ft_free((void **)content);
@@ -102,9 +102,10 @@ int	export_no_args(t_data *data)
 	c_env = env_converter_ll_to_array(data, data->env);
 	if (!c_env)
 		return (1);
-	if (add_quotes_content(data, &c_env) == 1);
-		return (free_tab(&c_env), 1);
-	sort_env_tab(&env);
+	if (add_quotes_content(data, &c_env) == 1)
+		return (ft_free_tab(&c_env), 1);
+	sort_env_tab(&c_env);
 	print_environment(c_env);
 	ft_free_tab(&c_env);
+	return (0);
 }

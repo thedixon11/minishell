@@ -14,30 +14,41 @@ int	ft_exit_error(t_data *data, char *arg, char *message, int code)
 	return (2);
 }
 
-int	ft_exit(t_data *data, char **cmd_args)
+t_bool	check_its_all_num(char *arg)
 {
 	int	x;
+
+	x = 0;
+	while (arg[x] != 0)
+	{
+		if (ft_isdigit(arg[x]) != 1)
+			return (B_FALSE);
+		x++;
+	}
+	return (B_TRUE);
+}
+
+int	ft_exit(t_data *data, char **cmd_args)
+{
 	int	y;
 	int	exit_code;
 
-	x = 0;
 	y = 1;
-	exit_code = data->code;
-	if (ft_isdigit(cmd_args[1][x]) != 1)
-	{
-			ft_exit_error_int(data, cmd_args[1][x], EXIT_INVALID, 2);
-			free_and_close_life(data);
-			exit(2);
-	}
-	x++;
+	exit_code = data->code;	
 	while (cmd_args[y] != NULL)
 		y++;
 	if (y == 1)
 		exit(exit_code);
+	if (check_its_all_num(cmd_args[1]) == B_FALSE)
+	{
+		ft_exit_error(data, cmd_args[1], EXIT_INVALID, 2);
+		free_and_close_life(data);
+		exit(2);
+	}
 	else if (y > 2)
 		return (error_int(data, I_EXIT, EXIT_ARGS_ERR, 1));
 	if (ft_atol(cmd_args[1]) > INT_MAX || ft_atol(cmd_args[1]) < INT_MIN)	
-		exit(ft_exit_error_int(data, cmd_args[y], EXIT_INVALID, 2));
+		exit(ft_exit_error(data, cmd_args[y], EXIT_INVALID, 2));
 	exit_code = ft_atoi(cmd_args[1]) % 256;
 	free_and_close_life(data);
 	exit (exit_code);	

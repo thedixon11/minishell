@@ -7,7 +7,7 @@ int	time_to_fork_and_exec(t_data *data)
 
 	pid = fork();
 	if (pid == -1)
-		return (error_int(data, I_FORK, strerror(errno), 1);
+		return (error_int(data, I_FORK, strerror(errno), 1));
 	else if (pid == 0)
 		child_process(data);
 	return (0);
@@ -16,7 +16,7 @@ int	time_to_fork_and_exec(t_data *data)
 int	time_to_pipe(t_data *data)
 {
 	if (data->max_cmd_nb > 0 && pipe(data->pipe_fd) == -1)
-		return (error_int(data, I_PIPE, strerror(errno), 1);
+		return (error_int(data, I_PIPE, strerror(errno), 1));
 	return (0);
 }
 

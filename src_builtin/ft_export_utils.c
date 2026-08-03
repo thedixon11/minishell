@@ -1,6 +1,6 @@
 #include "../minishell_general.h"
 
-void	ft_export_error(t_data *data, char *identifier, char *name)
+void	ft_export_error(t_data *data, char *identifier, int code)
 {
 	write(2, "minishell: export: ", 19);
 	write(2, "\'", 1);
@@ -68,18 +68,18 @@ t_bool	check_var_env_name(t_data *data, char **name, char *identifier, int *y)
 	int	i;
 
 	i = 1;
-	if (name[0] != '_' && ft_isalpha(name[0]) != 1)
+	if (name[0][0] != '_' && ft_isalpha(name[0][0]) != 1)
 	{
-		ft_export_error(data, identifier, name);
+		ft_export_error(data, identifier, 1);
 		ft_free((void **)name);
 		(*y)++;
 		return (B_FALSE);
 	}
-	while (name[i] != 0)
+	while (name[0][i] != 0)
 	{
-		if (name[i] != '_' && ft_isalnum(name[i]) != 1)
+		if (name[0][i] != '_' && ft_isalnum(name[0][i]) != 1)
 		{
-			ft_export_error(data, identifier, name);
+			ft_export_error(data, identifier, 1);
 			ft_free((void **)name);
 			(*y)++;
 			return (B_FALSE);

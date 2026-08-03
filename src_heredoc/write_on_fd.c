@@ -37,7 +37,7 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	char	*line_xpanded;
 
 	if (write(STDOUT_FILENO, "> ", 2) == -1)
-		return (error_char(data, I_WRITE, strerror(errno), 1);
+		return (error_char(data, I_WRITE, strerror(errno), 1));
 	line = get_next_line(STDIN_FILENO, heredoc->content, data->limiter_len);
 	if (line == NULL)
 		return (error_char(data, I_GNL, LIBFT_ERR, 1));

@@ -11,7 +11,7 @@ void	execute_builtin(t_data *data)
 	else if (ft_strncmp(current->content_xpand[0], "cd", 3) == 0)
 		ft_cd(data, current->content_xpand);
 	else if (ft_strncmp(current->content_xpand[0], "pwd", 4) == 0)
-		ft_pwd();
+		ft_pwd(data);
 	else if (ft_strncmp(current->content_xpand[0], "export", 7) == 0)
 		ft_export(data, current->content_xpand);
 	else if (ft_strncmp(current->content_xpand[0], "unset", 6) == 0)

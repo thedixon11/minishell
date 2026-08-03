@@ -6,7 +6,7 @@ char	*dollar_is_error_code(t_data *data, int *i)
 
 	result = ft_calloc(2, sizeof(char));
 	if (!result)
-		return (error_char(data, I_CALLOC, LIBFT_ERR, 1);
+		return (error_char(data, I_CALLOC, LIBFT_ERR, 1));
 	result[0] = data->code;
 	*i += 2;
 	return (result);

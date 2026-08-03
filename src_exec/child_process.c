@@ -10,7 +10,7 @@ void	check_cmd_is_not_empty(t_data *data, t_line *current)
 	if (current->content_xpand[0][0] == 0)
 	{
 		if (ft_strchr(current->content, '"') != 0)
-			ft_error_child_cmd_not_found(data, "", 1);
+			error_int(data, "", CMD_ERR, 1);
 	}
 }
 
@@ -29,7 +29,7 @@ void	child_no_builtin(t_data *data)
 {
 	t_cmd	*cmd_data;
 
-  cmd_data->do_i_exit = B_TRUE;
+	data->do_i_exit = B_TRUE;
 	cmd_data = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd_data)
 		error_int(data, I_CALLOC, LIBFT_ERR, 1);

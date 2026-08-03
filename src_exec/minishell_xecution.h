@@ -50,7 +50,7 @@ void	join_path_prog(t_data *data, t_cmd *cmd_data, char *path, char *prog_name);
 t_line	*move_current_to_start(t_data *data);
 t_line	*move_current_to_cmd(t_data *data);
 void	free_and_close_life(t_data *data);
-void	dup2_process(t_data *data, int *fd1, int fd2);
+int	dup2_process(t_data *data, int *fd1, int fd2);
 int	env_ll_len(t_env *ll_start);
 
 #endif

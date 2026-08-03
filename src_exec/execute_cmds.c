@@ -53,9 +53,9 @@ int	reset_redir_patch(t_data *data)
 {
 	
 	if (dup2(data->saved_stdin, STDIN_FILENO) == -1)
-		return (error_int(data, I_DUP2, strerror(errno), 1);
+		return (error_int(data, I_DUP2, strerror(errno), 1));
 	if (dup2(data->saved_stdout, STDOUT_FILENO) == -1)
-		return (error_int(data, I_DUP2, strerror(errno), 1);
+		return (error_int(data, I_DUP2, strerror(errno), 1));
 	return (0);
 }
 

@@ -10,6 +10,7 @@ void	execute_builtin(t_data *data);
 
 //ft_export
 int	ft_export(t_data *data, char **cmd_args);
+int	repl_create_var(t_data *data, char *name, char *content);
 t_env	*does_var_env_exist(t_data *data, char *name);
 int	replace_content_value(t_data *data, t_env *current, char *content);
 int	create_new_var_env(t_data *data, char *name, char *content);
@@ -18,13 +19,13 @@ int	create_new_var_env(t_data *data, char *name, char *content);
 char	*get_content_var_env(t_data *data, char *name_n_value);
 char	*get_name_var_env(t_data *data, char *name_n_value);
 int		how_much_args(char **cmd_args);
-t_bool	check_var_env_name(char	*name);
+t_bool	check_var_env_name(t_data *data, char **name, char *identifier, int *y);
 void	print_var_error(char *identifier);
 
 //ft_export_print
 void	swap_values(char ***env, int *i, int j);
 void	print_environment(char **env);
-void	export_no_args(t_data *data);
+int	export_no_args(t_data *data);
 int		add_quotes_content(t_data *data, char ***c_env);
 
 //ft_echo
@@ -39,7 +40,7 @@ int	check_nb_args_cd(t_data *data, char **cmd_args);
 int	ft_cd(t_data *data, char **cmd_args);
 
 //ft_pwd
-int	ft_pwd(void);
+int	ft_pwd(t_data *data);
 
 //ft_unset
 int	ft_unset(t_data *data, char **cmd_args);

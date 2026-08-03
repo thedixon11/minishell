@@ -56,7 +56,7 @@ char	*expand_off_quote(t_data *data, char *content)
 	second = NULL;
 	first = ft_strdup("");
 	if (!first)
-		return (error_char(data, I_STRDUP, LIBFT_ERR, 1);
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 	while (content[i] != 0 && first != NULL)
 	{
 		if (content[i] != 0 && content[i] != '$')

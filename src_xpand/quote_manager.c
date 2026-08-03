@@ -20,9 +20,8 @@ char	*second_block_not_dollar(t_data *data, char *str, int *start)
 		end++;
 	len = end - *start;
 	second_block = ft_substr(str, *start, len);
-	data->saved_errno = errno;
 	if (!second_block)
-		return (ft_error_parent_char(data, MALLOC_ERR, 1));
+		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	*start = end;
 	return (second_block);
 }

@@ -11,11 +11,11 @@ int	create_new_var_env(t_data *data, char *name, char *content)
 		return (error_int(data, I_EXPORT, LIBFT_ERR, 1));
 	new_var_env->name = ft_strdup(name);
 	if (!new_var_env->name)
-		return (ft_free((void **)&new_var_env, error_int(data, I_EXPORT, LIBFT_ERR, 1));
+		return (ft_free((void **)&new_var_env), error_int(data, I_EXPORT, LIBFT_ERR, 1));
 	new_var_env->content = ft_strdup(content);
 	if (!new_var_env->content)
-		return (ft_free((void **)&new_var_env->name), ft_free((void **)&new_var_env,
-				error_int(data, I_EXPORT, LIBFT_ERR, 1);
+		return (ft_free((void **)&new_var_env->name), ft_free((void **)&new_var_env),
+				error_int(data, I_EXPORT, LIBFT_ERR, 1));
 	current = data->env;
 	while (current->next != NULL)
 		current = current->next;
@@ -52,7 +52,7 @@ t_env	*does_var_env_exist(t_data *data, char *name)
 	return (NULL);
 }
 
-void	repl_create_var(t_data *data, char *name, char *content)
+int	repl_create_var(t_data *data, char *name, char *content)
 {
 	t_env	*current;
 
@@ -60,7 +60,7 @@ void	repl_create_var(t_data *data, char *name, char *content)
 	if (current != NULL && content[0] != 0)
 		return (replace_content_value(data, current, content));
 	else if (current != NULL && content[0] == 0)
-		return ;
+		return (0);
 	else
 		return (create_new_var_env(data, name, content));
 }
@@ -84,7 +84,7 @@ int	ft_export(t_data *data, char **cmd_args)
 		content = get_content_var_env(data, cmd_args[y]);
 		if (!content)
 			return (ft_free((void **)&name), 1);
-		if (repl_create_var(data, name, content) == 1);
+		if (repl_create_var(data, name, content) == 1)
 			return (ft_free((void **)&name), ft_free((void **)&content), 1);
 		ft_free((void **)&name);
 		ft_free((void **)&content);
