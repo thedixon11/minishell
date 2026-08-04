@@ -7,5 +7,6 @@ static t_data	*data_creation(t_env *env, t_line *line_cmd)
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (NULL);
+
 	return (data);
 }
