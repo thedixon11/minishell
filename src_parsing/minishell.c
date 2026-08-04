@@ -12,7 +12,7 @@ int	main()
 		line = readline("minishell$ ");	// -lreadline pour compil
 		add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
 		token = to_token(line);
-		data->line_cmd = to_parse(token);
+		data->line_cmd = to_parse(data, token);
 		execution_start(data);	
 		// print_tokens(token);
 		//print_lines(lines);
