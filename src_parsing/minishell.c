@@ -4,16 +4,18 @@ int	main()
 {
 	char	*line;
 	t_token	*token;
-	t_line	*lines;
+	t_data	*data;
 
+	data = data_creation();
 	while (1)
 	{
 		line = readline("minishell$ ");	// -lreadline pour compil
 		add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
 		token = to_token(line);
-		lines = to_parse(token);
+		data->line_cmd = to_parse(token);
+		execution_start(data);	
 		// print_tokens(token);
-		print_lines(lines);
+		//print_lines(lines);
 		if (!line)
 			break ;						//renvoie NULL ctrl D to leave
 	}
@@ -38,4 +40,15 @@ int	print_lines(t_line *lines)
 		lines = lines->next;
 	}
 	return (0);
+}
+
+t_data	*data_creation(void)
+{
+	t_data	*data;
+
+	data = ft_calloc(1, sizeof(t_data));
+	if (!data)
+		return (NULL);
+
+	return (data);
 }

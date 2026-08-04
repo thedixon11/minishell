@@ -26,6 +26,7 @@ typedef enum e_type
 	T_PIPE_IN,
 	T_PIPE_OUT,
 	T_COMMAND,
+	T_PIPE
 }					t_type;
 
 // NOTE: la struct t_line est utilisee pour la liste chainee de la cmd.

@@ -1,6 +1,7 @@
 #ifndef MINISHELL_PARSING_H
 # define MINISHELL_PARSING_H
 
+t_data	*data_creation(void);
 t_token	*new_node(char *value, t_type type);
 void	add_node(t_token *current, t_state *state);
 t_type	get_type(t_state *state);
