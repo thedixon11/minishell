@@ -19,6 +19,7 @@
 # define I_SUBSTR "ft_substr"
 # define I_ARRAYDUP "ft_arraydup"
 # define I_PUTENDL_FD "ft_putendl_fd"
+# define I_ITOA "ft_itoa"
 # define I_GNL "get_next_line"
 # define I_DUP "dup"
 # define I_DUP2 "dup2"
