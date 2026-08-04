@@ -1,4 +1,4 @@
-#include "alex.h"
+#include "../minishell_general.h"
 
 t_token	*new_node(char *value, t_type type)
 {

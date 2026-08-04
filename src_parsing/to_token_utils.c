@@ -1,4 +1,4 @@
-#include "alex.h"
+#include "../minishell_general.h"
 
 int	is_operator(char c)
 {

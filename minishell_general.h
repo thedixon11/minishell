@@ -4,6 +4,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./minishell_struct.h"
+# include "./src_parsing/minishell_parsing.h"
 # include "./src_exec/minishell_xecution.h"
 # include "./src_xpand/minishell_xpansion.h"
 # include "./src_builtin/minishell_builtin.h"

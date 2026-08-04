@@ -1,4 +1,4 @@
-#include "alex.h"
+#include "../minishell_general.h"
 
 t_line *fusion_commands(t_line *head)
 {
