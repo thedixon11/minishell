@@ -2,7 +2,7 @@
 
 void	free_cmd_args(t_data *data)
 {
-	if (data->cmd_data != NULL)
+	if (data != NULL && data->cmd_data != NULL)
 	{
 		if (data->cmd_data->prog_fullname != NULL)
 			ft_free((void **)&data->cmd_data->prog_fullname);
@@ -21,6 +21,8 @@ void	free_env(t_env *env)
 {
 	t_env	*current;
 
+  if (!env)
+    return ;
 	current = env;
 	while (current->next != NULL)
 	{
@@ -43,6 +45,8 @@ void	free_line_cmd(t_line *line_cmd)
 {
 	t_line	*current;
 
+  if (!line_cmd)
+    return ;
 	current = line_cmd;
 	while (current->next != NULL)
 	{
