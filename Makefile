@@ -1,11 +1,13 @@
-NAME = xcution
+NAME = minishell
 
+PARSING_DIR = src_parsing
 XPAND_DIR = src_xpand
 EXEC_DIR = src_exec
 BUILTIN_DIR = src_builtin
 TEST_DIR = src_test
 HEREDOC_DIR = src_heredoc
 ERRORS_DIR = src_errors
+PARSING_OBJ_DIR = obj_parsing
 XPAND_OBJ_DIR = obj_xpand
 EXEC_OBJ_DIR = obj_exec
 BUILTIN_OBJ_DIR = obj_builtin
@@ -51,8 +53,15 @@ BUILTIN = ft_export.c \
 		  ft_pwd.c \
 		  builtin_exec.c
 
-TEST = minishell_lists34.c
+PARSING = minishell.c \
+		  node_utils.c \
+		  parse_utils.c \
+		  to_parse.c \
+		  to_token.c \
+		  to_token_utils.c
 
+
+PARSING := $(addprefix $(PARSING_DIR)/,$(PARSING))
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
 BUILTIN := $(addprefix $(BUILTIN_DIR)/,$(BUILTIN))
@@ -60,6 +69,7 @@ TEST := $(addprefix $(TEST_DIR)/,$(TEST))
 HEREDOC := $(addprefix $(HEREDOC_DIR)/,$(HEREDOC))
 ERRORS := $(addprefix $(ERRORS_DIR)/,$(ERRORS))
 
+OBJS_PARSING := $(patsubst $(PARSING_DIR)/%.c,$(PARSING_OBJ_DIR)/%.o,$(PARSING))
 OBJS_XPAND := $(patsubst $(XPAND_DIR)/%.c,$(XPAND_OBJ_DIR)/%.o,$(XPAND))
 OBJS_EXEC := $(patsubst $(EXEC_DIR)/%.c,$(EXEC_OBJ_DIR)/%.o,$(EXEC))
 OBJS_BUILTIN := $(patsubst $(BUILTIN_DIR)/%.c,$(BUILTIN_OBJ_DIR)/%.o,$(BUILTIN))
@@ -71,12 +81,12 @@ CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -g
 VFLAGS = --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes
-INCLUDE = -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(BUILTIN_DIR)/include -I$(HEREDOC_DIR)/include -I$(ERRORS_DIR)/include -I$(LIBFT_DIR)/include
+INCLUDE = -I$(PARSING_DIR)/include -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(BUILTIN_DIR)/include -I$(HEREDOC_DIR)/include -I$(ERRORS_DIR)/include -I$(LIBFT_DIR)/include
 
 all: $(NAME)
 
-$(NAME): $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(OBJS_HEREDOC) $(OBJS_ERRORS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(OBJS_HEREDOC) $(OBJS_ERRORS) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJS_PARSING) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(OBJS_HEREDOC) $(OBJS_ERRORS) $(LIBFT)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_PARSING) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(OBJS_HEREDOC) $(OBJS_ERRORS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
@@ -105,8 +115,12 @@ $(ERRORS_OBJ_DIR)/%.o: $(ERRORS_DIR)/%.c
 	@mkdir -p $(ERRORS_OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
+$(PARSING_OBJ_DIR)/%.o: $(PARSING_DIR)/%.c
+	@mkdir -p $(PARSING_OBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
 clean:
-	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR) $(BUILTIN_OBJ_DIR) $(HEREDOC_OBJ_DIR) $(ERRORS_OBJ_DIR)
+	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR) $(BUILTIN_OBJ_DIR) $(HEREDOC_OBJ_DIR) $(ERRORS_OBJ_DIR) $(PARSING_OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean

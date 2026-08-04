@@ -15,13 +15,6 @@ typedef enum e_bool
 	B_TRUE
 }					t_bool;
 
-typedef enum e_scope
-{
-	S_OUTSIDE,
-	S_PARENT,
-	S_CHILD
-}					t_scope;
-
 // NOTE: cet enum enumere les differents types de nodes possible dans la liste chainee de la cmd
 
 typedef enum e_type
@@ -70,9 +63,39 @@ typedef struct s_cmd
 	char			**env;
 }					t_cmd;
 
+// NOTE: liste chainee pour les tokens avec 
+// value = caractere(s) du token
+// type = enum type du token
+
+typedef struct s_token
+{
+	char			*value;
+	t_type			type;
+	struct s_token	*next;
+	struct s_token	*prev;
+}					t_token;
+
+// NOTE: memoire de l'avancee pendant la tokensitaion
+// start : handle space
+// str : string transmis dans le prompt
+// i : place dans la string
+// quote : quote = \0 si simple = ' si double = "
+// current : token en cours
+// head : tete de la liste
+
+typedef struct s_state
+{
+	int				start;
+	char			*str;
+	int				i;
+	char			quote;
+	struct s_token	*current;
+	struct s_token	*head;
+}					t_state;
+
 // NOTE: la struct t_data est creer au tout debut du programme.
 // elle va contenir des donnees utilisees globalement dans le prog.
-//
+
 typedef struct s_data
 {
 	t_env			*env;
@@ -91,7 +114,7 @@ typedef struct s_data
 	int				limiter_len;
 	int				saved_stdin;
 	int				saved_stdout;
-  t_bool    do_i_exit;
+  t_bool			do_i_exit;
 	char			*old_cwd;
 	char			*cwd;
 }					t_data;
