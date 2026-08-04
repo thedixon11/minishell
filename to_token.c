@@ -28,13 +28,7 @@ t_token	*to_token(char *line)
 
 void	handle_quote(t_state *state)
 {
-	// int		start;
-	// char	*str;
-
-	//handle_word(state);
 	state->quote = state->str[state->i];
-//	start = state->i;
-//	state->i = start + 1;
 	state->i++;
 	while (state->str[state->i] != state->quote && state->str[state->i] != '\0') 
 			state->i++;
@@ -43,10 +37,6 @@ void	handle_quote(t_state *state)
 		printf("Erreur : Quote pas fermee bordel\n");
 		return ;
 	}
-	// str = strndup(state->str + start, state-> i - start + 1);
-	// state->current = new_node(str, WORD);
-	// add_node(state->current, state);
-	// state->start = state->i + 1;
 }
 
 void	handle_operator(t_state *state)
@@ -56,7 +46,7 @@ void	handle_operator(t_state *state)
 
 	handle_word(state);
 	type = get_type(state);
-	if (type == HEREDOC || type == REDIR_APPEND)
+	if (type == T_HEREDOC || type == T_OUTPUT_APPEND)
 	{
 		str = strndup(state->str + state->i, 2);
 		state->i++;
@@ -75,7 +65,7 @@ void	handle_word(t_state *state)
 	if (state->start != state->i)
 	{
 		str = strndup(state->str + state->start, state->i - state->start);
-		state->current = new_node(str, WORD);
+		state->current = new_node(str, T_COMMAND);
 		add_node(state->current, state);
 		state->start = state->i;
 	}

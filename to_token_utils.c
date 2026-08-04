@@ -10,14 +10,14 @@ int	is_operator(char c)
 t_type	get_type(t_state *state)
 {
 	if (state->str[state->i] == '|')
-		return (PIPE);
+		return (T_PIPE);
 	if (state->str[state->i] == '>' && state->str[state->i + 1] == '>')
-		return (REDIR_APPEND);
+		return (T_OUTPUT_APPEND);
 	if (state->str[state->i] == '<' && state->str[state->i + 1] == '<')
-		return (HEREDOC);
+		return (T_HEREDOC);
 	if (state->str[state->i] == '<')
-		return (REDIR_IN);
+		return (T_INPUT);
 	if (state->str[state->i] == '>')
-		return (REDIR_OUT);
-	return (WORD);
+		return (T_OUTPUT_TRUNC);
+	return (T_COMMAND);
 }

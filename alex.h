@@ -7,32 +7,28 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-typedef struct s_command		//args 1 par commande entre pipe et struct redirection
+typedef enum e_type
 {
-	char				**args;
-	int					index;
-	struct s_command	*prev;
-	struct s_command	*next;
-	struct s_redir		*redir;
-}						t_command;
+	T_INPUT,
+	T_OUTPUT_TRUNC,
+	T_OUTPUT_APPEND,
+	T_HEREDOC,
+	T_PIPE_IN,
+	T_PIPE_OUT,
+	T_COMMAND,
+	T_PIPE
+}	t_type;
 
-typedef struct s_redir			// redir avec le file associe
+typedef struct s_line
 {
 	t_type			type;
-	char			*file;
-	struct s_redir	*prev;
-	struct s_redir	*next;
-}					t_redir;
-
-typedef enum e_type				// definition du type de chaq token
-{
-	WORD,
-	PIPE,
-	REDIR_IN,
-	REDIR_OUT,
-	HEREDOC,
-	REDIR_APPEND
-}					t_type;
+	char			*content;
+	char			**content_xpand;
+	int				fd;
+	int				cmd_nb;
+	struct s_line	*prev;
+	struct s_line	*next;
+}					t_line;
 
 typedef struct s_token			//liste chainee des tokens
 {
@@ -55,11 +51,25 @@ typedef struct s_state			//memoire de l'avancee pendant la tokenisation
 t_token	*new_node(char *value, t_type type);
 void	add_node(t_token *current, t_state *state);
 t_type	get_type(t_state *state);
-int	is_operator(char c);
+int		is_operator(char c);
 t_token	*to_token(char *line);
-int	print_tokens(t_token *token);
+// int		print_tokens(t_token *token);
 void	handle_quote(t_state *state);
 void	handle_operator(t_state *state);
 void	handle_word(t_state *state);
+t_line	*to_parse(t_token *head);
+void	handle_command(t_token *token, t_line **head, int cmd_nb);
+void	handle_pipe(int *cmd_nb, t_line **head);
+int		handle_redir(t_token *token, int cmd_nb, t_line **head);
+void	add_line(t_line *current, t_line **head);
+t_line	*new_line(t_type type, int cmd_nb, char *content);
+int		print_lines(t_line *lines);
+t_line *fusion_commands(t_line *head);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(const char *s);
+size_t	ft_strlcat(char *dst, const char *src, size_t size);
+size_t	ft_strlcpy(char *dest, const char *src, size_t size);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+
 
 #endif
