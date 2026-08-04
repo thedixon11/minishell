@@ -35,7 +35,7 @@ t_line *fusion_commands(t_line *head)
 	return (head);
 }
 
-t_line	*to_parse(t_token *head)
+t_line	*to_parse(t_data *data, t_token *head)
 {
 	int	cmd_nb;
 	t_line	*line_head;
@@ -59,6 +59,7 @@ t_line	*to_parse(t_token *head)
 		token = token->next;
 	}
 	line_head = fusion_commands(line_head);
+	data->max_cmd_nb = cmd_nb;
 	return (line_head);
 }
 
