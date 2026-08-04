@@ -5,24 +5,32 @@ t_line *fusion_commands(t_line *head)
 	t_line	*current;
 	char	*resultat;
 	t_line	*temp;
+	t_line	*skip;
 
 	current = head;
 	while (current != NULL)
 	{
-		while (current->next != NULL && current->next->type == T_COMMAND && current->cmd_nb == current->next->cmd_nb)
+		if (current->type == T_COMMAND)
 		{
-			if (current->type == T_COMMAND)
+			skip = current->next;
+			while (skip != NULL && skip->cmd_nb == current->cmd_nb && skip->type != T_PIPE_OUT)
 			{
-				resultat = ft_strjoin(current->content, " ");
-				current->content = ft_strjoin(resultat, current->next->content);
-				temp = current->next;
-				current->next = temp->next;
-				if (temp->next != NULL)
-					temp->next->prev = current;
-				free(temp);	
+				if (skip->type == T_COMMAND)
+				{
+					resultat = ft_strjoin(current->content, " ");
+					current->content = ft_strjoin(resultat, skip->content);
+					temp = skip;
+					skip->prev->next = temp->next;
+					if (temp->next != NULL)
+						temp->next->prev = temp->prev;
+					skip = temp->next;
+					free(temp);
+				}
+				else
+				skip = skip->next;
 			}
 		}
-		current = current->next;
+			current = current->next;
 	}
 	return (head);
 }
