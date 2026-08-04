@@ -23,7 +23,7 @@ void	check_prog_in_path(t_data *data, t_cmd *cmd_data, char *prog_name)
 	size_t	y;
 
 	y = 0;
-	while (cmd_data->path_tab[y] != NULL)
+	while (cmd_data->path_tab != NULL && cmd_data->path_tab[y] != NULL)
 	{
 		join_path_prog(data, cmd_data, cmd_data->path_tab[y], prog_name);
 		if (is_prog_existing_and_executable(NULL, cmd_data) == 0)
