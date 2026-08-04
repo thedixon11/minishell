@@ -80,7 +80,7 @@ OBJS_ERRORS := $(patsubst $(ERRORS_DIR)/%.c,$(ERRORS_OBJ_DIR)/%.o,$(ERRORS))
 CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -g
-VFLAGS = --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes
+VFLAGS = --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp
 INCLUDE = -I$(PARSING_DIR)/include -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(BUILTIN_DIR)/include -I$(HEREDOC_DIR)/include -I$(ERRORS_DIR)/include -I$(LIBFT_DIR)/include
 
 all: $(NAME)
