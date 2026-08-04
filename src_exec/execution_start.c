@@ -52,6 +52,7 @@ int	execution_start(t_data *data)
 	reset_redir_patch(data);
 
   // NOTE: just some checker to print (5 below lines)
+	
 	check_dir = getcwd(NULL, 0);
 	ft_printf("|\ncwd = %s\n", check_dir);
 	ft_free((void **)&check_dir);

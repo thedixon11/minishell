@@ -36,8 +36,8 @@
 
 // List of error messages
 # define LIBFT_ERR "Libft function execution failed"
-# define CMD_ERR "Command not found"
-# define AMB_REDIR_ERR "Amgiguous redirect"
+# define CMD_ERR "command not found"
+# define AMB_REDIR_ERR "amgiguous redirect"
 # define CD_ARGS_ERR "too many arguments"
 # define CD_NO_HOME "HOME not set"
 # define ENV_ARGS_ERR "too many arguments"

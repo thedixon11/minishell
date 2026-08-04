@@ -39,15 +39,20 @@ void	child_no_builtin(t_data *data)
 	find_path_tab(data, cmd_data);
 	prog_name_prep(data, cmd_data);
 	is_prog_existing_and_executable(data, cmd_data);
-	free_and_close_life(data);
+
 	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
 	error_int(data, I_EXECVE, strerror(errno), 1);
+	free_and_close_life(data);
+	exit (1);
 }
 
 void	child_process(t_data *data)
 {
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
+	close_line_cmd_fds(data);
+	close_line_cmd_fds_full(data);
+	close_data_fds(data);
 	if (is_it_builtin(data) == B_FALSE)
 		child_no_builtin(data);
 	else
