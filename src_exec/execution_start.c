@@ -27,20 +27,35 @@ int	store_stdin_stdout(t_data *data)
 	return (0);
 }
 
-int	execution_start(t_data *data)
+t_data	*data_creation(t_line *line_cmd, int max_cmd_nb, t_env *env, int code)
+{
+	t_data	*data;
+
+	data = ft_calloc(1, sizeof(data));
+	if (!data)
+	{
+		error_int(data, I_CALLOC, LIBFT_ERR, 1);
+		return (NULL);
+	}
+	data->pipe_fd[0] = -1;
+	data->pipe_fd[1] = -1;
+	data->old_read_fd = -1;
+	data->env = env;
+	data->line_cmd = line_cmd;
+	data->max_cmd_nb = max_cmd_nb;
+	data->code = code;
+}
+
+int	execution_start(t_line *line_cmd, int max_cmd_nb, t_env *env, int code)
 {
 	int	error;
 	int	code;
 	char	*check_dir;
+	t_data	*data;
 
-  // NOTE: have to implement these 4 lines at the beggining
-  //of the minishell start
-	data->pipe_fd[0] = -1;
-	data->pipe_fd[1] = -1;
-	data->old_read_fd = -1;
+	data = data_creation(line_cmd, max_cmd_nb, env);
 	set_fd_pipe_zero(data);
-
-  data->do_i_exit = B_FALSE;
+	data->do_i_exit = B_FALSE;
 	error = store_stdin_stdout(data);
 	if (error == 0)
 		error = val_manager(data);
