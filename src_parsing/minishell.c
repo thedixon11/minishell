@@ -10,15 +10,16 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	(void) argc;
 	mini.code = 0;
+	mini.max_cmd_nb = 0;
 	mini.env = create_env(envp);
 
-	/*
+	/*	
 	line = readline("minishell$ ");	// -lreadline pour compil
 	add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
 	token = to_token(line);
-	line_cmd = to_parse(&max_cmd_nb, token);
+	mini.line_cmd = to_parse(&max_cmd_nb, token);
 	free_token_ll(token);
-	code = execution_start(line_cmd, max_cmd_nb, env, code);*/
+	mini.code = execution_start(&mini);*/
 	
 	while (1)
 	{
@@ -26,6 +27,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
 		token = to_token(line);
 		mini.line_cmd = to_parse(&max_cmd_nb, token);
+		free_token_ll(token);
 		mini.max_cmd_nb = max_cmd_nb;
 		mini.code = execution_start(&mini);	
 		// print_tokens(token);
@@ -72,20 +74,18 @@ int	print_lines(t_line *lines)
 void	free_token_ll(t_token *token)
 {
 	t_token	*current;
-	t_token	*to_delete;
 
+	if (!token)
+		return ;
 	current = token;
-	current = current->next;
 	while (current->next != NULL)
 	{
-		to_delete = current->prev;
-		ft_free((void **)&to_delete->value);
-		ft_free((void **)&to_delete);
+		if (current->value != NULL)
+			ft_free((void **)&current->value);
 		current = current->next;
+		ft_free((void **)&current->prev);
 	}
-	to_delete = current->prev;
-	ft_free((void **)&to_delete->value);
-	ft_free((void **)&to_delete);
-	ft_free((void **)&current->value);
+	if (current->value != NULL)
+		ft_free((void **)&current->value);
 	ft_free((void **)&current);
-}
+	}
