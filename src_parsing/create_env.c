@@ -47,3 +47,14 @@ t_env	*new_node_env(char *line)
 	node->content = strdup(equal + 1);
 	return (node);
 }
+
+char	*ft_strndup(const char *s, size_t n)
+{
+	char	*str;
+
+	str = malloc(n + 1);
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s, n + 1);
+	return (str);
+}
