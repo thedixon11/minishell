@@ -1,25 +1,39 @@
 #include "../minishell_general.h"
 
-int	main()
+int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_token	*token;
-	t_data	*data;
+	t_line	*line_cmd;
+	int		max_cmd_nb;
+	t_env	*env;
+	int		code;
 
-	data = data_creation();
+	env = create_env(envp);
+	print_env(env);
 	while (1)
 	{
 		line = readline("minishell$ ");	// -lreadline pour compil
 		add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
 		token = to_token(line);
-		data->line_cmd = to_parse(data, token);
-		execution_start(data);	
+		line_cmd = to_parse(&max_cmd_nb, token);
+		execution_start(line_cmd, max_cmd_nb, env, code);	
 		// print_tokens(token);
 		//print_lines(lines);
 		if (!line)
 			break ;						//renvoie NULL ctrl D to leave
 	}
 		return (0);
+}
+
+int	print_env(t_env	*env)
+{
+	while (env != NULL)
+	{
+		printf("name = %s, content = %s", env->name, env->content);
+		env = env->next;
+	}
+	return (0);
 }
 
 int	print_tokens(t_token *token)

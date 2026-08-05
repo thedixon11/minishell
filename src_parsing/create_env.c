@@ -7,22 +7,25 @@ t_env	*create_env(char **envp)
 	t_env	*node;
 
 	x = 0;
+	head = NULL;
 	while (envp[x] != NULL)
 	{
-
+		node = new_node_env(envp[x]);
+		add_node_env(node, &head);
+		x++;
 	}
+	return (head);
 }
 
-void	add_node_env(t_env *head)
+void	add_node_env(t_env	*current, t_env **head)
 {
 	t_env	*temp;
-	t_env	*current;
 
-	if (head == NULL)
-		head = current;
+	if (*head == NULL)
+		*head = current;
 	else
 	{
-		temp = head;
+		temp = *head;
 		while (temp->next != NULL)
 			temp = temp->next;
 		current->next = NULL;
