@@ -58,7 +58,8 @@ PARSING = minishell.c \
 		  parse_utils.c \
 		  to_parse.c \
 		  to_token.c \
-		  to_token_utils.c
+		  to_token_utils.c \
+		  create_env.c
 
 
 PARSING := $(addprefix $(PARSING_DIR)/,$(PARSING))

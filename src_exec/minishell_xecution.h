@@ -3,7 +3,7 @@
 
 //execution_start
 int	store_stdin_stdout(t_data *data);
-int	execution_start(t_data *data);
+int	execution_start(t_line *cmd_line, int max_cmd_nb, t_env *env, int code);
 
 //classic_execution
 void	parent_process(t_data *data);
