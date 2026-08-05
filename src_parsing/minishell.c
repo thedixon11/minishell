@@ -13,13 +13,14 @@ int	main(int argc, char **argv, char **envp)
 	mini.max_cmd_nb = 0;
 	mini.env = create_env(envp);
 
-	/*	
+	/*
 	line = readline("minishell$ ");	// -lreadline pour compil
 	add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
 	token = to_token(line);
 	mini.line_cmd = to_parse(&max_cmd_nb, token);
 	free_token_ll(token);
 	mini.code = execution_start(&mini);*/
+
 	
 	while (1)
 	{
