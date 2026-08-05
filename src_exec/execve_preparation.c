@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include <string.h>
 
 // NOTE: here we check if the programm exists and is executable
 // with the function access
@@ -13,9 +14,9 @@ int	is_prog_existing_and_executable(t_data *data, t_cmd *cmd_data)
 	if (data == NULL && access(path_to_check, X_OK) != 0)
 		return (-1);
 	if (data != NULL && access(path_to_check, F_OK) != 0)
-		error_int(data, path_to_check, CMD_ERR, 127);
+		error_int(data, path_to_check, strerror(errno), 127);
 	if (data != NULL && access(path_to_check, X_OK) != 0)
-		error_int(data, path_to_check, CMD_ERR, 126);
+		error_int(data, path_to_check, strerror(errno), 126);
 	return (0);
 }
 

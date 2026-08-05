@@ -130,6 +130,6 @@ fclean: clean
 
 re: fclean all
 	@clear
-	valgrind $(VFLAGS) ./$(NAME)
+	@#valgrind $(VFLAGS) ./$(NAME)
 
 .PHONY: all clean fclean re

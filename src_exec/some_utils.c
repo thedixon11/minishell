@@ -29,14 +29,15 @@ t_line	*move_current_to_cmd(t_data *data)
 	return (current);
 }
 
-void	free_and_close_life(t_data *data)
+void	free_and_close_life(t_data *data, t_bool erase_env)
 {
 	close_line_cmd_fds(data);
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
 	close_data_fds(data);
 	free_line_cmd(data->line_cmd);
-	free_env(data->env);
+	if (erase_env == B_TRUE)
+		free_env(data->env);
 	free_cmd_args(data);
 	ft_free((void **)&data->cwd);
 	ft_free((void **)&data->old_cwd);

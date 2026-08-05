@@ -27,7 +27,7 @@ int	store_stdin_stdout(t_data *data)
 	return (0);
 }
 
-t_data	*data_creation(t_line *line_cmd, int max_cmd_nb, t_env *env, int code)
+t_data	*data_creation(t_mini *mini)
 {
 	t_data	*data;
 
@@ -40,20 +40,20 @@ t_data	*data_creation(t_line *line_cmd, int max_cmd_nb, t_env *env, int code)
 	data->pipe_fd[0] = -1;
 	data->pipe_fd[1] = -1;
 	data->old_read_fd = -1;
-	data->env = env;
-	data->line_cmd = line_cmd;
-	data->max_cmd_nb = max_cmd_nb;
-	data->code = code;
+	data->env = mini->env;
+	data->line_cmd = mini->line_cmd;
+	data->max_cmd_nb = mini->max_cmd_nb;
+	data->code = mini->code;
 	return (data);
 }
 
-int	execution_start(t_line *line_cmd, int max_cmd_nb, t_env *env, int code)
+int	execution_start(t_mini *mini)
 {
 	int	error;
 	char	*check_dir;
 	t_data	*data;
 
-	data = data_creation(line_cmd, max_cmd_nb, env, code);
+	data = data_creation(mini);
 	set_fd_pipe_zero(data);
 	data->do_i_exit = B_FALSE;
 	error = store_stdin_stdout(data);

@@ -32,7 +32,7 @@ void	check_prog_in_path(t_data *data, t_cmd *cmd_data, char *prog_name)
 		y++;
 	}
 	ft_free((void **)&cmd_data->prog_fullname);
-  error_int(data, prog_name, CMD_ERR, 127);
+	error_int(data, prog_name, CMD_ERR, 127);
 }
 
 // NOTE: For the programm name, I have first to figure out if it could be

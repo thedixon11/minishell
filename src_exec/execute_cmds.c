@@ -74,6 +74,6 @@ int	execute_cmds(t_data *data)
 		data->current_cmd_nb++;
 	}
 	wait_all_children(data);
-	export_no_args(data);
+	//export_no_args(data);
 	return (0);
 }

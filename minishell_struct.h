@@ -120,4 +120,12 @@ typedef struct s_data
 	char			*cwd;
 }					t_data;
 
+typedef struct s_mini
+{
+	t_env	*env;
+	t_line	*line_cmd;
+	int		max_cmd_nb;
+	int		code;
+}			t_mini;
+
 #endif /*MINISHELL_STRUCT_H*/
