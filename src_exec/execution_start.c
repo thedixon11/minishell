@@ -31,7 +31,7 @@ t_data	*data_creation(t_line *line_cmd, int max_cmd_nb, t_env *env, int code)
 {
 	t_data	*data;
 
-	data = ft_calloc(1, sizeof(data));
+	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 	{
 		error_int(data, I_CALLOC, LIBFT_ERR, 1);
@@ -44,16 +44,16 @@ t_data	*data_creation(t_line *line_cmd, int max_cmd_nb, t_env *env, int code)
 	data->line_cmd = line_cmd;
 	data->max_cmd_nb = max_cmd_nb;
 	data->code = code;
+	return (data);
 }
 
 int	execution_start(t_line *line_cmd, int max_cmd_nb, t_env *env, int code)
 {
 	int	error;
-	int	code;
 	char	*check_dir;
 	t_data	*data;
 
-	data = data_creation(line_cmd, max_cmd_nb, env);
+	data = data_creation(line_cmd, max_cmd_nb, env, code);
 	set_fd_pipe_zero(data);
 	data->do_i_exit = B_FALSE;
 	error = store_stdin_stdout(data);

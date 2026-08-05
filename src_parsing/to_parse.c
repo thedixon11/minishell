@@ -19,6 +19,7 @@ t_line *fusion_commands(t_line *head)
 				{
 					resultat = ft_strjoin(current->content, " ");
 					current->content = ft_strjoin(resultat, skip->content);
+					ft_free((void **)&resultat);
 					temp = skip;
 					skip->prev->next = temp->next;
 					if (temp->next != NULL)
