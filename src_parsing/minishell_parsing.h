@@ -20,5 +20,6 @@ t_line	*new_line(t_type type, int cmd_nb, char *content);
 int		print_lines(t_line *lines);
 t_line	*fusion_commands(t_line *head);
 int		print_env(t_env	*env);
+char	*ft_strndup(const char *s, size_t n);
 
 #endif
