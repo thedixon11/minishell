@@ -52,7 +52,7 @@ void	handle_operator(t_state *state)
 		state->i++;
 	}
 	else 
-		str = strndup(state->str + state->i, 1);
+		str = ft_strndup(state->str + state->i, 1);
 	state->current = new_node(str, type);
 	add_node(state->current, state);
 	state->start = state->i + 1;
@@ -64,7 +64,7 @@ void	handle_word(t_state *state)
 
 	if (state->start != state->i)
 	{
-		str = strndup(state->str + state->start, state->i - state->start);
+		str = ft_strndup(state->str + state->start, state->i - state->start);
 		state->current = new_node(str, T_COMMAND);
 		add_node(state->current, state);
 		state->start = state->i;

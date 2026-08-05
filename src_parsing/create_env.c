@@ -39,12 +39,12 @@ t_env	*new_node_env(char *line)
 	t_env	*node;
 	char	*equal;
 
-	node = calloc(1, sizeof(t_env));
+	node = ft_calloc(1, sizeof(t_env));
 	if (!node)
 		return (NULL);
 	equal = ft_strchr(line, '=');
 	node->name = ft_strndup(line, equal - line);
-	node->content = strdup(equal + 1);
+	node->content = ft_strdup(equal + 1);
 	return (node);
 }
 
@@ -52,7 +52,7 @@ char	*ft_strndup(const char *s, size_t n)
 {
 	char	*str;
 
-	str = malloc(n + 1);
+	str = ft_calloc(1, n + 1);
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s, n + 1);
