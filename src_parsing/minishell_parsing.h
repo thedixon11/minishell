@@ -11,7 +11,7 @@ t_token	*to_token(char *line);
 void	handle_quote(t_state *state);
 void	handle_operator(t_state *state);
 void	handle_word(t_state *state);
-t_line	*to_parse(t_data *data, t_token *head);
+t_line	*to_parse(int *max_cmd_nb, t_token *head);
 void	handle_command(t_token *token, t_line **head, int cmd_nb);
 void	handle_pipe(int *cmd_nb, t_line **head);
 int		handle_redir(t_token *token, int cmd_nb, t_line **head);
@@ -19,5 +19,6 @@ void	add_line(t_line *current, t_line **head);
 t_line	*new_line(t_type type, int cmd_nb, char *content);
 int		print_lines(t_line *lines);
 t_line	*fusion_commands(t_line *head);
+int		print_env(t_env	*env);
 
 #endif
