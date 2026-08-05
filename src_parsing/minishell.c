@@ -4,12 +4,13 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_token	*token;
-	t_mini	*mini;
+	t_mini	mini;
+	int	max_cmd_nb;
 
 	(void) argv;
 	(void) argc;
-	mini->code = 0;
-	mini->env = create_env(envp);
+	mini.code = 0;
+	mini.env = create_env(envp);
 
 	/*
 	line = readline("minishell$ ");	// -lreadline pour compil
@@ -24,15 +25,16 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("minishell$ ");	// -lreadline pour compil
 		add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
 		token = to_token(line);
-		mini->line_cmd = to_parse(&max_cmd_nb, token);
-		mini->max_cmd_nb = max_cmd_nb;
-		mini->code = execution_start(mini);	
+		mini.line_cmd = to_parse(&max_cmd_nb, token);
+		mini.max_cmd_nb = max_cmd_nb;
+		mini.code = execution_start(&mini);	
 		// print_tokens(token);
 		//print_lines(lines);
 		if (!line)
 			break ;						//renvoie NULL ctrl D to leave
 	}
-		return (code);
+		free_env(mini.env);
+		return (mini.code);
 }
 
 int	print_env(t_env	*env)

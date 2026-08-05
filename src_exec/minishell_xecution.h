@@ -4,8 +4,8 @@
 //execution_start
 void	set_fd_pipe_zero(t_data *data);
 int	store_stdin_stdout(t_data *data);
-t_data	*data_creation(t_line *line_cmd, int max_cmd_nb, t_env *env, int code);
-int	execution_start(t_line *cmd_line, int max_cmd_nb, t_env *env, int code);
+t_data	*data_creation(t_mini *mini);
+int	execution_start(t_mini *mini);
 
 //classic_execution
 void	parent_process(t_data *data);

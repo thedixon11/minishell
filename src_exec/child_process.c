@@ -4,6 +4,7 @@ void	check_cmd_is_not_empty(t_data *data, t_line *current)
 {
 	if (current->content_xpand == NULL)
 	{
+		free_env(data->env);
 		free_and_close_life(data);
 		exit(0);
 	}
@@ -29,7 +30,6 @@ void	child_no_builtin(t_data *data)
 {
 	t_cmd	*cmd_data;
 
-	data->do_i_exit = B_TRUE;
 	cmd_data = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd_data)
 		error_int(data, I_CALLOC, LIBFT_ERR, 1);
@@ -43,12 +43,14 @@ void	child_no_builtin(t_data *data)
 
 	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
 	error_int(data, I_EXECVE, strerror(errno), 1);
-	free_and_close_life(data, B_TRUE);
+	free_env(data->env);
+	free_and_close_life(data);
 	exit (1);
 }
 
 void	child_process(t_data *data)
 {
+	data->do_i_exit = B_TRUE;
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
 	close_line_cmd_fds(data);
@@ -58,7 +60,8 @@ void	child_process(t_data *data)
 		child_no_builtin(data);
 	else
 		execute_builtin(data);
-	free_and_close_life(data, B_TRUE);
+	free_env(data->env);
+	free_and_close_life(data);
 	exit (0);
 }
 

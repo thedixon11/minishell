@@ -50,8 +50,8 @@ t_data	*data_creation(t_mini *mini)
 int	execution_start(t_mini *mini)
 {
 	int	error;
-	char	*check_dir;
 	t_data	*data;
+	int	code;
 
 	data = data_creation(mini);
 	set_fd_pipe_zero(data);
@@ -65,16 +65,6 @@ int	execution_start(t_mini *mini)
 		error = execute_cmds(data);
 	code = data->code;
 	reset_redir_patch(data);
-
-  // NOTE: just some checker to print (5 below lines)
-	
-	check_dir = getcwd(NULL, 0);
-	ft_printf("|\ncwd = %s\n", check_dir);
-	ft_free((void **)&check_dir);
-	ft_printf("cwd data = %s\n", data->cwd);
-	ft_printf("oldcwd data = %s\n", data->old_cwd);
-
-
 	free_and_close_life(data);
 	return (code);
 }

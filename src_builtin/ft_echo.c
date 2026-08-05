@@ -46,8 +46,11 @@ int	ft_echo(t_data *data, char **args_cmd)
 			if (write(STDOUT_FILENO, "\n", 1) == -1)
 				return (error_int(data, I_ECHO, strerror(errno), 1));
 		}
-		if (write(STDOUT_FILENO, " ", 1) == -1)
-			error_int(data, I_ECHO, strerror(errno), 1);
+		if (args_cmd[y + 1] != NULL)
+		{
+			if (write(STDOUT_FILENO, " ", 1) == -1)
+				error_int(data, I_ECHO, strerror(errno), 1);
+		}
 		y++;
 	}
 	return (1);
