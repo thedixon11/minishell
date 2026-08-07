@@ -122,6 +122,7 @@ typedef struct s_data
 
 typedef struct s_mini
 {
+	t_token	*token;
 	t_env	*env;
 	t_line	*line_cmd;
 	int		max_cmd_nb;

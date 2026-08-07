@@ -18,6 +18,7 @@ t_line *fusion_commands(t_line *head)
 				if (skip->type == T_COMMAND)
 				{
 					resultat = ft_strjoin(current->content, " ");
+					ft_free((void **)&current->content); // WARNING:
 					current->content = ft_strjoin(resultat, skip->content);
 					ft_free((void **)&resultat);
 					temp = skip;
@@ -48,7 +49,7 @@ t_line	*to_parse(int *max_cmd_nb, t_token *head)
 	while (token != NULL)
 	{
 		if (token->type == T_COMMAND)
-			handle_command(token, &line_head, cmd_nb);
+			handle_command(token, &line_head, cmd_nb); // BUG:
 		else if (token->type == T_PIPE)
 			handle_pipe(&cmd_nb, &line_head);
 		else
@@ -68,7 +69,7 @@ void	handle_command(t_token *token, t_line **head, int cmd_nb)
 {
 	t_line	*current;
 
-	current = new_line(token->type, cmd_nb, token->value);
+	current = new_line(token->type, cmd_nb, token->value); // BUG:
 	add_line(current, head);
 }
 

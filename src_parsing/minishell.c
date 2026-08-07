@@ -11,17 +11,18 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	mini.code = 0;
 	mini.max_cmd_nb = 0;
+	mini.line_cmd = NULL;
 	mini.env = create_env(envp);
 
-	/*
+	
 	line = readline("minishell$ ");	// -lreadline pour compil
 	add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
 	token = to_token(line);
-	mini.line_cmd = to_parse(&max_cmd_nb, token);
+	mini.line_cmd = to_parse(&max_cmd_nb, token);  // BUG:
 	free_token_ll(token);
-	mini.code = execution_start(&mini);*/
+	//mini.code = execution_start(&mini);
 
-	
+	/*
 	while (1)
 	{
 		line = readline("minishell$ ");	// -lreadline pour compil
@@ -35,7 +36,8 @@ int	main(int argc, char **argv, char **envp)
 		//print_lines(lines);
 		if (!line)
 			break ;						//renvoie NULL ctrl D to leave
-	}
+	}*/
+		//free_line_cmd(mini.line_cmd);
 		free_env(mini.env);
 		return (mini.code);
 }

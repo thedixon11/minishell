@@ -4,7 +4,7 @@ t_line	*new_line(t_type type, int cmd_nb, char *content)
 {
 	t_line	*node;
 
-	node = calloc(1, sizeof(t_line));
+	node = calloc(1, sizeof(t_line)); // BUG:
 	if (!node)
 		return (NULL);
 	node->type = type;
