@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include "minishell_parsing.h"
 
 t_line *fusion_commands(t_line *head)
 {
@@ -18,7 +19,7 @@ t_line *fusion_commands(t_line *head)
 				if (skip->type == T_COMMAND)
 				{
 					resultat = ft_strjoin(current->content, " ");
-					ft_free((void **)&current->content); // WARNING:
+					//ft_free((void **)&current->content); // WARNING:
 					current->content = ft_strjoin(resultat, skip->content);
 					ft_free((void **)&resultat);
 					temp = skip;
@@ -68,8 +69,11 @@ t_line	*to_parse(int *max_cmd_nb, t_token *head)
 void	handle_command(t_token *token, t_line **head, int cmd_nb)
 {
 	t_line	*current;
-
-	current = new_line(token->type, cmd_nb, token->value); // BUG:
+	char	*value;
+	
+	value = ft_strdup(token->value);
+	current = new_line(token->type, cmd_nb, value); // BUG:
+	ft_free((void **)&value);
 	add_line(current, head);
 }
 
@@ -87,13 +91,16 @@ void	handle_pipe(int *cmd_nb, t_line **head)
 int	handle_redir(t_token *token, int cmd_nb, t_line **head)
 {
 	t_line	*current;
+	char	*value;
 
 	if (token->next == NULL)
 	{
 		printf("Erreur : Syntax error\n");
 		return (-1);
 	}
+	value = ft_strdup(token->next->value);
 	current = new_line(token->type, cmd_nb, token->next->value);
+	ft_free((void **)&value);
 	add_line(current, head);
 	return (0);
 }

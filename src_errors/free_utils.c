@@ -63,3 +63,17 @@ void	free_line_cmd(t_line *line_cmd)
 		ft_free_tab(&current->content_xpand);
 	ft_free((void **)&current);
 }
+
+// void	free_line_cmd(t_line *line_cmd)
+// {
+// 	t_line	*next;
+//
+// 	while (line_cmd)
+// 	{
+// 		next = line_cmd->next;
+// 		if (line_cmd->content)
+// 			ft_free((void **)&line_cmd->content);
+// 		ft_free((void **)&line_cmd);
+// 		line_cmd = next;
+// 	}
+// }

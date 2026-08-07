@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!line)
 			break ;						//renvoie NULL ctrl D to leave
 	}*/
-		//free_line_cmd(mini.line_cmd);
+		free_line_cmd(mini.line_cmd);
 		free_env(mini.env);
 		return (mini.code);
 }
