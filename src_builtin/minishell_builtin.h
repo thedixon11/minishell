@@ -30,7 +30,8 @@ int		add_quotes_content(t_data *data, char ***c_env);
 
 //ft_echo
 int	ft_echo(t_data *data, char **args_cmd);
-t_bool	skip_option_n(char **args_cmd, int *y);
+t_bool	skip_option_n(t_data *data, char **args_cmd, int *y);
+void	echo_no_args(t_data *data);
 
 //ft_cd
 int	update_env_wd(t_data *data);

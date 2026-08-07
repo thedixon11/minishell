@@ -1,11 +1,23 @@
 #include "../minishell_general.h"
 #include "minishell_builtin.h"
 
-t_bool	skip_option_n(char **args_cmd, int *y)
+void	echo_no_args(t_data *data)
+{
+	if (data->do_i_exit == B_TRUE)
+	{
+		free_env(data->env);
+		free_and_close_life(data);
+		exit (0);
+	}
+}
+
+t_bool	skip_option_n(t_data *data, char **args_cmd, int *y)
 {
 	int	x;
 
 	x = 2;
+	if (args_cmd[1] == NULL)
+		echo_no_args(data);
 	if (args_cmd[*y][0] != '-' && args_cmd[*y][1] != 'n')
 		return (B_TRUE);
 	while (args_cmd[*y][x] != 0 && args_cmd[*y][x] == 'n')
@@ -35,7 +47,7 @@ int	ft_echo(t_data *data, char **args_cmd)
 
 	y = 1;
 	len = 0;
-	do_i_return = skip_option_n(args_cmd, &y);
+	do_i_return = skip_option_n(data, args_cmd, &y);
 	while (args_cmd[y] != NULL)
 	{
 		len = ft_strlen(args_cmd[y]);
