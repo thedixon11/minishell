@@ -10,7 +10,7 @@ t_line	*new_line(t_type type, int cmd_nb, char *content)
 	node->type = type;
 	node->fd = -1;
 	node->cmd_nb = cmd_nb;
-	node->content = content;
+	node->content = ft_strdup(content);
 	return (node);
 }
 

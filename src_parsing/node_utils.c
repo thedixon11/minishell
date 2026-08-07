@@ -7,7 +7,7 @@ t_token	*new_node(char *value, t_type type)
 	current = calloc(1, sizeof(t_token)); //calloc !!!
 	if (!current)
 		return (NULL);
-	current->value = value;
+	current->value = ft_strdup(value);
 	current->type = type;
 	current->next = NULL;
 	current->prev = NULL;
