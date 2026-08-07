@@ -18,7 +18,7 @@ t_bool	skip_option_n(t_data *data, char **args_cmd, int *y)
 	x = 2;
 	if (args_cmd[1] == NULL)
 		echo_no_args(data);
-	if (args_cmd[*y][0] != '-' && args_cmd[*y][1] != 'n')
+	if (args_cmd[*y][0] != '-' || args_cmd[*y][1] != 'n')  // BUG:
 		return (B_TRUE);
 	while (args_cmd[*y][x] != 0 && args_cmd[*y][x] == 'n')
 		x++;
