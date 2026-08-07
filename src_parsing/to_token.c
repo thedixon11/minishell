@@ -56,6 +56,7 @@ void	handle_operator(t_state *state)
 	state->current = new_node(str, type);
 	add_node(state->current, state);
 	state->start = state->i + 1;
+	ft_free((void **)&str);
 }
 
 void	handle_word(t_state *state)

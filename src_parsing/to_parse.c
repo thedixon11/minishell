@@ -27,7 +27,8 @@ t_line *fusion_commands(t_line *head)
 					if (temp->next != NULL)
 						temp->next->prev = temp->prev;
 					skip = temp->next;
-					free(temp);
+					ft_free((void **)&temp->content);
+					ft_free((void **)&temp);
 				}
 				else
 					skip = skip->next;
