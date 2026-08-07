@@ -19,7 +19,7 @@ t_line *fusion_commands(t_line *head)
 				if (skip->type == T_COMMAND)
 				{
 					resultat = ft_strjoin(current->content, " ");
-					//ft_free((void **)&current->content); // WARNING:
+					ft_free((void **)&current->content); // WARNING:
 					current->content = ft_strjoin(resultat, skip->content);
 					ft_free((void **)&resultat);
 					temp = skip;
@@ -42,6 +42,7 @@ t_line	*to_parse(int *max_cmd_nb, t_token *head)
 {
 	int	cmd_nb;
 	t_line	*line_head;
+	t_line	*result;
 	t_token	*token;
 
 	cmd_nb = 0;
@@ -61,9 +62,9 @@ t_line	*to_parse(int *max_cmd_nb, t_token *head)
 		}
 		token = token->next;
 	}
-	line_head = fusion_commands(line_head);
+	result = fusion_commands(line_head);
 	*max_cmd_nb = cmd_nb;
-	return (line_head);
+	return (result);
 }
 
 void	handle_command(t_token *token, t_line **head, int cmd_nb)
@@ -99,7 +100,7 @@ int	handle_redir(t_token *token, int cmd_nb, t_line **head)
 		return (-1);
 	}
 	value = ft_strdup(token->next->value);
-	current = new_line(token->type, cmd_nb, token->next->value);
+	current = new_line(token->type, cmd_nb, value);
 	ft_free((void **)&value);
 	add_line(current, head);
 	return (0);
