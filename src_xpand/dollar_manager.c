@@ -5,9 +5,9 @@ char	*dollar_is_error_code(t_data *data, int *i)
 	char	*result;
 
 	result = ft_itoa(data->code);
+	*i += 2;	
 	if (!result)
 		return (error_char(data, I_ITOA, LIBFT_ERR, 1));
-	*i += ft_strlen(result) + 1;
 	return (result);
 }
 

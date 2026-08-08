@@ -6,23 +6,48 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*token;
 	t_mini	mini;
 	int	max_cmd_nb;
+	int	y;
 
 	(void) argv;
 	(void) argc;
+	y = 0;
 	mini.code = 0;
 	mini.max_cmd_nb = 0;
 	mini.line_cmd = NULL;
 	mini.env = create_env(envp);
-
-/*	
-	line = readline("minishell$ ");	// -lreadline pour compil
-	add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
-	token = to_token(line);
-	mini.line_cmd = to_parse(&max_cmd_nb, token);  // BUG:
-	free_token_ll(token);
-	//mini.code = execution_start(&mini);*/
-
 	
+	/*
+	line = readline("minishell$ ");
+	if (!line)
+		exit(15);
+	add_history(line);
+	if (line[0] != 0)
+	{
+		token = to_token(line);
+		if (token)
+		{
+			mini.line_cmd = to_parse(&max_cmd_nb, token);
+			free_token_ll(token);
+			mini.max_cmd_nb = max_cmd_nb;
+			mini.code = execution_start(&mini);
+		}
+	}
+	line = readline("minishell$ ");
+	if (!line)
+		exit(15);
+	add_history(line);
+	if (line[0] != 0)
+	{
+		token = to_token(line);
+		if (token)
+		{
+			mini.line_cmd = to_parse(&max_cmd_nb, token); // BUG: debut bug
+			free_token_ll(token);
+			mini.max_cmd_nb = max_cmd_nb;
+			mini.code = execution_start(&mini); // BUG: et bug du coup dans val manager
+		}
+	}*/
+
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -40,9 +65,8 @@ int	main(int argc, char **argv, char **envp)
 			mini.code = execution_start(&mini);
 		}
 	}
-		free_line_cmd(mini.line_cmd);
-		free_env(mini.env);
-		return (mini.code);
+	free_env(mini.env);
+	return (mini.code);
 }
 
 int	print_env(t_env	*env)
