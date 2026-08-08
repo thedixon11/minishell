@@ -24,6 +24,28 @@ char	*dollar_not_alphanum_and_err(t_data *data, char *str, int *i)
 	return (result);
 }
 
+char	*digit_after_dollar(t_data *data, int *i)
+{
+	char	*result;
+
+	*i += 2;
+	result = ft_strdup("");
+	if (!result)
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
+	return (result);
+}
+
+char	*quote_after_dollar(t_data *data, int *i)
+{
+	char	*result;
+
+	*i += 1;
+	result = ft_strdup("");
+	if (!result)
+		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
+	return (result);
+}
+
 // NOTE: It's the entry point to deal with dollars. Managing the dollars depends
 //	on which value is right after it. There is 5 possiblities :
 //	1) a quote (single or double), and we are treating out of quotes (Q_NONE);
@@ -46,15 +68,9 @@ char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 	char	*result;
 
 	if (q_mode == Q_NONE && (str[*i + 1] == '"' || str[*i + 1] == '\''))
-	{
-		*i += 1;
-		return (NULL);
-	}
-	else if (ft_isdigit(str[*i + 1] == 1))
-	{
-		*i += 2;
-		return (NULL);
-	}
+		return (quote_after_dollar(data, i));
+	else if (ft_isdigit(str[*i + 1]) == 1)
+		return (digit_after_dollar(data, i));
 	else if (str[*i + 1] == '?')
 		return (dollar_is_error_code(data, i));
 	else if (ft_isalpha(str[*i + 1]) == 1 || str[*i + 1] == '_')
