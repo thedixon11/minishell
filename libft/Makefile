@@ -14,7 +14,7 @@ LIBFT_SRC = ft_tolower.c ft_toupper.c ft_isprint.c ft_isascii.c ft_isalnum.c \
 		ft_substr.c ft_strtrim.c ft_putchar_fd.c ft_putstr_fd.c \
 		ft_putendl_fd.c ft_putnbr_fd.c ft_lstnew.c  ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 		ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_atol.c ft_arraydup.c \
-		ft_arraychr.c ft_strrm.c ft_free_tab.c ft_split_squote.c \
+		ft_arraychr.c ft_strrm.c ft_free_tab.c ft_split_quote.c \
 		ft_free.c ft_close_fd.c ft_strsrrnd.c
 
 PRINTF_SRC = ft_printf.c ft_conv.c ft_printchar.c ft_printdigit.c ft_printhex.c \

@@ -131,7 +131,7 @@ int	val_manager(t_data *data)
 				return (1);
 			if (temp[0] == 0)
 				return (ft_free((void **)&temp), 0);
-			current->content_xpand = ft_split_squote(temp, ' ');
+			current->content_xpand = ft_split_quote(temp, ' ');
 			ft_free((void **)&temp);
 			if (!current->content_xpand)
 				return (error_int(data, I_SPLIT, LIBFT_ERR, 1));
