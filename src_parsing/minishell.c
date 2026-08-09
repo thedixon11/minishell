@@ -1,20 +1,34 @@
 #include "../minishell_general.h"
 
+t_data	*data_init(void);
+{
+	t_data	*data;
+
+	data = ft_calloc(1, sizeof(t_data));
+	if (!data)
+	{
+		error_int(data, I_CALLOC, LIBFT_ERR, 1);
+		return (NULL);
+	}
+	return (data);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_token	*token;
-	t_mini	mini;
+	t_data	*data;
 	int	max_cmd_nb;
 	int	y;
 
 	(void) argv;
 	(void) argc;
 	y = 0;
-	mini.code = 0;
-	mini.max_cmd_nb = 0;
-	mini.line_cmd = NULL;
-	mini.env = create_env(envp);
+	data = data_init();
+	data->code = 0;
+	data->max_cmd_nb = 0;
+	data->line_cmd = NULL;
+	data->env = create_env(envp);
 	
 	/*
 	line = readline("minishell$ ");
@@ -59,10 +73,10 @@ int	main(int argc, char **argv, char **envp)
 			token = to_token(line);
 			if (!token)
 				continue ;
-			mini.line_cmd = to_parse(&max_cmd_nb, token);
+			data->line_cmd = to_parse(&max_cmd_nb, token);
 			free_token_ll(token);
-			mini.max_cmd_nb = max_cmd_nb;
-			mini.code = execution_start(&mini);
+			data->max_cmd_nb = max_cmd_nb;
+			data->code = execution_start(data);
 		}
 	}
 	free_env(mini.env);

@@ -65,6 +65,5 @@ int	execution_start(t_mini *mini)
 		error = execute_cmds(data);
 	code = data->code;
 	reset_redir_patch(data);
-	free_and_close_life(data);
 	return (code);
 }
