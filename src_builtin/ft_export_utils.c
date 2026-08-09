@@ -5,7 +5,7 @@ void	ft_export_error(t_data *data, char *identifier, int code)
 	write(2, "minishell: export: ", 19);
 	write(2, "\'", 1);
 	write(2, identifier, ft_strlen(identifier));
-	write(2, "\' ", 2);
+	write(2, "\': ", 3);
 	write(2, EXPORT_ID_ERR, ft_strlen(EXPORT_ID_ERR));
 	write(1, "\n", 1);	
 	data->saved_errno = 0;

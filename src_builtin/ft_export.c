@@ -72,6 +72,7 @@ int	ft_export(t_data *data, char **cmd_args)
 	char	*content;
 
 	y = 1;
+	data->code = 0;
 	if (how_much_args(cmd_args) == 1)
 		return (export_no_args(data));
 	while (cmd_args[y] != NULL)
@@ -91,5 +92,5 @@ int	ft_export(t_data *data, char **cmd_args)
 		y++;
 	}
 	//export_no_args(data);	// NOTE: juste pour voir le resultat directement (test)
-	return (0);
+	return (data->code);
 }
