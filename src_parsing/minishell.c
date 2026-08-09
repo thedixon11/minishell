@@ -1,6 +1,6 @@
 #include "../minishell_general.h"
 
-t_data	*data_init(void);
+t_data	*data_init(void)
 {
 	t_data	*data;
 
@@ -8,7 +8,7 @@ t_data	*data_init(void);
 	if (!data)
 	{
 		error_int(data, I_CALLOC, LIBFT_ERR, 1);
-		return (NULL);
+		exit(1);
 	}
 	return (data);
 }
@@ -19,11 +19,13 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*token;
 	t_data	*data;
 	int	max_cmd_nb;
-	int	y;
+  int code;
+	//int	y;
 
 	(void) argv;
 	(void) argc;
-	y = 0;
+	//y = 0;
+  code = 0;
 	data = data_init();
 	data->code = 0;
 	data->max_cmd_nb = 0;
@@ -76,11 +78,13 @@ int	main(int argc, char **argv, char **envp)
 			data->line_cmd = to_parse(&max_cmd_nb, token);
 			free_token_ll(token);
 			data->max_cmd_nb = max_cmd_nb;
-			data->code = execution_start(data);
+			execution_start(data);
+      data->do_i_exit = B_TRUE;
 		}
 	}
-	free_env(mini.env);
-	return (mini.code);
+  code = data->code;
+	free_and_close_life(data);
+	return (code);
 }
 
 int	print_env(t_env	*env)

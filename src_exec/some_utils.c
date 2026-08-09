@@ -40,5 +40,9 @@ void	free_and_close_life(t_data *data)
 	ft_free((void **)&data->cwd);
 	ft_free((void **)&data->old_cwd);
 	ft_free((void **)&data->failed_content);
-	ft_free((void **)&data);
+  if (data->do_i_exit == B_TRUE)
+  {
+    free_env(data->env);
+	  ft_free((void **)&data);
+  }
 }

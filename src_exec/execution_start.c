@@ -27,33 +27,18 @@ int	store_stdin_stdout(t_data *data)
 	return (0);
 }
 
-t_data	*data_creation(t_mini *mini)
+void	data_creation(t_data *data)
 {
-	t_data	*data;
-
-	data = ft_calloc(1, sizeof(t_data));
-	if (!data)
-	{
-		error_int(data, I_CALLOC, LIBFT_ERR, 1);
-		return (NULL);
-	}
 	data->pipe_fd[0] = -1;
 	data->pipe_fd[1] = -1;
 	data->old_read_fd = -1;
-	data->env = mini->env;
-	data->line_cmd = mini->line_cmd;
-	data->max_cmd_nb = mini->max_cmd_nb;
-	data->code = mini->code;
-	return (data);
 }
 
-int	execution_start(t_mini *mini)
+int	execution_start(t_data *data)
 {
 	int	error;
-	t_data	*data;
-	int	code;
 
-	data = data_creation(mini);
+	data_creation(data);
 	set_fd_pipe_zero(data);
 	data->do_i_exit = B_FALSE;
 	error = store_stdin_stdout(data);
@@ -63,7 +48,6 @@ int	execution_start(t_mini *mini)
 		error = heredoc_exec(data);
 	if (error == 0)
 		error = execute_cmds(data);
-	code = data->code;
 	reset_redir_patch(data);
-	return (code);
+	return (0);
 }
