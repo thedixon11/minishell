@@ -67,7 +67,7 @@ void	print_environment(char **env)
 	y = 0;
 	while (env[y] != NULL)
 	{
-		ft_putendl_fd(env[y], STDIN_FILENO);
+		ft_putendl_fd(env[y], 1);
 		y++;
 	}
 }

@@ -37,6 +37,7 @@
 # define I_EXPORT "export"
 # define I_PWD "pwd"
 # define I_UNSET "unset"
+# define I_STAT "stat"
 
 // List of error messages
 # define LIBFT_ERR "Libft function execution failed"
@@ -49,5 +50,6 @@
 # define EXIT_INVALID "numeric argument required"
 # define EXIT_ARGS_ERR "too many arguments"
 # define EXPORT_ID_ERR "not a valid identifier"
+# define DIR_ERR "Is a directory"
 
 #endif /*MINISHELL_GENERAL_H*/
