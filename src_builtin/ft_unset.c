@@ -51,6 +51,8 @@ int	ft_unset(t_data *data, char **cmd_args)
 	int	y;
 
 	y = 1;
+  if (data->env == NULL)
+    return (0);
 	while (cmd_args[y] != NULL)
 	{
 		remove_the_env_var(data, cmd_args[y]);

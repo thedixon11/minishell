@@ -34,6 +34,8 @@ void	save_pipe_rd_to_old_read_fd(t_data *data)
 {
 	if (data->current_cmd_nb < data->max_cmd_nb)
 		data->old_read_fd = data->pipe_fd[0];
+  data->pipe_fd[0] = -1;
+  data->pipe_fd[1] = -1;
 }
 
 void	wait_all_children(t_data *data)
