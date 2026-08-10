@@ -52,11 +52,9 @@ void	child_no_builtin(t_data *data)
 	find_path_tab(data, cmd_data);
 	if (cmd_data->args_tab != NULL)
 		prog_name_prep(data, cmd_data);
-	//is_prog_existing_and_executable(data, cmd_data);
 	is_directory(data, cmd_data);
 	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
 	error_int(data, I_EXECVE, strerror(errno), 1);
-	free_env(data->env);
 	free_and_close_life(data);
 	exit (1);
 }
@@ -73,7 +71,6 @@ void	child_process(t_data *data)
 		child_no_builtin(data);
 	else
 		execute_builtin(data);
-	free_env(data->env);
 	free_and_close_life(data);
 	exit (0);
 }

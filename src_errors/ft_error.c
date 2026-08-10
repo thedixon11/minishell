@@ -9,7 +9,6 @@ int	error_int(t_data *data, char *item, char *message, int code)
 	write(2, "\n", 1);
 	if (data->do_i_exit == B_TRUE)
 	{
-		free_env(data->env);
 		free_and_close_life(data);
 		exit (code);
 	}
@@ -28,7 +27,6 @@ char	*error_char(t_data *data, char *item, char *message, int code)
 	write(2, "\n", 1);
 	if (data->do_i_exit == B_TRUE)
 	{
-		free_env(data->env);
 		free_and_close_life(data);
 		exit (code);
 	}

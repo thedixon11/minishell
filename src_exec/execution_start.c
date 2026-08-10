@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include "minishell_xecution.h"
 
 void	set_fd_pipe_zero(t_data *data)
 {
@@ -32,6 +33,7 @@ void	data_creation(t_data *data)
 	data->pipe_fd[0] = -1;
 	data->pipe_fd[1] = -1;
 	data->old_read_fd = -1;
+  data->current_cmd_nb = 0;
 }
 
 int	execution_start(t_data *data)
@@ -49,5 +51,6 @@ int	execution_start(t_data *data)
 	if (error == 0)
 		error = execute_cmds(data);
 	reset_redir_patch(data);
+  free_and_close_life(data);
 	return (0);
 }

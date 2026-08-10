@@ -79,9 +79,9 @@ int	main(int argc, char **argv, char **envp)
 			free_token_ll(token);
 			data->max_cmd_nb = max_cmd_nb;
 			execution_start(data);
-      data->do_i_exit = B_TRUE;
 		}
 	}
+  data->do_i_exit = B_TRUE;
   code = data->code;
 	free_and_close_life(data);
 	return (code);
