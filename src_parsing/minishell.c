@@ -6,11 +6,11 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*token;
 	t_mini	mini;
 	int	max_cmd_nb;
-	int	y;
+	//int	y;
 
 	(void) argv;
 	(void) argc;
-	y = 0;
+	//y = 0;
 	mini.code = 0;
 	mini.max_cmd_nb = 0;
 	mini.line_cmd = NULL;
