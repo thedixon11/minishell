@@ -20,8 +20,8 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	t_token	*token;
 	t_data	*data;
-	int		max_cmd_nb;
-	int 	code;
+	int	max_cmd_nb;
+	int code;
 	//int	y;
 
 	(void) argv;
