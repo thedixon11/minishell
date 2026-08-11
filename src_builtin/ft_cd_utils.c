@@ -27,25 +27,24 @@ char	*search_home_var(t_data *data)
 	return (NULL);
 }
 
-int	update_data_wd_home(t_data *data, char *pathname)
+int	update_data_wd_home(t_data *data)
 {
-	char	*temp_oldcwd;
+	char	*home_path;
 
-	temp_oldcwd = getcwd(NULL, 0);
-	if (!temp_oldcwd)
-		pathname = search_home_var(data);
-	if (pathname == NULL)
+	home_path = search_home_var(data);
+	if (home_path == NULL)
 		return (error_int(data, I_CD, CD_NO_HOME, 1));
-	data->error = chdir(pathname);
+	data->error = chdir(home_path);
 	data->saved_errno = errno;
 	if (data->error == -1)
-		return (ft_free((void**)&temp_oldcwd), 
-		  ft_cd_error(data, pathname, strerror(data->saved_errno), 1));
+		return (ft_cd_error(data, home_path, strerror(data->saved_errno), 1));
 	ft_free((void **)&data->old_cwd);
-	data->old_cwd = ft_strdup(temp_oldcwd);
+	if (data->cwd != NULL)
+		data->old_cwd = ft_strdup(data->cwd);
+	else
+		data->old_cwd = ft_strdup("");
 	if (!data->old_cwd)
-		return (ft_free((void**)&temp_oldcwd), error_int(data, I_CD, LIBFT_ERR, 1));
-	ft_free((void **)&temp_oldcwd);
+		return (error_int(data, I_CD, LIBFT_ERR, 1));
 	ft_free((void **)&data->cwd);
 	data->cwd = getcwd(NULL, 0);
 	if (!data->cwd)

@@ -55,6 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	if (line[0] != 0)
 	{
 		token = to_token(line);
+
 		if (token)
 		{
 			mini.line_cmd = to_parse(&max_cmd_nb, token); // BUG: debut bug

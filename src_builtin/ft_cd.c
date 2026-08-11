@@ -53,6 +53,7 @@ int	update_data_wd(t_data *data, char *pathname)
 int	change_cwd_to_home(t_data *data)
 {
 	t_env	*current;
+	char	*pwd;
 
 	current = data->env;
 	while (current != NULL)
@@ -61,7 +62,11 @@ int	change_cwd_to_home(t_data *data)
 		{
 			if (current->content == NULL || current->content[0] == 0)
 				return(error_int(data, I_CD, CD_NO_HOME, 1));
-			if (update_data_wd_home(data, current->content) != 0)
+			pwd = getcwd(NULL, 0);
+			if (pwd == NULL)
+				update_data_wd_home(data);
+			ft_free((void **)&pwd);
+			if (update_data_wd(data, current->content) != 0)
 				return (1);
 			return (0);
 		}
