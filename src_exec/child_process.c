@@ -54,7 +54,9 @@ void	child_no_builtin(t_data *data)
 		prog_name_prep(data, cmd_data);
 	is_directory(data, cmd_data);
 	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
-	error_int(data, I_EXECVE, strerror(errno), 1);
+	if (errno == EACCES)
+		error_int(data, cmd_data->prog_fullname, strerror(errno), 126);
+	error_int(data, cmd_data->prog_fullname, strerror(errno), 1);
 	free_and_close_life(data);
 	exit (1);
 }
