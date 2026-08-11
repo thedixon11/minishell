@@ -86,40 +86,8 @@ int	main(int argc, char **argv, char **envp)
 	}
   data->do_i_exit = B_TRUE;
   code = data->code;
-	//free_and_close_life(data);
+	free_and_close_life(data);
 	return (code);
-}
-
-int	print_env(t_env	*env)
-{
-	printf("EH OUI VOILA L'ENV\n");
-	while (env != NULL)
-	{
-		printf("%s = %s\n", env->name, env->content);
-		env = env->next;
-	}
-	printf("\n\n");
-	return (0);
-}
-
-int	print_tokens(t_token *token)
-{
-	while (token != NULL)
-	{
-		printf("value = %s, et type = %u\n", token->value, token->type);
-		token = token->next;
-	}
-	return (0);
-}
-
-int	print_lines(t_line *lines)
-{
-	while (lines != NULL)
-	{
-		printf("content = %s, type = %d, et cmd = %d\n", lines->content, lines->type, lines->cmd_nb);
-		lines = lines->next;
-	}
-	return (0);
 }
 
 void	free_token_ll(t_token *token)
@@ -141,7 +109,7 @@ void	free_token_ll(t_token *token)
 	ft_free((void **)&current);
 	}
 
-void handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	g_signal = sig;
 
@@ -149,4 +117,11 @@ void handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	handle_sigint_heredoc(int sig)
+{
+	g_signal = SIGINT;
+
+	close (0);
 }

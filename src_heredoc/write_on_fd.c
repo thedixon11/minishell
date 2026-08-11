@@ -66,6 +66,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	line = create_line(data, heredoc, xpand_or_not);
 	if (!line)
 		return (1);
+	signal (SIGINT, handle_sigint_heredoc);
 	while (ft_strncmp(line, heredoc->content, data->limiter_len) != 0)
 	{
 		len_of_line = ft_strlen(line);
@@ -79,6 +80,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		if (!line)
 			return (1);
 	}
+	signal (SIGINT, handle_sigint);
 	ft_free((void **)&line);
 	ft_close_fd(&data->heredoc_pipe_fds[1]);
 	return (0);

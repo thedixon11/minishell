@@ -27,7 +27,7 @@ t_line *fusion_commands(t_line *head);
 t_line	*to_parse(int *max_cmd_nb, t_token *head);
 void	handle_command(t_token *token, t_line **head, int cmd_nb);
 void	handle_pipe(int *cmd_nb, t_line **head);
-int	handle_redir(t_token *token, int cmd_nb, t_line **head);
+int		handle_redir(t_token *token, int cmd_nb, t_line **head);
 
 // to_token.c
 t_token	*to_token(char *line);
@@ -39,6 +39,7 @@ void	handle_word(t_state *state);
 int	is_operator(char c);
 t_type	get_type(t_state *state);
 
-void handle_sigint(int sig);
+void 	handle_sigint(int sig);
+void	handle_sigint_heredoc(int sig);
 
 #endif
