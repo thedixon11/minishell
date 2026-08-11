@@ -65,7 +65,8 @@ int	main(int argc, char **argv, char **envp)
 			mini.code = execution_start(&mini); // BUG: et bug du coup dans val manager
 		}
 	}*/
-
+	signal (SIGINT, handle_sigint);
+	signal (SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -85,7 +86,7 @@ int	main(int argc, char **argv, char **envp)
 	}
   data->do_i_exit = B_TRUE;
   code = data->code;
-	free_and_close_life(data);
+	//free_and_close_life(data);
 	return (code);
 }
 
