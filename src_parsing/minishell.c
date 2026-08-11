@@ -25,6 +25,8 @@ int	main(int argc, char **argv, char **envp)
 	{
 		line = readline("minishell$ ");	// -lreadline pour compil
 		add_history(line);				// historique envoie au prompt fleche du haut et du bas pour check
+		if (!line)
+			break ;						//renvoie NULL ctrl D to leave
 		token = to_token(line);
 		mini.line_cmd = to_parse(&max_cmd_nb, token);
 		free_token_ll(token);
@@ -32,8 +34,8 @@ int	main(int argc, char **argv, char **envp)
 		mini.code = execution_start(&mini);	
 		// print_tokens(token);
 		//print_lines(lines);
-		if (!line)
-			break ;						//renvoie NULL ctrl D to leave
+		// if (!line)
+		// 	break ;						//renvoie NULL ctrl D to leave
 	}
 		free_env(mini.env);
 		return (mini.code);
