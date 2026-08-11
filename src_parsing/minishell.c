@@ -19,7 +19,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*token;
 	t_data	*data;
 	int	max_cmd_nb;
-  int code;
+	int code;
 	//int	y;
 
 	(void) argv;

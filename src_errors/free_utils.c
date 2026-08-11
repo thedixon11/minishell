@@ -19,80 +19,42 @@ void	free_cmd_args(t_data *data)
 
 void	free_env(t_env **env)
 {
-	if (*env == NULL)
-		return ;
-	while (*env != NULL)
-	{
-		if ((env[0]->name) != NULL)
-			ft_free((void **)env[0]->name);
-		if (env[0]->content != NULL)
-			ft_free((void **)env[0]->content);
-		if (env[0]->next != NULL)
-		{
-			*env = env[0]->next;
-			ft_free((void **)env[0]->prev);
-		}
-		ft_free((void **)env);
-	}
-}
-/*
-void	free_env(t_env *env)
-{
 	t_env	*current;
+	t_env	*next;
 
-  if (!env)
-    return ;
-	current = env;
-	while (current->next != NULL)
+	if (env == NULL && *env == NULL)
+		return ;
+	current = *env;
+	while (current != NULL)
 	{
+		next = current->next;
 		if (current->name != NULL)
 			ft_free((void **)&current->name);
 		if (current->content != NULL)
 			ft_free((void **)&current->content);
-		current = current->next;
-		if (current->prev != NULL)
-			ft_free((void **)&current->prev);
+		ft_free((void **)&current);
+		current = next;
 	}
-	if (current->name != NULL)
-		ft_free((void **)&current->name);
-	if (current->content != NULL)
-		ft_free((void **)&current->content);
-	ft_free((void **)&current);
-}*/
+	*env = NULL;
+}
 
-void	free_line_cmd(t_line *line_cmd)
+void	free_line_cmd(t_line **line_cmd)
 {
 	t_line	*current;
+	t_line	*next;
 
-  if (!line_cmd)
-    return ;
-	current = line_cmd;
-	while (current->next != NULL)
+	if (line_cmd == NULL && *line_cmd == NULL)
+		return ;
+	current = *line_cmd;
+	while (current != NULL)
 	{
+		next = current->next;
 		if (current->content != NULL)
 			ft_free((void **)&current->content);
 		if (current->content_xpand != NULL)
 			ft_free_tab(&current->content_xpand);
-		current = current->next;
-		ft_free((void **)&current->prev);
+		ft_free((void **)&current);
+		current = next;
 	}
-	if (current->content != NULL)
-		ft_free((void **)&current->content);
-	if (current->content_xpand != NULL)
-		ft_free_tab(&current->content_xpand);
-	ft_free((void **)&current);
+	*line_cmd = NULL;
 }
-
-// void	free_line_cmd(t_line *line_cmd)
-// {
-// 	t_line	*next;
-//
-// 	while (line_cmd)
-// 	{
-// 		next = line_cmd->next;
-// 		if (line_cmd->content)
-// 			ft_free((void **)&line_cmd->content);
-// 		ft_free((void **)&line_cmd);
-// 		line_cmd = next;
-// 	}
-// }
