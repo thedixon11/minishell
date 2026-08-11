@@ -40,6 +40,9 @@ int	change_cwd_to_home(t_data *data);
 int	check_nb_args_cd(t_data *data, char **cmd_args);
 int	ft_cd(t_data *data, char **cmd_args);
 
+//ft_cd_utils
+int	ft_cd_error(t_data *data, char *path, char *message, int code);
+
 //ft_pwd
 int	ft_pwd(t_data *data);
 
