@@ -3,6 +3,7 @@
 # include "./libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 # include "./minishell_struct.h"
 # include "./src_parsing/minishell_parsing.h"
 # include "./src_exec/minishell_xecution.h"

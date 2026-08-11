@@ -39,4 +39,6 @@ void	handle_word(t_state *state);
 int	is_operator(char c);
 t_type	get_type(t_state *state);
 
+void handle_sigint(int sig);
+
 #endif

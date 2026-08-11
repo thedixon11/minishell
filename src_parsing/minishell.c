@@ -1,5 +1,7 @@
 #include "../minishell_general.h"
 
+int	g_signal;
+
 t_data	*data_init(void)
 {
 	t_data	*data;
@@ -18,14 +20,14 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	t_token	*token;
 	t_data	*data;
-	int	max_cmd_nb;
-  int code;
+	int		max_cmd_nb;
+	int 	code;
 	//int	y;
 
 	(void) argv;
 	(void) argc;
 	//y = 0;
-  code = 0;
+	code = 0;
 	data = data_init();
 	data->code = 0;
 	data->max_cmd_nb = 0;
@@ -137,3 +139,13 @@ void	free_token_ll(t_token *token)
 		ft_free((void **)&current->value);
 	ft_free((void **)&current);
 	}
+
+void handle_sigint(int sig)
+{
+	g_signal = sig;
+
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
