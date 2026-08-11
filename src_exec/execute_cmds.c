@@ -77,5 +77,5 @@ int	execute_cmds(t_data *data)
 	}
 	wait_all_children(data);
 	//export_no_args(data);
-	return (0);
+	return (data->code);
 }

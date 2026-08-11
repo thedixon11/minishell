@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	(void) argc;
 	//y = 0;
-  code = 0;
+	code = 0;
 	data = data_init();
 	data->code = 0;
 	data->max_cmd_nb = 0;
@@ -79,11 +79,11 @@ int	main(int argc, char **argv, char **envp)
 			data->line_cmd = to_parse(&max_cmd_nb, token);
 			free_token_ll(token);
 			data->max_cmd_nb = max_cmd_nb;
-			execution_start(data);
+			code = execution_start(data);
+			data->code = code;
 		}
 	}
-  data->do_i_exit = B_TRUE;
-  code = data->code;
+	data->do_i_exit = B_TRUE;
 	free_and_close_life(data);
 	return (code);
 }

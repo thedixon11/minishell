@@ -39,7 +39,9 @@ void	data_creation(t_data *data)
 int	execution_start(t_data *data)
 {
 	int	error;
+	int	code;
 
+	code = 0;
 	data_creation(data);
 	set_fd_pipe_zero(data);
 	data->do_i_exit = B_FALSE;
@@ -49,8 +51,8 @@ int	execution_start(t_data *data)
 	if (error == 0)
 		error = heredoc_exec(data);
 	if (error == 0)
-		error = execute_cmds(data);
+		code = execute_cmds(data);
 	reset_redir_patch(data);
-  free_and_close_life(data);
-	return (0);
+	free_and_close_life(data);
+	return (code);
 }

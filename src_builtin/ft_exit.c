@@ -25,6 +25,8 @@ t_bool	check_its_all_num(char *arg)
 	int	x;
 
 	x = 0;
+	if (arg[x] == '+' || arg[x] == '-')
+		x++;
 	while (arg[x] != 0)
 	{
 		if (ft_isdigit(arg[x]) != 1)
