@@ -5,7 +5,7 @@ void	echo_no_args(t_data *data)
 {
 	if (data->do_i_exit == B_TRUE)
 	{
-		free_env(data->env);
+		free_env(&data->env);
 		free_and_close_life(data);
 		exit (0);
 	}

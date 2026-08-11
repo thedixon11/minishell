@@ -17,6 +17,25 @@ void	free_cmd_args(t_data *data)
 	}
 }
 
+void	free_env(t_env **env)
+{
+	if (*env == NULL)
+		return ;
+	while (*env != NULL)
+	{
+		if ((env[0]->name) != NULL)
+			ft_free((void **)env[0]->name);
+		if (env[0]->content != NULL)
+			ft_free((void **)env[0]->content);
+		if (env[0]->next != NULL)
+		{
+			*env = env[0]->next;
+			ft_free((void **)env[0]->prev);
+		}
+		ft_free((void **)env);
+	}
+}
+/*
 void	free_env(t_env *env)
 {
 	t_env	*current;
@@ -39,7 +58,7 @@ void	free_env(t_env *env)
 	if (current->content != NULL)
 		ft_free((void **)&current->content);
 	ft_free((void **)&current);
-}
+}*/
 
 void	free_line_cmd(t_line *line_cmd)
 {

@@ -10,7 +10,7 @@ int	error_int(t_data *data, char *item, char *message, int code);
 
 //ft_free
 void	free_line_cmd(t_line *line_cmd);
-void	free_env(t_env *env);
+void	free_env(t_env **env);
 void	free_cmd_args(t_data *data);
 
 //close_fd_utils

@@ -6,7 +6,7 @@ void	check_cmd_is_not_empty(t_data *data, t_line *current)
 {
 	if (current->content_xpand == NULL)
 	{
-		free_env(data->env);
+		free_env(&data->env);
 		free_and_close_life(data);
 		exit(0);
 	}
