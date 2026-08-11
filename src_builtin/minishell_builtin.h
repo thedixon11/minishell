@@ -41,6 +41,8 @@ int	check_nb_args_cd(t_data *data, char **cmd_args);
 int	ft_cd(t_data *data, char **cmd_args);
 
 //ft_cd_utils
+int	update_data_wd_home(t_data *data, char *pathname);
+char	*search_home_var(t_data *data);
 int	ft_cd_error(t_data *data, char *path, char *message, int code);
 
 //ft_pwd
