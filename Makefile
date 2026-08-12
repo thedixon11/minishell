@@ -27,6 +27,7 @@ EXEC =	child_process.c \
 		execve_preparation_utils.c \
 		manage_redirections.c \
 		some_utils.c \
+		no_command_process.c
 
 XPAND = val_manager.c \
 		val_manager_utils.c \

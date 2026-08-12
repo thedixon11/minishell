@@ -34,8 +34,8 @@ void	save_pipe_rd_to_old_read_fd(t_data *data)
 {
 	if (data->current_cmd_nb < data->max_cmd_nb)
 		data->old_read_fd = data->pipe_fd[0];
-  data->pipe_fd[0] = -1;
-  data->pipe_fd[1] = -1;
+	data->pipe_fd[0] = -1;
+	data->pipe_fd[1] = -1;
 }
 
 void	wait_all_children(t_data *data)
@@ -67,7 +67,9 @@ int	execute_cmds(t_data *data)
 	{
 		if (reset_redir_patch(data) == 1)
 			return (1);
-		if (do_i_parent(data) == B_TRUE)
+		if (is_there_command(data) == B_FALSE)
+			no_command_process(data);
+		else if (do_i_parent(data) == B_TRUE)
 			data->code = execute_builtin_parent(data);
 		else
 			classic_execution(data);

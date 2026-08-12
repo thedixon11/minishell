@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include <string.h>
 
 int	time_to_fork_and_exec(t_data *data)
 {

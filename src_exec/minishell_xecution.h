@@ -18,7 +18,11 @@ void	child_process(t_data *data);
 void	child_no_builtin(t_data *data);
 void	create_args_tab(t_data *data, t_cmd *cmd_data);
 void	check_cmd_is_not_empty(t_data *data, t_line *current);
-	
+
+//no_command_process
+t_bool	is_there_command(t_data *data);
+void	no_command_process(t_data *data);
+
 //manage_redirections
 int	patch_others_redir(t_data *data);
 int	first_patch_pipes_redir(t_data *data);
