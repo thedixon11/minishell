@@ -68,7 +68,7 @@ int	execute_cmds(t_data *data)
 		if (reset_redir_patch(data) == 1)
 			return (1);
 		if (do_i_parent(data) == B_TRUE)
-			execute_builtin_parent(data);
+			data->code = execute_builtin_parent(data);
 		else
 			classic_execution(data);
 		close_used_fd(data);
@@ -76,6 +76,5 @@ int	execute_cmds(t_data *data)
 		data->current_cmd_nb++;
 	}
 	wait_all_children(data);
-	//export_no_args(data);
-	return (data->code);
+	return (0);
 }

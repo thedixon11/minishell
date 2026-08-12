@@ -6,7 +6,7 @@ int	execute_builtin_parent(t_data *data);
 t_bool	is_it_builtin(t_data *data);
 t_bool	is_echo_pwd_env(t_data *data);
 t_bool	is_there_pipes(t_data *data);
-void	execute_builtin(t_data *data);
+int	execute_builtin(t_data *data);
 
 //ft_export
 int	ft_export(t_data *data, char **cmd_args);

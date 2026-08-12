@@ -1,25 +1,29 @@
 #include "../minishell_general.h"
 #include "minishell_builtin.h"
 
-void	execute_builtin(t_data *data)
+int	execute_builtin(t_data *data)
 {
 	t_line	*current;
 
+  int code;
+
+  code = 0;
 	current = move_current_to_cmd(data);
 	if (ft_strncmp(current->content_xpand[0], "echo", 5) == 0)
-		ft_echo(data, current->content_xpand);
+		code = ft_echo(data, current->content_xpand);
 	else if (ft_strncmp(current->content_xpand[0], "cd", 3) == 0)
-		ft_cd(data, current->content_xpand);
+		code = ft_cd(data, current->content_xpand);
 	else if (ft_strncmp(current->content_xpand[0], "pwd", 4) == 0)
-		ft_pwd(data);
+		code = ft_pwd(data);
 	else if (ft_strncmp(current->content_xpand[0], "export", 7) == 0)
-		ft_export(data, current->content_xpand);
+		code = ft_export(data, current->content_xpand);
 	else if (ft_strncmp(current->content_xpand[0], "unset", 6) == 0)
-		ft_unset(data, current->content_xpand);
+		code = ft_unset(data, current->content_xpand);
 	else if (ft_strncmp(current->content_xpand[0], "env", 4) == 0)
-		ft_env(data, current->content_xpand);
+		code = ft_env(data, current->content_xpand);
 	else if (ft_strncmp(current->content_xpand[0], "exit", 5) == 0)
-		ft_exit(data, current->content_xpand);
+		code = ft_exit(data, current->content_xpand);
+  return (code);
 }
 
 t_bool	is_there_pipes(t_data *data)
@@ -80,8 +84,11 @@ t_bool	is_it_builtin(t_data *data)
 
 int	execute_builtin_parent(t_data *data)
 {
+  int code;
+
+  code = 0;
 	if (manage_redirections(data) == 1)
 		return (1);
-	execute_builtin(data);
-	return (0);
+	code = execute_builtin(data);
+	return (code);
 }

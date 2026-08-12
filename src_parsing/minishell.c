@@ -79,11 +79,11 @@ int	main(int argc, char **argv, char **envp)
 			data->line_cmd = to_parse(&max_cmd_nb, token);
 			free_token_ll(token);
 			data->max_cmd_nb = max_cmd_nb;
-			code = execution_start(data);
-			data->code = code;
+			execution_start(data);
 		}
 	}
 	data->do_i_exit = B_TRUE;
+  code = data->code;
 	free_and_close_life(data);
 	return (code);
 }

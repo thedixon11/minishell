@@ -5,7 +5,7 @@
 void	set_fd_pipe_zero(t_data *data);
 int	store_stdin_stdout(t_data *data);
 void	data_creation(t_data *data);
-int	execution_start(t_data *data);
+void	execution_start(t_data *data);
 
 //classic_execution
 void	parent_process(t_data *data);

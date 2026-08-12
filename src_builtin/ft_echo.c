@@ -65,5 +65,5 @@ int	ft_echo(t_data *data, char **args_cmd)
 		}
 		y++;
 	}
-	return (1);
+	return (0);
 }

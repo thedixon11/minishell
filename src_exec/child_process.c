@@ -63,6 +63,9 @@ void	child_no_builtin(t_data *data)
 
 void	child_process(t_data *data)
 {
+  int code;
+
+  code = 0;
 	data->do_i_exit = B_TRUE;
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
@@ -72,8 +75,8 @@ void	child_process(t_data *data)
 	if (is_it_builtin(data) == B_FALSE)
 		child_no_builtin(data);
 	else
-		execute_builtin(data);
+		code = execute_builtin(data);
 	free_and_close_life(data);
-	exit (0);
+	exit (code);
 }
 
