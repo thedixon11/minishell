@@ -44,7 +44,7 @@ void	wait_all_children(t_data *data)
 
 	while (waitpid(-1, &status, 0) != -1)
 	{
-		if (WIFEXITED(status))
+		if (data->last_pid == B_TRUE && WIFEXITED(status))
 			data->code = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			data->code = 128 + WTERMSIG(status);

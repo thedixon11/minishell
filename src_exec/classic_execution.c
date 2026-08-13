@@ -7,6 +7,8 @@ int	time_to_fork_and_exec(t_data *data)
 	pid = fork();
 	if (pid == -1)
 		return (error_int(data, I_FORK, strerror(errno), 1));
+  if (data->current_cmd_nb +  1 == data->max_cmd_nb)
+    data->last_pid = B_TRUE;
 	else if (pid == 0)
 		child_process(data);
 	return (0);

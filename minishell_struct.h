@@ -118,6 +118,7 @@ typedef struct s_data
   t_bool			do_i_exit;
 	char			*old_cwd;
 	char			*cwd;
+  t_bool       last_pid;
 }					t_data;
 
 typedef struct s_mini
