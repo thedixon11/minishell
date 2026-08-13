@@ -110,6 +110,7 @@ typedef struct s_data
 	int				saved_errno;
 	int				error;
 	int				code;
+	int				last_code;
 	char			*failed_content;
 	t_cmd			*cmd_data;
 	int				limiter_len;
@@ -118,7 +119,7 @@ typedef struct s_data
   t_bool			do_i_exit;
 	char			*old_cwd;
 	char			*cwd;
-  t_bool       last_pid;
+	int				last_pid;
 }					t_data;
 
 typedef struct s_mini

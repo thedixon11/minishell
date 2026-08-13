@@ -41,13 +41,19 @@ void	save_pipe_rd_to_old_read_fd(t_data *data)
 void	wait_all_children(t_data *data)
 {
 	int	status;
+	int	pid;
 
-	while (waitpid(-1, &status, 0) != -1)
+	pid = waitpid(-1, &status, 0);
+	while (pid > 0)
 	{
-		if (data->last_pid == B_TRUE && WIFEXITED(status))
-			data->code = WEXITSTATUS(status);
+		if (pid == data->last_pid)
+		{
+			if (WIFEXITED(status))
+				data->code = WEXITSTATUS(status);
+		}
 		else if (WIFSIGNALED(status))
 			data->code = 128 + WTERMSIG(status);
+		pid = waitpid(-1, &status, 0);
 	}
 }
 
@@ -64,7 +70,9 @@ int	reset_redir_patch(t_data *data)
 int	execute_cmds(t_data *data)
 {
 	while (data->current_cmd_nb <= data->max_cmd_nb)
-	{
+	{  
+		//if (data->current_cmd_nb == data->max_cmd_nb)
+		//	data->last_pid = B_TRUE;
 		if (reset_redir_patch(data) == 1)
 			return (1);
 		if (is_there_command(data) == B_FALSE)

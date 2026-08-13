@@ -33,8 +33,8 @@ void	data_creation(t_data *data)
 	data->pipe_fd[0] = -1;
 	data->pipe_fd[1] = -1;
 	data->old_read_fd = -1;
-  data->current_cmd_nb = 0;
-  data->last_pid = B_FALSE;
+	data->current_cmd_nb = 0;
+	data->last_pid = 0;
 }
 
 void	execution_start(t_data *data)
