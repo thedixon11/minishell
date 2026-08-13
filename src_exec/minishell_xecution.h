@@ -27,7 +27,7 @@ void	no_command_process(t_data *data);
 int	patch_others_redir(t_data *data);
 int	first_patch_pipes_redir(t_data *data);
 int	open_fd_in_line_cmd(t_data *data);
-int	check_ambiguous_redir(t_data *data);
+int	check_ambiguous_redir(t_data *data, t_line *current);
 int	manage_redirections(t_data *data);
 
 //execute_cmds
