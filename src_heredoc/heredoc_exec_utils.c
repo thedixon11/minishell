@@ -81,9 +81,9 @@ char	*delimiter_manager_hdoc(t_data *data, char *old_del)
 		return (error_char(data, I_STRDUP, LIBFT_ERR, 1));
 	while (old_del[i] != 0 && first != NULL)
 	{
-		if (old_del[i] != '\'' && old_del[i] != '\"' && old_del[i] != 0)
+		if (old_del[i] != '\'' && old_del[i] != '"' && old_del[i] != 0)
 			second = go_until_quote_hdoc(data, old_del, &i);
-		else if (old_del[i] == '\'' || old_del[i] != '\"')
+		else if (old_del[i] == '\'' || old_del[i] == '"')
 			second = extract_quote_hdoc(data, old_del, &i, old_del[i]);
 		if (second != NULL)
 			first = fusion_first_second_block(data, first, second);

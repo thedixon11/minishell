@@ -61,8 +61,8 @@ int	heredoc_exec(t_data *data)
 		{
 			if (create_heredoc_fd(data, current) == 1)
 				return (1);
-			if (ft_strchr(current->content, '\'') != NULL
-				&& ft_strchr(current->content, '"') != NULL)
+			if ((ft_strchr(current->content, '\'') != NULL)
+				|| (ft_strchr(current->content, '\"') != NULL))
 				error = quotes_in_delimiter(data, current);
 			else
 				error = write_on_fd(data, current, B_TRUE);

@@ -41,6 +41,8 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	line = get_next_line(STDIN_FILENO, heredoc->content, data->limiter_len);
 	if (line == NULL)
 		return (error_char(data, I_GNL, LIBFT_ERR, 1));
+	if (ft_strncmp(line, heredoc->content, data->limiter_len) == 0)
+		return (line);
 	if (xpand_or_not == B_FALSE)
 		return (line);
 	line_xpanded = expand_line_hdoc(data, line);

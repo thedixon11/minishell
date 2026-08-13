@@ -71,8 +71,6 @@ int	execute_cmds(t_data *data)
 {
 	while (data->current_cmd_nb <= data->max_cmd_nb)
 	{  
-		//if (data->current_cmd_nb == data->max_cmd_nb)
-		//	data->last_pid = B_TRUE;
 		if (reset_redir_patch(data) == 1)
 			return (1);
 		if (is_there_command(data) == B_FALSE)
