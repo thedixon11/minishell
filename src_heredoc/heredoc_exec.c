@@ -26,16 +26,21 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 	return (0);
 }
 
-int	quotes_in_delimiter(t_data *data, t_line *current)
+int	delimiter_manager_n_write_hdoc(t_data *data, t_line *current)
 {
-	char	*temp;
+	char	*temp1;
+  char  *temp2;
 
-	temp = ft_strdup(current->content);
-	if (!temp)
+	temp1 = ft_strdup(current->content);
+	if (!temp1)
 		return (error_int(data, I_STRDUP, LIBFT_ERR, 1));
 	ft_free((void **)&current->content);
-	current->content = delimiter_manager_hdoc(data, temp);
-	ft_free((void **)&temp);
+  temp2 = expand_off_quote_hdoc(data, temp1);
+	ft_free((void **)&temp1);
+  if (!temp2)
+    return (1);
+	current->content = remove_n_xtract_quotes_hdoc(data, temp2);
+	ft_free((void **)&temp2);
 	if (!current->content)
 		return (1);
 	if (write_on_fd(data, current, B_FALSE) == 1)
@@ -63,7 +68,7 @@ int	heredoc_exec(t_data *data)
 				return (1);
 			if ((ft_strchr(current->content, '\'') != NULL)
 				|| (ft_strchr(current->content, '\"') != NULL))
-				error = quotes_in_delimiter(data, current);
+				error = delimiter_manager_n_write_hdoc(data, current);
 			else
 				error = write_on_fd(data, current, B_TRUE);
 		}

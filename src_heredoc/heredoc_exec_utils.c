@@ -69,7 +69,7 @@ char	*go_until_dollar_hdoc(t_data *data, char *line, int *start)
 // NOTE: delimiter manager will treat the quotes of the delimiter and
 // removed them
 
-char	*delimiter_manager_hdoc(t_data *data, char *old_del)
+char	*remove_n_xtract_quotes_hdoc(t_data *data, char *old_del)
 {
 	char	*first;
 	char	*second;

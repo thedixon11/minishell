@@ -37,7 +37,8 @@ XPAND = val_manager.c \
 
 HEREDOC = heredoc_exec.c \
 		  heredoc_exec_utils.c \
-		  write_on_fd.c
+		  write_on_fd.c \
+			delimiter_manager.c
 
 ERRORS = ft_error.c \
 		 free_utils.c \
