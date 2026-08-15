@@ -94,8 +94,8 @@ int	ft_cd(t_data *data, char **cmd_args)
 	if (check_nb_args_cd(data, cmd_args) == 1)
 		return (1);
 	else if (check_nb_args_cd(data, cmd_args) == 3)
-		change_cwd_to_home(data);
+		return (change_cwd_to_home(data));
 	else
-		update_data_wd(data, cmd_args[1]);
+		return (update_data_wd(data, cmd_args[1]));
 	return (0);
 }

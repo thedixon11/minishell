@@ -1,6 +1,4 @@
 #include "../minishell_general.h"
-#include <string.h>
-#include <sys/stat.h>
 
 void	check_cmd_is_not_empty(t_data *data, t_line *current)
 {
@@ -13,6 +11,8 @@ void	check_cmd_is_not_empty(t_data *data, t_line *current)
 	if (current->content_xpand[0][0] == 0)
 	{
 		if (ft_strchr(current->content, '"') != 0)
+			error_int(data, "", CMD_ERR, 127);
+		if (ft_strchr(current->content, '\'') != 0)
 			error_int(data, "", CMD_ERR, 127);
 	}
 }
