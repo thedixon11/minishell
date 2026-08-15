@@ -8,11 +8,13 @@ char	*add_quotes_content_util(t_data *data, char **name, char **content)
 	result = ft_strsrrnd(*content, "\"");
 	ft_free((void **)content);
 	if (!result)
-		return (ft_free((void **)name), error_char(data, I_EXPORT, LIBFT_ERR, 1));
+		return (ft_free((void **)name),
+			error_char(data, I_EXPORT, LIBFT_ERR, 1));
 	*content = ft_strjoin("=", result);
 	ft_free((void **) &result);
 	if (!*content)
-		return (ft_free((void **)name), error_char(data, I_EXPORT, LIBFT_ERR, 1));
+		return (ft_free((void **)name),
+			error_char(data, I_EXPORT, LIBFT_ERR, 1));
 	result = ft_strjoin(*name, *content);
 	ft_free((void **)content);
 	ft_free((void **)name);
@@ -43,7 +45,7 @@ int	add_quotes_content(t_data *data, char ***c_env)
 			if (!c_env[0][y])
 				return (1);
 		}
-		ft_free((void **)&content); // WARNING: possible double free ?? have to test one day
+		ft_free((void **)&content);
 		ft_free((void **)&name);
 		y++;
 	}
@@ -86,9 +88,11 @@ void	sort_env_tab(char ***c_env)
 	{
 		j = i + 1;
 		size = ft_strlen(c_env[0][i]) + 1;
-		while (c_env[0][j] != NULL && ft_strncmp(c_env[0][i], c_env[0][j], size) <= 0)
+		while (c_env[0][j] != NULL &&
+			ft_strncmp(c_env[0][i], c_env[0][j], size) <= 0)
 			j++;
-		if (c_env[0][j] != NULL && ft_strncmp(c_env[0][i], c_env[0][j], size) > 0)
+		if (c_env[0][j] != NULL &&
+			ft_strncmp(c_env[0][i], c_env[0][j], size) > 0)
 			swap_values(c_env, &i, j);
 		else
 			i++;
