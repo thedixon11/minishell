@@ -1,6 +1,7 @@
 #include "../minishell_general.h"
 
-void	join_path_prog(t_data *data, t_cmd *cmd_data, char *path, char *prog_name)
+void	join_path_prog(t_data *data, t_cmd *cmd_data, char *path,
+		char *prog_name)
 {
 	char	*temp;
 

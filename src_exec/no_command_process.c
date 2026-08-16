@@ -8,7 +8,6 @@ void	no_command_process(t_data *data)
 		return ;
 }
 
-
 t_bool	is_there_command(t_data *data)
 {
 	t_line	*current;

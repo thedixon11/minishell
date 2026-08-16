@@ -1,12 +1,12 @@
 #ifndef MINISHELL_ERRORS_H
 # define MINISHELL_ERRORS_H
 
-int	error_int(t_data *data, char *item, char *message, int code);
+int		error_int(t_data *data, char *item, char *message, int code);
 char	*error_char(t_data *data, char *item, char *message, int code);
 
 //ft_error
 char	*error_char(t_data *data, char *item, char *message, int code);
-int	error_int(t_data *data, char *item, char *message, int code);
+int		error_int(t_data *data, char *item, char *message, int code);
 
 //ft_free
 void	free_line_cmd(t_line **line_cmd);

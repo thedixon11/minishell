@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_builtin.h"
 
 void	echo_no_args(t_data *data)
 {
@@ -7,7 +6,7 @@ void	echo_no_args(t_data *data)
 	{
 		free_env(&data->env);
 		free_and_close_life(data);
-		exit (0);
+		exit(0);
 	}
 }
 
@@ -42,8 +41,8 @@ t_bool	skip_option_n(t_data *data, char **args_cmd, int *y)
 int	ft_echo(t_data *data, char **args_cmd)
 {
 	int		y;
-	t_bool	do_i_return;
 	int		len;
+	t_bool	do_i_return;
 
 	y = 1;
 	len = 0;

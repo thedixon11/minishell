@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include <string.h>
 
 // NOTE: here we check if the programm exists and is executable
 // with the function access

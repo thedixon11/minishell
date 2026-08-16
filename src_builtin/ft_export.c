@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_builtin.h"
 
 int	create_new_var_env(t_data *data, char *name, char *content)
 {
@@ -11,11 +10,13 @@ int	create_new_var_env(t_data *data, char *name, char *content)
 		return (error_int(data, I_EXPORT, LIBFT_ERR, 1));
 	new_var_env->name = ft_strdup(name);
 	if (!new_var_env->name)
-		return (ft_free((void **)&new_var_env), error_int(data, I_EXPORT, LIBFT_ERR, 1));
+		return (ft_free((void **)&new_var_env), error_int(data, I_EXPORT,
+				LIBFT_ERR, 1));
 	new_var_env->content = ft_strdup(content);
 	if (!new_var_env->content)
-		return (ft_free((void **)&new_var_env->name), ft_free((void **)&new_var_env),
-				error_int(data, I_EXPORT, LIBFT_ERR, 1));
+		return (ft_free((void **)&new_var_env->name),
+			ft_free((void **)&new_var_env), error_int(data, I_EXPORT, LIBFT_ERR,
+				1));
 	current = data->env;
 	while (current->next != NULL)
 		current = current->next;
@@ -79,7 +80,7 @@ int	ft_export(t_data *data, char **cmd_args)
 	{
 		name = get_name_var_env(data, cmd_args[y]);
 		if (!name)
-			return(1);
+			return (1);
 		if (check_var_env_name(data, &name, cmd_args[y], &y) == B_FALSE)
 			continue ;
 		content = get_content_var_env(data, cmd_args[y]);
@@ -91,6 +92,5 @@ int	ft_export(t_data *data, char **cmd_args)
 		ft_free((void **)&content);
 		y++;
 	}
-	//export_no_args(data);	// NOTE: juste pour voir le resultat directement (test)
 	return (data->code);
 }

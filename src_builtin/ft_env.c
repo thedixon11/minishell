@@ -1,9 +1,8 @@
 #include "../minishell_general.h"
-#include "minishell_builtin.h"
 
 int	ft_env(t_data *data, char **cmd_args)
 {
-	int	y;
+	int		y;
 	t_env	*current;
 
 	y = 0;

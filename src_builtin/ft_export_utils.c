@@ -7,7 +7,7 @@ void	ft_export_error(t_data *data, char *identifier, int code)
 	write(2, identifier, ft_strlen(identifier));
 	write(2, "\': ", 3);
 	write(2, EXPORT_ID_ERR, ft_strlen(EXPORT_ID_ERR));
-	write(1, "\n", 1);	
+	write(1, "\n", 1);
 	data->saved_errno = 0;
 	data->error = 0;
 	data->code = code;
@@ -20,7 +20,7 @@ char	*get_content_var_env(t_data *data, char *name_n_value)
 	char	*content;
 
 	start = 0;
-	while (name_n_value [start] != 0 && name_n_value[start] != '=')
+	while (name_n_value[start] != 0 && name_n_value[start] != '=')
 		start++;
 	if (name_n_value[start] == 0)
 	{

@@ -19,7 +19,7 @@ void	close_line_cmd_fds_full(t_data *data)
 		else
 			ft_close_fd(current->fd_of_pipe);
 		current = current->next;
-	}	
+	}
 }
 
 void	close_line_cmd_fds(t_data *data)

@@ -29,16 +29,16 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 int	delimiter_manager_n_write_hdoc(t_data *data, t_line *current)
 {
 	char	*temp1;
-  char  *temp2;
+	char	*temp2;
 
 	temp1 = ft_strdup(current->content);
 	if (!temp1)
 		return (error_int(data, I_STRDUP, LIBFT_ERR, 1));
 	ft_free((void **)&current->content);
-  temp2 = expand_off_quote_hdoc(data, temp1);
+	temp2 = expand_off_quote_hdoc(data, temp1);
 	ft_free((void **)&temp1);
-  if (!temp2)
-    return (1);
+	if (!temp2)
+		return (1);
 	current->content = remove_n_xtract_quotes_hdoc(data, temp2);
 	ft_free((void **)&temp2);
 	if (!current->content)
@@ -55,10 +55,10 @@ int	delimiter_manager_n_write_hdoc(t_data *data, t_line *current)
 
 int	heredoc_exec(t_data *data)
 {
-  int error;
+	int		error;
 	t_line	*current;
 
-  error = 0;
+	error = 0;
 	current = data->line_cmd;
 	while (current != NULL && data->error == 0)
 	{

@@ -4,8 +4,8 @@ char	**initialize_converted_env(t_data *data, t_env *env)
 {
 	char	**converted_env;
 	t_env	*current;
-	int	i;
-	
+	int		i;
+
 	i = 0;
 	current = env;
 	while (current != NULL)

@@ -1,24 +1,5 @@
 #include "../minishell_general.h"
 
-void	close_used_fd(t_data *data)
-{
-	t_line	*current;
-
-	current = move_current_to_start(data);
-	while (current != NULL && current->cmd_nb == data->current_cmd_nb)
-	{
-		if (current->type == T_INPUT || current->type == T_HEREDOC)
-			ft_close_fd(&current->fd);
-		else if (current->type == T_OUTPUT_APPEND 
-				|| current->type == T_OUTPUT_TRUNC)
-			ft_close_fd(&current->fd);
-		else if (current->type == T_PIPE_IN || current->type == T_PIPE_OUT)
-			ft_close_fd(current->fd_of_pipe);
-		current = current->next;		
-	}
-	ft_close_fd(&data->pipe_fd[1]);
-}
-
 t_bool	do_i_parent(t_data *data)
 {
 	if (is_it_builtin(data) == B_FALSE)
@@ -59,7 +40,6 @@ void	wait_all_children(t_data *data)
 
 int	reset_redir_patch(t_data *data)
 {
-	
 	if (dup2(data->saved_stdin, STDIN_FILENO) == -1)
 		return (error_int(data, I_DUP2, strerror(errno), 1));
 	if (dup2(data->saved_stdout, STDOUT_FILENO) == -1)
@@ -70,7 +50,7 @@ int	reset_redir_patch(t_data *data)
 int	execute_cmds(t_data *data)
 {
 	while (data->current_cmd_nb <= data->max_cmd_nb)
-	{  
+	{
 		if (reset_redir_patch(data) == 1)
 			return (1);
 		if (is_there_command(data) == B_FALSE)

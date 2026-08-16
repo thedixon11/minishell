@@ -20,17 +20,17 @@ void	check_cmd_is_not_empty(t_data *data, t_line *current)
 void	create_args_tab(t_data *data, t_cmd *cmd_data)
 {
 	t_line	*current;
-	
+
 	current = move_current_to_cmd(data);
 	check_cmd_is_not_empty(data, current);
 	cmd_data->args_tab = ft_arraydup(current->content_xpand);
 	if (!cmd_data->args_tab)
-    error_int(data, I_ARRAYDUP, LIBFT_ERR, 1);
+		error_int(data, I_ARRAYDUP, LIBFT_ERR, 1);
 }
 
 int	is_directory(t_data *data, t_cmd *cmd_data)
 {
-	struct stat buf;
+	struct stat	buf;
 
 	if (stat(cmd_data->prog_fullname, &buf) == -1)
 		error_int(data, cmd_data->prog_fullname, strerror(errno), 127);
@@ -58,14 +58,14 @@ void	child_no_builtin(t_data *data)
 		error_int(data, cmd_data->prog_fullname, strerror(errno), 126);
 	error_int(data, cmd_data->prog_fullname, strerror(errno), 1);
 	free_and_close_life(data);
-	exit (1);
+	exit(1);
 }
 
 void	child_process(t_data *data)
 {
-  int code;
+	int	code;
 
-  code = 0;
+	code = 0;
 	data->do_i_exit = B_TRUE;
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
@@ -77,6 +77,5 @@ void	child_process(t_data *data)
 	else
 		code = execute_builtin(data);
 	free_and_close_life(data);
-	exit (code);
+	exit(code);
 }
-

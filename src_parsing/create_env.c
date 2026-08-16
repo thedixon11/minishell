@@ -17,7 +17,7 @@ t_env	*create_env(char **envp)
 	return (head);
 }
 
-void	add_node_env(t_env	*current, t_env **head)
+void	add_node_env(t_env *current, t_env **head)
 {
 	t_env	*temp;
 

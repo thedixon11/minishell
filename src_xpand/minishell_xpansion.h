@@ -15,6 +15,8 @@ void	jump_quoted_content(char *content, int *end);
 
 // dollar manager functions
 char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode);
+
+//dollar_manager_utils
 char	*dollar_not_alphanum_and_err(t_data *data, char *str, int *i);
 char	*dollar_is_error_code(t_data *data, int *i);
 char	*zero_after_dollar(t_data *data, int *i);

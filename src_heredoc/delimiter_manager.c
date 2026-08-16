@@ -38,7 +38,7 @@ char	*zero_after_dollar_hdoc(t_data *data, int *i)
 
 char	*dollar_manager_hdoc(t_data *data, char *str, int *i)
 {
-	if ((str[*i + 1] == '"' ) || (str[*i + 1] == '\''))
+	if ((str[*i + 1] == '"') || (str[*i + 1] == '\''))
 		return (quote_after_dollar(data, i));
 	else if (str[*i + 1] == 0)
 		return (zero_after_dollar(data, i));

@@ -2,9 +2,9 @@
 
 void	free_env_node(t_env *to_delete)
 {
-		ft_free((void **)&to_delete->name);
-		ft_free((void **)&to_delete->content);
-		ft_free((void **)&to_delete);
+	ft_free((void **)&to_delete->name);
+	ft_free((void **)&to_delete->content);
+	ft_free((void **)&to_delete);
 }
 
 void	delete_node(t_env *to_delete)
@@ -51,8 +51,8 @@ int	ft_unset(t_data *data, char **cmd_args)
 	int	y;
 
 	y = 1;
-  if (data->env == NULL)
-    return (0);
+	if (data->env == NULL)
+		return (0);
 	while (cmd_args[y] != NULL)
 	{
 		remove_the_env_var(data, cmd_args[y]);

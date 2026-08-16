@@ -47,6 +47,7 @@ ERRORS = ft_error.c \
 BUILTIN = ft_export.c \
 		  ft_export_print.c \
 		  ft_export_utils.c \
+		  ft_export_utils_two.c \
 		  ft_echo.c \
 		  ft_cd.c \
 		  ft_cd_utils.c \

@@ -36,12 +36,13 @@ int	update_data_wd(t_data *data, char *pathname)
 	data->error = chdir(pathname);
 	data->saved_errno = errno;
 	if (data->error == -1)
-		return (ft_free((void**)&temp_oldcwd), 
-		  ft_cd_error(data, pathname, strerror(data->saved_errno), 1));
+		return (ft_free((void **)&temp_oldcwd), ft_cd_error(data, pathname,
+				strerror(data->saved_errno), 1));
 	ft_free((void **)&data->old_cwd);
 	data->old_cwd = ft_strdup(temp_oldcwd);
 	if (!data->old_cwd)
-		return (ft_free((void**)&temp_oldcwd), error_int(data, I_CD, LIBFT_ERR, 1));
+		return (ft_free((void **)&temp_oldcwd), error_int(data, I_CD, LIBFT_ERR,
+				1));
 	ft_free((void **)&temp_oldcwd);
 	ft_free((void **)&data->cwd);
 	data->cwd = getcwd(NULL, 0);
@@ -61,7 +62,7 @@ int	change_cwd_to_home(t_data *data)
 		if (ft_strncmp(current->name, "HOME", 5) == 0)
 		{
 			if (current->content == NULL || current->content[0] == 0)
-				return(error_int(data, I_CD, CD_NO_HOME, 1));
+				return (error_int(data, I_CD, CD_NO_HOME, 1));
 			pwd = getcwd(NULL, 0);
 			if (pwd == NULL)
 				update_data_wd_home(data);

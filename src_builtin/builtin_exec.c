@@ -1,13 +1,11 @@
 #include "../minishell_general.h"
-#include "minishell_builtin.h"
 
 int	execute_builtin(t_data *data)
 {
 	t_line	*current;
+	int		code;
 
-  int code;
-
-  code = 0;
+	code = 0;
 	current = move_current_to_cmd(data);
 	if (ft_strncmp(current->content_xpand[0], "echo", 5) == 0)
 		code = ft_echo(data, current->content_xpand);
@@ -23,7 +21,7 @@ int	execute_builtin(t_data *data)
 		code = ft_env(data, current->content_xpand);
 	else if (ft_strncmp(current->content_xpand[0], "exit", 5) == 0)
 		code = ft_exit(data, current->content_xpand);
-  return (code);
+	return (code);
 }
 
 t_bool	is_there_pipes(t_data *data)
@@ -54,7 +52,7 @@ t_bool	is_echo_pwd_env(t_data *data)
 	else if (ft_strncmp(current->content_xpand[0], "env", 4) == 0)
 		return (B_FALSE);
 	else
-	 return (B_TRUE);
+		return (B_TRUE);
 }
 
 t_bool	is_it_builtin(t_data *data)
@@ -84,9 +82,9 @@ t_bool	is_it_builtin(t_data *data)
 
 int	execute_builtin_parent(t_data *data)
 {
-  int code;
+	int	code;
 
-  code = 0;
+	code = 0;
 	if (manage_redirections(data) == 1)
 		return (1);
 	code = execute_builtin(data);
