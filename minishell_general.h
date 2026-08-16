@@ -38,6 +38,7 @@
 # define I_PWD "pwd"
 # define I_UNSET "unset"
 # define I_STAT "stat"
+# define I_GETCWD "getcwd"
 
 // List of error messages
 # define LIBFT_ERR "Libft function execution failed"

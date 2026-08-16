@@ -39,7 +39,7 @@ t_env	*new_node_env(char *line)
 	t_env	*node;
 	char	*equal;
 
-	node = calloc(1, sizeof(t_env));
+	node = ft_calloc(1, sizeof(t_env));
 	if (!node)
 		return (NULL);
 	equal = ft_strchr(line, '=');

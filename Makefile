@@ -33,7 +33,8 @@ XPAND = val_manager.c \
 		val_manager_utils.c \
 		quote_manager.c \
 		env_var_manager.c \
-		dollar_manager.c
+		dollar_manager.c \
+		dollar_manager_utils.c
 
 HEREDOC = heredoc_exec.c \
 		  heredoc_exec_utils.c \
@@ -63,8 +64,8 @@ PARSING = minishell.c \
 		  to_parse.c \
 		  to_token.c \
 		  to_token_utils.c \
-		  create_env.c
-
+		  create_env.c \
+		  is_there_env.c
 
 PARSING := $(addprefix $(PARSING_DIR)/,$(PARSING))
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))

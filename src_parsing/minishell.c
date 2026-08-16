@@ -20,51 +20,15 @@ int	main(int argc, char **argv, char **envp)
 	t_data	*data;
 	int	max_cmd_nb;
 	int code;
-	//int	y;
 
 	(void) argv;
 	(void) argc;
-	//y = 0;
 	code = 0;
 	data = data_init();
 	data->code = 0;
 	data->max_cmd_nb = 0;
 	data->line_cmd = NULL;
-	data->env = create_env(envp);
-	
-	/*
-	line = readline("minishell$ ");
-	if (!line)
-		exit(15);
-	add_history(line);
-	if (line[0] != 0)
-	{
-		token = to_token(line);
-		if (token)
-		{
-			mini.line_cmd = to_parse(&max_cmd_nb, token);
-			free_token_ll(token);
-			mini.max_cmd_nb = max_cmd_nb;
-			mini.code = execution_start(&mini);
-		}
-	}
-	line = readline("minishell$ ");
-	if (!line)
-		exit(15);
-	add_history(line);
-	if (line[0] != 0)
-	{
-		token = to_token(line);
-
-		if (token)
-		{
-			mini.line_cmd = to_parse(&max_cmd_nb, token); // BUG: debut bug
-			free_token_ll(token);
-			mini.max_cmd_nb = max_cmd_nb;
-			mini.code = execution_start(&mini); // BUG: et bug du coup dans val manager
-		}
-	}*/
-
+	initialize_env(data, envp);
 	while (1)
 	{
 		line = readline("minishell$ ");
