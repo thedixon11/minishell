@@ -42,10 +42,12 @@ t_type	get_type(t_state *state);
 // is_there_env
 int	initialize_env(t_data *data, char **envp);
 t_bool	check_if_value_exist(t_data *data, char *value);
+int	create_new_env(t_data *data);
+
+//is_there_env_utils
 int	create_pwd_value(t_data *data);
 int	create_shlvl_value(t_data *data);
 int	update_pwd_value(t_data *data);
 int	update_shlvl_value(t_data *data);
-int	create_new_env(t_data *data);
 
 #endif
