@@ -3,6 +3,7 @@
 t_token	*to_token(char *line)
 {
 	t_state	state;
+
 	state.i = 0;
 	state.start = 0;
 	state.str = line;
@@ -33,10 +34,7 @@ void	handle_quote(t_state *state)
 	while (state->str[state->i] != state->quote && state->str[state->i] != '\0') 
 			state->i++;
 	if (state->quote != '\0' && state->str[state->i] == '\0')
-	{
-		printf("Erreur : Quote pas fermee bordel\n");
-		return ;
-	}
+		error_token(state, STAX_QUOTES, 2, B_TRUE);
 }
 
 void	handle_operator(t_state *state)
@@ -48,11 +46,12 @@ void	handle_operator(t_state *state)
 	type = get_type(state);
 	if (type == T_HEREDOC || type == T_OUTPUT_APPEND)
 	{
-		str = strndup(state->str + state->i, 2);
+		str = ft_substr(state->str, state->i, 2); 
 		state->i++;
 	}
 	else 
-		str = strndup(state->str + state->i, 1);
+		str = ft_substr(state->str, state->i, 1);
+
 	state->current = new_node(str, type);
 	add_node(state->current, state);
 	state->start = state->i + 1;
@@ -65,7 +64,8 @@ void	handle_word(t_state *state)
 
 	if (state->start != state->i)
 	{
-		str = strndup(state->str + state->start, state->i - state->start);
+		//str = strndup(state->str + state->start, state->i - state->start); 
+		str = ft_substr(state->str, state->start, state->i - state->start); // WARNING: a voir si sa marche
 		state->current = new_node(str, T_COMMAND);
 		add_node(state->current, state);
 		state->start = state->i;

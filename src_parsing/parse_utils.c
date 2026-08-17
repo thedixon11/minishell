@@ -4,7 +4,7 @@ t_line	*new_line(t_type type, int cmd_nb, char *content)
 {
 	t_line	*node;
 
-	node = calloc(1, sizeof(t_line)); // BUG:
+	node = ft_calloc(1, sizeof(t_line)); // BUG:
 	if (!node)
 		return (NULL);
 	node->type = type;
@@ -12,8 +12,6 @@ t_line	*new_line(t_type type, int cmd_nb, char *content)
 	node->cmd_nb = cmd_nb;
 	if (content)
 		node->content = ft_strdup(content);
-	// else
-	// 	node->content = ft_strdup("");
 	return (node);
 }
 

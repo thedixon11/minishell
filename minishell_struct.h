@@ -90,6 +90,7 @@ typedef struct s_state
 	char			*str;
 	int				i;
 	char			quote;
+	t_env			*env;
 	struct s_token	*current;
 	struct s_token	*head;
 }					t_state;
@@ -121,14 +122,5 @@ typedef struct s_data
 	char			*cwd;
 	int				last_pid;
 }					t_data;
-
-typedef struct s_mini
-{
-	t_token	*token;
-	t_env	*env;
-	t_line	*line_cmd;
-	int		max_cmd_nb;
-	int		code;
-}			t_mini;
 
 #endif /*MINISHELL_STRUCT_H*/

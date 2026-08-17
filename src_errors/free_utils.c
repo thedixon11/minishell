@@ -1,5 +1,36 @@
 #include "../minishell_general.h"
 
+void	free_state_data(t_state *state)
+{
+	if (state == NULL)
+		return ;
+	if (state->current != NULL && state->current->value != NULL)
+		ft_free((void **)&state->current->value);
+	if (state->current != NULL)
+		ft_free((void **)&state->current);
+	if (state->head != NULL)
+		free_token_ll(state->head);
+}
+
+void	free_token_ll(t_token *token)
+{
+	t_token	*current;
+
+	if (!token)
+		return ;
+	current = token;
+	while (current->next != NULL)
+	{
+		if (current->value != NULL)
+			ft_free((void **)&current->value);
+		current = current->next;
+		ft_free((void **)&current->prev);
+	}
+	if (current->value != NULL)
+		ft_free((void **)&current->value);
+	ft_free((void **)&current);
+}
+
 void	free_cmd_args(t_data *data)
 {
 	if (data != NULL && data->cmd_data != NULL)

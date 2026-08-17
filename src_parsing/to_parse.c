@@ -19,7 +19,7 @@ t_line *fusion_commands(t_line *head)
 				if (skip->type == T_COMMAND)
 				{
 					resultat = ft_strjoin(current->content, " ");
-					ft_free((void **)&current->content); // WARNING:
+					ft_free((void **)&current->content);
 					current->content = ft_strjoin(resultat, skip->content);
 					ft_free((void **)&resultat);
 					temp = skip;

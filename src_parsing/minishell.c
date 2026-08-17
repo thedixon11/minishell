@@ -10,6 +10,10 @@ t_data	*data_init(void)
 		error_int(data, I_CALLOC, LIBFT_ERR, 1);
 		exit(1);
 	}
+	data->code = 0;
+	data->max_cmd_nb = 0;
+	data->line_cmd = NULL;
+	data->do_i_exit = B_TRUE;
 	return (data);
 }
 
@@ -22,12 +26,10 @@ int	main(int argc, char **argv, char **envp)
 	int code;
 
 	(void) argv;
-	(void) argc;
+	if (argc > 1)
+		return (error_no_data(I_MINISHELL, MINI_ARGS, 1));
 	code = 0;
 	data = data_init();
-	data->code = 0;
-	data->max_cmd_nb = 0;
-	data->line_cmd = NULL;
 	initialize_env(data, envp);
 	while (1)
 	{
@@ -47,58 +49,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 	}
 	data->do_i_exit = B_TRUE;
-  code = data->code;
+	code = data->code;
 	free_and_close_life(data);
 	return (code);
 }
-
-int	print_env(t_env	*env)
-{
-	printf("EH OUI VOILA L'ENV\n");
-	while (env != NULL)
-	{
-		printf("%s = %s\n", env->name, env->content);
-		env = env->next;
-	}
-	printf("\n\n");
-	return (0);
-}
-
-int	print_tokens(t_token *token)
-{
-	while (token != NULL)
-	{
-		printf("value = %s, et type = %u\n", token->value, token->type);
-		token = token->next;
-	}
-	return (0);
-}
-
-int	print_lines(t_line *lines)
-{
-	while (lines != NULL)
-	{
-		printf("content = %s, type = %d, et cmd = %d\n", lines->content, lines->type, lines->cmd_nb);
-		lines = lines->next;
-	}
-	return (0);
-}
-
-void	free_token_ll(t_token *token)
-{
-	t_token	*current;
-
-	if (!token)
-		return ;
-	current = token;
-	while (current->next != NULL)
-	{
-		if (current->value != NULL)
-			ft_free((void **)&current->value);
-		current = current->next;
-		ft_free((void **)&current->prev);
-	}
-	if (current->value != NULL)
-		ft_free((void **)&current->value);
-	ft_free((void **)&current);
-	}
