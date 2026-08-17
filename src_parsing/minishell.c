@@ -39,10 +39,10 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		if (line[0] != 0)
 		{
-			token = to_token(line);
+			token = to_token(line, data);
 			if (!token)
 				continue ;
-			data->line_cmd = to_parse(&max_cmd_nb, token);
+			data->line_cmd = to_parse(&max_cmd_nb, token, data);
 			free_token_ll(token);
 			data->max_cmd_nb = max_cmd_nb;
 			execution_start(data);

@@ -1,13 +1,25 @@
 #include "../minishell_general.h"
 
-t_token	*new_node(char *value, t_type type)
+t_token	*new_node(t_data *data, t_state *state, char *value, t_type type)
 {
 	t_token *current;
 
 	current = ft_calloc(1, sizeof(t_token));
 	if (!current)
+	{
+		free_state_data(state);
+		error_int(data, I_CALLOC, LIBFT_ERR, 1);
 		return (NULL);
+	}
 	current->value = ft_strdup(value);
+	if (!current->value)
+	{
+		ft_free((void **)&current->value)
+		ft_free((void **)&current);
+		free_state_data(state);
+		error_int(data, I_CALLOC, LIBFT_ERR, 1);
+		return (NULL);
+	}
 	current->type = type;
 	current->next = NULL;
 	current->prev = NULL;
