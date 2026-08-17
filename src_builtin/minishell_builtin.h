@@ -22,10 +22,10 @@ int		how_much_args(char **cmd_args);
 t_bool	check_var_env_name(t_data *data, char **name, char *identifier, int *y);
 void	print_var_error(char *identifier);
 
-//ft_export_utils two
-
+// ft_export_utils two
 int		add_quotes_content(t_data *data, char ***c_env);
 char	*add_quotes_content_util(t_data *data, char **name, char **content);
+t_env	*create_new_node_env(t_data *data, char *name, char *content);
 
 // ft_export_print
 void	swap_values(char ***env, int *i, int j);

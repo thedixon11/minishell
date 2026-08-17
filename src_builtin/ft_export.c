@@ -5,18 +5,14 @@ int	create_new_var_env(t_data *data, char *name, char *content)
 	t_env	*current;
 	t_env	*new_var_env;
 
-	new_var_env = ft_calloc(1, sizeof(t_env));
+	new_var_env = create_new_node_env(data, name, content);
 	if (!new_var_env)
-		return (error_int(data, I_EXPORT, LIBFT_ERR, 1));
-	new_var_env->name = ft_strdup(name);
-	if (!new_var_env->name)
-		return (ft_free((void **)&new_var_env), error_int(data, I_EXPORT,
-				LIBFT_ERR, 1));
-	new_var_env->content = ft_strdup(content);
-	if (!new_var_env->content)
-		return (ft_free((void **)&new_var_env->name),
-			ft_free((void **)&new_var_env), error_int(data, I_EXPORT, LIBFT_ERR,
-				1));
+		return (1);
+	if (data->env == NULL)
+	{
+		data->env = new_var_env;
+		return (0);
+	}
 	current = data->env;
 	while (current->next != NULL)
 		current = current->next;
@@ -42,6 +38,8 @@ t_env	*does_var_env_exist(t_data *data, char *name)
 	int		len;
 	t_env	*current;
 
+	if (data->env == NULL)
+		return (NULL);
 	current = data->env;
 	len = ft_strlen(name) + 1;
 	while (current != NULL)

@@ -17,7 +17,7 @@ static void	go_to_next_c(char const *s, int *i, char c)
 	char	quote;
 
 	quote = 'a';
-	while(s[*i] != 0 && s[*i] != c)
+	while (s[*i] != 0 && s[*i] != c)
 	{
 		if (s[*i] == '\'' || s[*i] == '\"')
 		{
@@ -30,12 +30,13 @@ static void	go_to_next_c(char const *s, int *i, char c)
 					*i = -1;
 					return ;
 				}
-			(*i)++;
+				(*i)++;
 			}
 		}
 		(*i)++;
 	}
 }
+
 static size_t	ft_len(char const *s, char c, size_t start)
 {
 	int	end;
@@ -44,7 +45,6 @@ static size_t	ft_len(char const *s, char c, size_t start)
 	go_to_next_c(s, &end, c);
 	return (end - start);
 }
-
 
 static char	**xtab(char const *s, char c, char **tab)
 {
