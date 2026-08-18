@@ -19,15 +19,15 @@ t_token	*new_node(t_data *data, char *value, t_type type);
 void	add_node(t_token *current, t_state *state);
 
 // parse_utils.c
-t_line	*new_line(t_type type, int cmd_nb, char *content);
+t_line	*new_line(t_data *data, t_type type, int cmd_nb, char *content);
 void	add_line(t_line *current, t_line **head);
 
 // to_parse.c
-t_line *fusion_commands(t_line *head);
-t_line	*to_parse(int *max_cmd_nb, t_token *head);
-void	handle_command(t_token *token, t_line **head, int cmd_nb);
-void	handle_pipe(int *cmd_nb, t_line **head);
-int	handle_redir(t_token *token, int cmd_nb, t_line **head);
+t_line *fusion_commands(t_data *data, t_line *head);
+t_line	*to_parse(t_data *data, t_token *head);
+int	handle_command(t_data *data, t_token *token, t_line **head, int cmd_nb);
+int	handle_pipe(t_data *data, int *cmd_nb, t_line **head);
+int	handle_redir(t_data *data, t_token *token, int cmd_nb, t_line **head);
 
 // to_token.c
 t_token	*to_token(char *line, t_data *data);

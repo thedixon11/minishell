@@ -17,28 +17,10 @@ t_data	*data_init(void)
 	return (data);
 }
 
-void    handle_sigint(int sig)
-{
-    g_signal = sig;
-
-    write(1, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
-}
-
-void    handle_sigint_heredoc(int sig)
-{
-    g_signal = SIGINT;
-    close(0);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
-	t_token	*token;
 	t_data	*data;
-	int	max_cmd_nb;
 	int code;
 
 	(void) argv;
@@ -55,11 +37,13 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		if (line[0] != 0)
 		{
-			token = to_token(line, data);
-			if (!token)
+			data->token_head = to_token(line, data);
+			if (!data->token_head)
 				continue ;
-			to_parse(data, token);
-			free_token_ll(token);
+			data->line_cmd = to_parse(data, data->token_head);
+			if (data->line_cmd == NULL)
+				continue ;
+			free_token_ll(data->token_head);
 			execution_start(data);
 		}
 	}

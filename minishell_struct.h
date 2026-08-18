@@ -122,6 +122,8 @@ typedef struct s_data
 	char			*cwd;
 	int				last_pid;
 	t_state			*state;
+	t_line			**line_head;
+	t_token			*token_head;
 }					t_data;
 
 #endif /*MINISHELL_STRUCT_H*/

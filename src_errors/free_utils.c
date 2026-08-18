@@ -8,8 +8,6 @@ void	free_state_data(t_state *state)
 		ft_free((void **)&state->current->value);
 	if (state->current != NULL)
 		ft_free((void **)&state->current);
-	if (state->head != NULL)
-		free_token_ll(state->head);
 }
 
 void	free_token_ll(t_token *token)
