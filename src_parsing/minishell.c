@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **envp)
 			token = to_token(line, data);
 			if (!token)
 				continue ;
-			data->line_cmd = to_parse(&max_cmd_nb, token, data);
+			data->line_cmd = to_parse(&max_cmd_nb, token);
 			free_token_ll(token);
 			data->max_cmd_nb = max_cmd_nb;
 			execution_start(data);

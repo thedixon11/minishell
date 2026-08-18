@@ -15,7 +15,7 @@ t_env	*new_node_env(char *line);
 char	*ft_strndup(const char *s, size_t n);
 
 // node_utils.c
-t_token	*new_node(char *value, t_type type);
+t_token	*new_node(t_data *data, char *value, t_type type);
 void	add_node(t_token *current, t_state *state);
 
 // parse_utils.c
@@ -30,10 +30,10 @@ void	handle_pipe(int *cmd_nb, t_line **head);
 int	handle_redir(t_token *token, int cmd_nb, t_line **head);
 
 // to_token.c
-t_token	*to_token(char *line);
-void	handle_quote(t_state *state);
-void	handle_operator(t_state *state);
-void	handle_word(t_state *state);
+t_token	*to_token(char *line, t_data *data);
+int		handle_quote(t_state *state, t_data *data);
+int		handle_operator(t_state *state, t_data *data);
+int		handle_word(t_state *state, t_data *data);
 
 // to_token_utils.c
 int	is_operator(char c);

@@ -10,33 +10,30 @@ int	error_no_data(char *item, char *message, int code)
 	return (code);
 }
 
-t_token	*error_token(t_data *data, t_state *state, char *message, int code)
+t_token	*error_token(t_data *data, char *item, char *message, int code)
 {
-	write(2, "minishell: ", 11);	
-	write(2, message, ft_strlen(message));
-	write(2, "\n", 1);
-	free_state_data(state);
-	data->code = code;
+	free_state_data(data->state);
+	error_int(data, item, message, code);
 	return (NULL);
 }
 
-int	error_token_int(t_state *state, char *message, int code, t_bool do_i_exit)
+int	error_token_int(t_data *data, char *item, char *message, int code)
 {
-	write(2, "minishell: ", 11);	
-	write(2, message, ft_strlen(message));
-	write(2, "\n", 1);
-	free_state_data(state);
-	if (do_i_exit == B_TRUE)
-		exit (code);
+	free_state_data(data->state);
+	error_int(data, item, message, code);
 	return (1);
 }
 
 int	error_int(t_data *data, char *item, char *message, int code)
 {
 	write(2, "minishell: ", 11);
-	write(2, item, ft_strlen(item));
-	write(2, ": ", 2);
-	write(2, message, ft_strlen(message));
+	if (item)
+	{
+		write(2, item, ft_strlen(item));
+		write(2, ": ", 2);
+	}
+	if (message)
+		write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
 	if (data->do_i_exit == B_TRUE)
 	{
@@ -52,9 +49,13 @@ int	error_int(t_data *data, char *item, char *message, int code)
 char	*error_char(t_data *data, char *item, char *message, int code)
 {
 	write(2, "minishell: ", 11);
-	write(2, item, ft_strlen(item));
-	write(2, ": ", 2);
-	write(2, message, ft_strlen(message));
+	if (item)
+	{
+		write(2, item, ft_strlen(item));
+		write(2, ": ", 2);
+	}
+	if (message)
+		write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
 	if (data->do_i_exit == B_TRUE)
 	{
