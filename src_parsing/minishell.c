@@ -141,7 +141,7 @@ void	free_token_ll(t_token *token)
 	ft_free((void **)&current);
 	}
 
-void handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	g_signal = sig;
 
@@ -149,4 +149,10 @@ void handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	handle_sigint_heredoc(int sig)
+{
+	g_signal = SIGINT;
+	close(0);
 }
