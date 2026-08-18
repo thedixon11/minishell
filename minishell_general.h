@@ -1,6 +1,7 @@
 #ifndef MINISHELL_GENERAL_H
 # define MINISHELL_GENERAL_H
 # include "./libft/libft.h"
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./minishell_struct.h"
@@ -51,5 +52,7 @@
 # define EXIT_ARGS_ERR "too many arguments"
 # define EXPORT_ID_ERR "not a valid identifier"
 # define DIR_ERR "Is a directory"
+
+extern int	g_signal;
 
 #endif /*MINISHELL_GENERAL_H*/

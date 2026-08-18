@@ -1,5 +1,23 @@
 #include "../minishell_general.h"
 
+int	g_signal;
+
+void    handle_sigint(int sig)
+{
+    g_signal = sig;
+
+    write(1, "\n", 1);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+void    handle_sigint_heredoc(int sig)
+{
+    g_signal = sig;
+    close(0);
+}
+
 t_data	*data_init(void)
 {
 	t_data	*data;

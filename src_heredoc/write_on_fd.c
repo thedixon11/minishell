@@ -39,6 +39,8 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	if (write(STDOUT_FILENO, "> ", 2) == -1)
 		return (error_char(data, I_WRITE, strerror(errno), 1));
 	line = get_next_line(STDIN_FILENO, heredoc->content, data->limiter_len);
+	if (g_signal == SIGINT)
+		return (NULL);
 	if (line == NULL)
 		return (error_char(data, I_GNL, LIBFT_ERR, 1));
 	if (ft_strncmp(line, heredoc->content, data->limiter_len) == 0)
@@ -64,6 +66,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	char	*line;
 	int		len_of_line;
 
+	signal(SIGINT, handle_sigint_heredoc);
 	data->limiter_len = ft_strlen(heredoc->content);
 	line = create_line(data, heredoc, xpand_or_not);
 	if (!line)
@@ -81,6 +84,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		if (!line)
 			return (1);
 	}
+	signal(SIGINT, handle_sigint);
 	ft_free((void **)&line);
 	ft_close_fd(&data->heredoc_pipe_fds[1]);
 	return (0);

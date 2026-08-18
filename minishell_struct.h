@@ -1,6 +1,7 @@
 #ifndef MINISHELL_STRUCT_H
 # define MINISHELL_STRUCT_H
 
+
 typedef enum e_quote
 {
 	Q_NONE,
