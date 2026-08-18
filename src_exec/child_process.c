@@ -65,6 +65,8 @@ void	child_process(t_data *data)
 {
   int code;
 
+  signal(SIGINT, SIG_DFL);
+  signal(SIGQUIT, SIG_DFL);
   code = 0;
 	data->do_i_exit = B_TRUE;
 	ft_close_fd(&data->saved_stdin);

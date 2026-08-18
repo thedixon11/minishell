@@ -2,6 +2,21 @@
 
 int	g_signal;
 
+int	end_heredoc(t_data *data, char *line)
+{
+	if (line)
+		ft_free((void **)&line);
+	dup2(data->saved_stdin, STDIN_FILENO);
+	signal(SIGINT, handle_sigint);
+	return (1);
+}
+void	setup_signals(void)
+{
+	g_signal = 0;
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 void    handle_sigint(int sig)
 {
     g_signal = sig;
@@ -16,6 +31,7 @@ void    handle_sigint_heredoc(int sig)
 {
     g_signal = sig;
     close(0);
+	write(1, "\n", 1);
 }
 
 t_data	*data_init(void)
@@ -82,9 +98,10 @@ int	main(int argc, char **argv, char **envp)
 			mini.code = execution_start(&mini); // BUG: et bug du coup dans val manager
 		}
 	}*/
-
+	setup_signals();
 	while (1)
 	{
+		g_signal = 0;
 		line = readline("minishell$ ");
 		if (!line)
 			break ;

@@ -70,20 +70,22 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	data->limiter_len = ft_strlen(heredoc->content);
 	line = create_line(data, heredoc, xpand_or_not);
 	if (!line)
-		return (1);
+		return (end_heredoc(data, line));
 	while (ft_strncmp(line, heredoc->content, data->limiter_len) != 0)
 	{
 		len_of_line = ft_strlen(line);
 		if (write(data->heredoc_pipe_fds[1], line, len_of_line) == -1)
 		{
 			error_int(data, I_WRITE, strerror(errno), 1);
-			return (ft_free((void **)&line), 1);
+			return (end_heredoc(data, line));
 		}
 		ft_free((void **)&line);
 		line = create_line(data, heredoc, xpand_or_not);
 		if (!line)
-			return (1);
+			return (end_heredoc(data, line));
 	}
+	if (g_signal == SIGINT)
+		dup2(data->saved_stdin, STDIN_FILENO);
 	signal(SIGINT, handle_sigint);
 	ft_free((void **)&line);
 	ft_close_fd(&data->heredoc_pipe_fds[1]);

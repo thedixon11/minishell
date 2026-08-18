@@ -42,5 +42,6 @@ t_type	get_type(t_state *state);
 //signals
 void    handle_sigint(int sig);
 void    handle_sigint_heredoc(int sig);
+void	setup_signals(void);
 
 #endif

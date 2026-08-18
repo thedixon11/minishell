@@ -43,6 +43,7 @@ void	wait_all_children(t_data *data)
 	int	status;
 	int	pid;
 
+	signal(SIGINT, SIG_IGN);
 	pid = waitpid(-1, &status, 0);
 	while (pid > 0)
 	{
@@ -55,6 +56,7 @@ void	wait_all_children(t_data *data)
 			data->code = 128 + WTERMSIG(status);
 		pid = waitpid(-1, &status, 0);
 	}
+	signal(SIGINT, handle_sigint);
 }
 
 int	reset_redir_patch(t_data *data)
