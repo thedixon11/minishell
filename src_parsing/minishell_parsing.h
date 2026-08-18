@@ -50,4 +50,8 @@ int	create_shlvl_value(t_data *data);
 int	update_pwd_value(t_data *data);
 int	update_shlvl_value(t_data *data);
 
+// signals
+void    handle_sigint(int sig);
+void    handle_sigint_heredoc(int sig);
+
 #endif

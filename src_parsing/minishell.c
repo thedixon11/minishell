@@ -17,6 +17,22 @@ t_data	*data_init(void)
 	return (data);
 }
 
+void    handle_sigint(int sig)
+{
+    g_signal = sig;
+
+    write(1, "\n", 1);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+void    handle_sigint_heredoc(int sig)
+{
+    g_signal = SIGINT;
+    close(0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
