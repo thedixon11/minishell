@@ -2,8 +2,8 @@
 
 int	handle_token_line(t_data *data)
 {
-	int	error;
-	int	cmd_nb;
+	int		error;
+	int		cmd_nb;
 	t_token	*current;
 
 	error = 0;
@@ -42,7 +42,7 @@ int	handle_command(t_data *data, t_token *current, int cmd_nb)
 {
 	t_line	*new_cmd_node;
 	char	*value;
-	
+
 	value = ft_strdup(current->value);
 	if (!value)
 		return (error_token_int(data, I_STRDUP, LIBFT_ERR, 1));

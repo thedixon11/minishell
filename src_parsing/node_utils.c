@@ -2,11 +2,12 @@
 
 t_token	*new_token_node(t_data *data, char *value, t_type type)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = ft_calloc(1, sizeof(t_token));
 	if (!current)
-		return (ft_free((void **)&value), error_token(data, I_CALLOC, LIBFT_ERR, 1));
+		return (ft_free((void **)&value), error_token(data, I_CALLOC, LIBFT_ERR,
+				1));
 	current->value = ft_strdup(value);
 	if (!current->value)
 	{

@@ -21,9 +21,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_data	*data;
-	int code;
+	int		code;
 
-	(void) argv;
+	(void)argv;
 	if (argc > 1)
 		return (error_no_data(I_MINISHELL, MINI_ARGS, 1));
 	code = 0;
@@ -32,18 +32,18 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("minishell$ ");
-	 	if (!line)
-	 		break ;
-	 	add_history(line);
-	 	if (line[0] != 0)
-	 	{
-	 		if (to_token(line, data) == 1)
-	 			continue ;
-	 		if (to_parse(data) == 1)
-	 			continue ;
-	 		free_token_ll(&data->token_head);
-	 		execution_start(data);
-	 	}
+		if (!line)
+			break ;
+		add_history(line);
+		if (line[0] != 0)
+		{
+			if (to_token(line, data) == 1)
+				continue ;
+			if (to_parse(data) == 1)
+				continue ;
+			free_token_ll(&data->token_head);
+			execution_start(data);
+		}
 	}
 	data->do_i_exit = B_TRUE;
 	code = data->code;

@@ -1,7 +1,7 @@
 #include "../minishell_general.h"
 
 void	state_init(t_state *state, char *line)
-{	
+{
 	state->i = 0;
 	state->start = 0;
 	state->str = line;
@@ -11,7 +11,7 @@ void	state_init(t_state *state, char *line)
 int	to_token(char *line, t_data *data)
 {
 	t_state	state;
-	int	error;
+	int		error;
 
 	error = 0;
 	state_init(&state, line);
@@ -41,8 +41,8 @@ int	handle_quote(t_state *state, t_data *data)
 	data->do_i_exit = B_FALSE;
 	state->quote = state->str[state->i];
 	state->i++;
-	while (state->str[state->i] != state->quote && state->str[state->i] != '\0') 
-			state->i++;
+	while (state->str[state->i] != state->quote && state->str[state->i] != '\0')
+		state->i++;
 	if (state->quote != '\0' && state->str[state->i] == '\0')
 	{
 		error_token_int(data, NULL, STAX_QUOTES, 2);
@@ -66,7 +66,7 @@ int	handle_operator(t_state *state, t_data *data)
 		operator = ft_substr(state->str, state->i, 2);
 		state->i++;
 	}
-	else 
+	else
 		operator = ft_substr(state->str, state->i, 1);
 	if (!operator)
 		return (error_token_int(data, I_SUBSTR, LIBFT_ERR, 1));
