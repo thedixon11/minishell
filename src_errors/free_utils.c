@@ -62,7 +62,7 @@ void	free_line_cmd(t_line **line_cmd)
 	t_line	*current;
 	t_line	*next;
 
-	if (line_cmd == NULL && *line_cmd == NULL)
+	if (line_cmd == NULL || *line_cmd == NULL)
 		return ;
 	current = *line_cmd;
 	while (current != NULL)

@@ -21,12 +21,12 @@ t_token	*new_node(t_data *data, char *value, t_type type)
 	return (current);
 }
 
-void	add_node(t_token *current, t_state *state)
+void	add_node(t_token *current, t_data *data)
 {
 	t_token	*temp;
 
-	if (state->head == NULL)
-		state->head = current;
+	if (data->token_head == NULL)
+		data->token_head = current;
 	else
 	{
 		temp = state->head;

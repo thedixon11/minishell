@@ -90,9 +90,6 @@ typedef struct s_state
 	char			*str;
 	int				i;
 	char			quote;
-	t_env			*env;
-	struct s_token	*current;
-	struct s_token	*head;
 }					t_state;
 
 // NOTE: la struct t_data est creer au tout debut du programme.
@@ -121,7 +118,6 @@ typedef struct s_data
 	char			*old_cwd;
 	char			*cwd;
 	int				last_pid;
-	t_state			*state;
 	t_line			**line_head;
 	t_token			*token_head;
 }					t_data;

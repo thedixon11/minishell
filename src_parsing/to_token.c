@@ -6,8 +6,6 @@ void	state_init(t_state *state, char *line)
 	state->start = 0;
 	state->str = line;
 	state->quote = '\0';
-	state->head = NULL;
-	state->current = NULL;
 }
 
 int	to_token(char *line, t_data *data)
@@ -17,7 +15,6 @@ int	to_token(char *line, t_data *data)
 
 	error = 0;
 	state_init(&state, line);
-	data->state = &state;
 	while (state.str[state.i] != '\0')
 	{
 		if (state.str[state.i] == '\'' || state.str[state.i] == '"')
@@ -36,7 +33,6 @@ int	to_token(char *line, t_data *data)
 	error = handle_word(&state, data);
 	if (error != 0)
 		return (1);
-  data->token_head = state.head;
 	return (0);
 }
 
@@ -60,6 +56,7 @@ int	handle_operator(t_state *state, t_data *data)
 {
 	char	*str;
 	t_type	type;
+	t_token	*new_node;
 
 	if (handle_word(state, data) != 0)
 		return (1);
@@ -73,11 +70,11 @@ int	handle_operator(t_state *state, t_data *data)
 		str = ft_substr(state->str, state->i, 1);
 	if (!str)
 		return (error_token_int(data, I_SUBSTR, LIBFT_ERR, 1));
-	state->current = new_node(data, str, type);
+	new_node = new_node(data, str, type);
 	ft_free((void **)&str);
-	if (!state->current)
+	if (!new_node)
 		return (1);
-	add_node(state->current, state);
+	add_node(new_node), data);
 	state->start = state->i + 1;
 	return (0);
 }

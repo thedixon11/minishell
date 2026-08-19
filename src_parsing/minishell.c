@@ -32,19 +32,19 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("minishell$ ");
-		if (!line)
-			break ;
-		add_history(line);
-		if (line[0] != 0)
-		{
-			if (to_token(line, data) == 1)
-				continue ;
-			data->line_cmd = to_parse(data, data->token_head);
-			if (data->line_cmd == NULL)
-				continue ;
-			free_token_ll(data->token_head);
-			execution_start(data);
-		}
+	 	if (!line)
+	 		break ;
+	 	add_history(line);
+	 	if (line[0] != 0)
+	 	{
+	 		if (to_token(line, data) == 1)
+	 			continue ;
+	 		data->line_cmd = to_parse(data, data->token_head);
+	 		if (data->line_cmd == NULL)
+	 			continue ;
+	 		free_token_ll(data->token_head);
+	 		execution_start(data);
+	 	}
 	}
 	data->do_i_exit = B_TRUE;
 	code = data->code;

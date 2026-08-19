@@ -30,7 +30,7 @@ int	handle_pipe(t_data *data, int *cmd_nb, t_line **head);
 int	handle_redir(t_data *data, t_token *token, int cmd_nb, t_line **head);
 
 // to_token.c
-t_token	*to_token(char *line, t_data *data);
+int		to_token(char *line, t_data *data);
 int		handle_quote(t_state *state, t_data *data);
 int		handle_operator(t_state *state, t_data *data);
 int		handle_word(t_state *state, t_data *data);

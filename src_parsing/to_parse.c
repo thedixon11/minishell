@@ -1,24 +1,26 @@
 #include "../minishell_general.h"
 #include "minishell_parsing.h"
 
-int	join_all_cmd_content(t_data *data, t_line *current, t_line *skip)
+int	join_all_cmd_content(t_data *data, t_line *current, t_line **skip)
 {
 	char	*resultat;
 	t_line	*temp;
 
+	if (!skip || !*skip)
+		return (1);
 	resultat = ft_strjoin(current->content, " ");
 	ft_free((void **)&current->content);
 	if (!resultat)
 		return (error_token_int(data, I_STRJOIN, LIBFT_ERR, 1));
-	current->content = ft_strjoin(resultat, skip->content);
+	current->content = ft_strjoin(resultat, skip[0]->content);
 	ft_free((void **)&resultat);
 	if (!current->content)
 		return (error_token_int(data, I_STRJOIN, LIBFT_ERR, 1));
-	temp = skip;
-	skip->prev->next = temp->next;
+	temp = *skip;
+	skip[0]->prev->next = temp->next;
 	if (temp->next != NULL)
 	temp->next->prev = temp->prev;
-	skip = temp->next;
+	*skip = temp->next;
 	ft_free((void **)&temp->content);
 	ft_free((void **)&temp);  // BUG: ce temp est free et apparement on essaie de le relire dans fusion_commands 
 	return (0);
@@ -30,22 +32,24 @@ t_line *fusion_commands(t_data *data, t_line *head)
 	t_line	*skip;
 
 	current = head;
-	while (current != NULL)
+	if (current != NULL)
+		skip = current->next;
+	while (current != NULL && skip != NULL)
 	{
 		if (current->type == T_COMMAND)
 		{
-			skip = current->next;
 			while (skip != NULL && skip->cmd_nb == current->cmd_nb
 				&& skip->type != T_PIPE_OUT)
 			{
 				if (skip->type == T_COMMAND)
 				{
-					if (join_all_cmd_content(data, current, skip) == 1)
+					if (join_all_cmd_content(data, current, &skip) == 1)
 						return (NULL);
 				}
 				else
 					skip = skip->next;
 			}
+			skip = current->next;
 		}
 		current = current->next;
 	}
