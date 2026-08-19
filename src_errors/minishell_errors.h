@@ -13,7 +13,6 @@ void	free_line_cmd(t_line **line_cmd);
 void	free_env(t_env **env);
 void	free_cmd_args(t_data *data);
 void	free_token_ll(t_token *token);
-void	free_state_data(t_state *state);
 
 //close_fd_utils
 void	close_line_cmd_fds(t_data *data);

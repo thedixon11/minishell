@@ -37,8 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		if (line[0] != 0)
 		{
-			data->token_head = to_token(line, data);
-			if (!data->token_head)
+			if (to_token(line, data) == 1)
 				continue ;
 			data->line_cmd = to_parse(data, data->token_head);
 			if (data->line_cmd == NULL)

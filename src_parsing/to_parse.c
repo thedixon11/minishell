@@ -20,7 +20,7 @@ int	join_all_cmd_content(t_data *data, t_line *current, t_line *skip)
 	temp->next->prev = temp->prev;
 	skip = temp->next;
 	ft_free((void **)&temp->content);
-	ft_free((void **)&temp);
+	ft_free((void **)&temp);  // BUG: ce temp est free et apparement on essaie de le relire dans fusion_commands 
 	return (0);
 }
 

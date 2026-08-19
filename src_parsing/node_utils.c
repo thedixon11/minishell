@@ -6,12 +6,13 @@ t_token	*new_node(t_data *data, char *value, t_type type)
 
 	current = ft_calloc(1, sizeof(t_token));
 	if (!current)
-		return (error_token(data, I_CALLOC, LIBFT_ERR, 1));
+		return (ft_free((void **)&value), error_token(data, I_CALLOC, LIBFT_ERR, 1));
 	current->value = ft_strdup(value);
 	if (!current->value)
 	{
 		ft_free((void **)&current->value);
 		ft_free((void **)&current);
+    ft_free((void **)&value);
 		return (error_token(data, I_STRDUP, LIBFT_ERR, 1));
 	}
 	current->type = type;

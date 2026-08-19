@@ -10,7 +10,7 @@ void	state_init(t_state *state, char *line)
 	state->current = NULL;
 }
 
-t_token	*to_token(char *line, t_data *data)
+int	to_token(char *line, t_data *data)
 {
 	t_state	state;
 	int	error;
@@ -30,13 +30,14 @@ t_token	*to_token(char *line, t_data *data)
 			state.start = state.i + 1;
 		}
 		if (error != 0)
-			return (NULL);
+			return (1);
 		state.i++;
 	}
 	error = handle_word(&state, data);
 	if (error != 0)
-		return (NULL);
-	return (state.head);
+		return (1);
+  data->token_head = state.head;
+	return (0);
 }
 
 int	handle_quote(t_state *state, t_data *data)

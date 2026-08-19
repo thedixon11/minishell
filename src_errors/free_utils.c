@@ -1,15 +1,5 @@
 #include "../minishell_general.h"
 
-void	free_state_data(t_state *state)
-{
-	if (state == NULL)
-		return ;
-	if (state->current != NULL && state->current->value != NULL)
-		ft_free((void **)&state->current->value);
-	if (state->current != NULL)
-		ft_free((void **)&state->current);
-}
-
 void	free_token_ll(t_token *token)
 {
 	t_token	*current;
