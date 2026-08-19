@@ -62,6 +62,7 @@ PARSING = minishell.c \
 		  node_utils.c \
 		  parse_utils.c \
 		  to_parse.c \
+		  to_parse_fusion_cmd.c \
 		  to_token.c \
 		  to_token_utils.c \
 		  create_env.c \

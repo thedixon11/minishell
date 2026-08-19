@@ -1,140 +1,79 @@
 #include "../minishell_general.h"
-#include "minishell_parsing.h"
 
-int	join_all_cmd_content(t_data *data, t_line *current, t_line **skip)
-{
-	char	*resultat;
-	t_line	*temp;
-
-	if (!skip || !*skip)
-		return (1);
-	resultat = ft_strjoin(current->content, " ");
-	ft_free((void **)&current->content);
-	if (!resultat)
-		return (error_token_int(data, I_STRJOIN, LIBFT_ERR, 1));
-	current->content = ft_strjoin(resultat, skip[0]->content);
-	ft_free((void **)&resultat);
-	if (!current->content)
-		return (error_token_int(data, I_STRJOIN, LIBFT_ERR, 1));
-	temp = *skip;
-	skip[0]->prev->next = temp->next;
-	if (temp->next != NULL)
-	temp->next->prev = temp->prev;
-	*skip = temp->next;
-	ft_free((void **)&temp->content);
-	ft_free((void **)&temp);  // BUG: ce temp est free et apparement on essaie de le relire dans fusion_commands 
-	return (0);
-}
-
-t_line *fusion_commands(t_data *data, t_line *head)
-{
-	t_line	*current;
-	t_line	*skip;
-
-	current = head;
-	if (current != NULL)
-		skip = current->next;
-	while (current != NULL && skip != NULL)
-	{
-		if (current->type == T_COMMAND)
-		{
-			while (skip != NULL && skip->cmd_nb == current->cmd_nb
-				&& skip->type != T_PIPE_OUT)
-			{
-				if (skip->type == T_COMMAND)
-				{
-					if (join_all_cmd_content(data, current, &skip) == 1)
-						return (NULL);
-				}
-				else
-					skip = skip->next;
-			}
-			skip = current->next;
-		}
-		current = current->next;
-	}
-	return (head);
-}
-
-int	handle_token_line(t_data *data, t_token *head, t_line **line_head, int *cmd_nb)
+int	handle_token_line(t_data *data)
 {
 	int	error;
-	t_token	*token;
+	int	cmd_nb;
+	t_token	*current;
 
 	error = 0;
-	token = head;
-	while (token != NULL)
+	cmd_nb = 0;
+	current = data->token_head;
+	while (current != NULL)
 	{
-		if (token->type == T_COMMAND)
-			error = handle_command(data, token, line_head, *cmd_nb);
-		else if (token->type == T_PIPE)
-			error = handle_pipe(data, cmd_nb, line_head);
+		if (current->type == T_COMMAND)
+			error = handle_command(data, current, cmd_nb);
+		else if (current->type == T_PIPE)
+			error = handle_pipe(data, &cmd_nb);
 		else
 		{
-			if (handle_redir(data, token, *cmd_nb, line_head) == 1)
+			if (handle_redir(data, current, cmd_nb) == 1)
 				return (1);
-			token = token->next;
+			current = current->next;
 		}
 		if (error != 0)
 			return (1);
-		token = token->next;
+		current = current->next;
 	}
+	data->max_cmd_nb = cmd_nb;
 	return (0);
 }
 
-t_line	*to_parse(t_data *data, t_token *head)
+int	to_parse(t_data *data)
 {
-	int	cmd_nb;
-	t_line	*line_head;
-	t_line	*result;
-
-	cmd_nb = 0;
-	line_head = NULL;
-	data->line_head = &line_head;
-	if (handle_token_line(data, head, &line_head, &cmd_nb) == 1)
-		return (NULL);
-	result = fusion_commands(data, line_head);
-	if (!result)
-		return (NULL);
-	data->max_cmd_nb = cmd_nb;
-	return (result);
+	if (handle_token_line(data) == 1)
+		return (1);
+	if (fusion_commands(data) == 1)
+		return (1);
+	return (0);
 }
 
-int	handle_command(t_data *data, t_token *token, t_line **head, int cmd_nb)
+int	handle_command(t_data *data, t_token *current, int cmd_nb)
 {
-	t_line	*current;
+	t_line	*new_cmd_node;
 	char	*value;
 	
-	value = ft_strdup(token->value);
+	value = ft_strdup(current->value);
 	if (!value)
 		return (error_token_int(data, I_STRDUP, LIBFT_ERR, 1));
-	current = new_line(data, token->type, cmd_nb, value);
+	new_cmd_node = new_line(data, current->type, cmd_nb, value);
 	ft_free((void **)&value);
-	if (!current)
+	if (!new_cmd_node)
 		return (1);
-	add_line(current, head);
+	add_line(data, new_cmd_node);
 	return (0);
 }
 
-int	handle_pipe(t_data *data, int *cmd_nb, t_line **head)
+int	handle_pipe(t_data *data, int *cmd_nb)
 {
-	t_line	*current;
+	t_line	*new_pipe_out_node;
+	t_line	*new_pipe_in_node;
 
-	current = new_line(data, T_PIPE_OUT, *cmd_nb, NULL);
-	if (!current)
+	new_pipe_out_node = new_line(data, T_PIPE_OUT, *cmd_nb, NULL);
+	if (!new_pipe_out_node)
 		return (1);
-	add_line(current, head);
+	add_line(data, new_pipe_out_node);
 	(*cmd_nb)++;
-	current = new_line(data, T_PIPE_IN, *cmd_nb, NULL);
-	if (!current)
+	new_pipe_in_node = new_line(data, T_PIPE_IN, *cmd_nb, NULL);
+	if (!new_pipe_in_node)
 		return (1);
-	add_line(current, head);
+	add_line(data, new_pipe_in_node);
 	return (0);
 }
 
-int	handle_redir(t_data *data, t_token *token, int cmd_nb, t_line **head)
+int	handle_redir(t_data *data, t_token *token, int cmd_nb)
 {
-	t_line	*current;
+	t_line	*new_redir_node;
 	char	*value;
 
 	if (token->next == NULL)
@@ -147,10 +86,10 @@ int	handle_redir(t_data *data, t_token *token, int cmd_nb, t_line **head)
 	value = ft_strdup(token->next->value);
 	if (!value)
 		return (error_token_int(data, I_STRDUP, LIBFT_ERR, 1));
-	current = new_line(data, token->type, cmd_nb, value);
+	new_redir_node = new_line(data, token->type, cmd_nb, value);
 	ft_free((void **)&value);
-	if (!current)
+	if (!new_redir_node)
 		return (1);
-	add_line(current, head);
+	add_line(data, new_redir_node);
 	return (0);
 }

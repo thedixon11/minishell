@@ -1,6 +1,6 @@
 #include "../minishell_general.h"
 
-t_token	*new_node(t_data *data, char *value, t_type type)
+t_token	*new_token_node(t_data *data, char *value, t_type type)
 {
 	t_token *current;
 
@@ -12,7 +12,7 @@ t_token	*new_node(t_data *data, char *value, t_type type)
 	{
 		ft_free((void **)&current->value);
 		ft_free((void **)&current);
-    ft_free((void **)&value);
+		ft_free((void **)&value);
 		return (error_token(data, I_STRDUP, LIBFT_ERR, 1));
 	}
 	current->type = type;
@@ -21,7 +21,7 @@ t_token	*new_node(t_data *data, char *value, t_type type)
 	return (current);
 }
 
-void	add_node(t_token *current, t_data *data)
+void	add_token(t_data *data, t_token *current)
 {
 	t_token	*temp;
 
@@ -29,7 +29,7 @@ void	add_node(t_token *current, t_data *data)
 		data->token_head = current;
 	else
 	{
-		temp = state->head;
+		temp = data->token_head;
 		while (temp->next != NULL)
 			temp = temp->next;
 		current->next = NULL;

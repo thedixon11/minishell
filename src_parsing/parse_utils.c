@@ -2,35 +2,35 @@
 
 t_line	*new_line(t_data *data, t_type type, int cmd_nb, char *content)
 {
-	t_line	*node;
+	t_line	*new_node_line;
 
-	node = ft_calloc(1, sizeof(t_line));
-	if (!node)
+	new_node_line = ft_calloc(1, sizeof(t_line));
+	if (!new_node_line)
 		return (error_token_int(data, I_CALLOC, LIBFT_ERR, 1), NULL);
-	node->type = type;
-	node->fd = -1;
-	node->cmd_nb = cmd_nb;
-	if (content)
+	new_node_line->type = type;
+	new_node_line->fd = -1;
+	new_node_line->cmd_nb = cmd_nb;
+	if (content != NULL)
 	{
-		node->content = ft_strdup(content);
-		if (!node->content)
+		new_node_line->content = ft_strdup(content);
+		if (!new_node_line->content)
 		{
-			ft_free((void **)&node);
+			ft_free((void **)&new_node_line);
 			return (error_token_int(data, I_STRDUP, LIBFT_ERR, 1), NULL);
 		}
 	}
-	return (node);
+	return (new_node_line);
 }
 
-void	add_line(t_line *current, t_line **head)
+void	add_line(t_data *data, t_line *current)
 {
 	t_line	*temp;
 
-	if (*head == NULL)
-		*head = current;
+	if (data->line_cmd == NULL)
+		data->line_cmd = current;
 	else
 	{
-		temp = *head;
+		temp = data->line_cmd;
 		while (temp->next != NULL)
 			temp = temp->next;
 		current->next = NULL;

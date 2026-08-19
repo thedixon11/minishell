@@ -54,7 +54,7 @@ int	handle_quote(t_state *state, t_data *data)
 
 int	handle_operator(t_state *state, t_data *data)
 {
-	char	*str;
+	char	*operator;
 	t_type	type;
 	t_token	*new_node;
 
@@ -63,36 +63,37 @@ int	handle_operator(t_state *state, t_data *data)
 	type = get_type(state);
 	if (type == T_HEREDOC || type == T_OUTPUT_APPEND)
 	{
-		str = ft_substr(state->str, state->i, 2);
+		operator = ft_substr(state->str, state->i, 2);
 		state->i++;
 	}
 	else 
-		str = ft_substr(state->str, state->i, 1);
-	if (!str)
+		operator = ft_substr(state->str, state->i, 1);
+	if (!operator)
 		return (error_token_int(data, I_SUBSTR, LIBFT_ERR, 1));
-	new_node = new_node(data, str, type);
-	ft_free((void **)&str);
+	new_node = new_token_node(data, operator, type);
+	ft_free((void **)&operator);
 	if (!new_node)
 		return (1);
-	add_node(new_node), data);
+	add_token(data, new_node);
 	state->start = state->i + 1;
 	return (0);
 }
 
 int	handle_word(t_state *state, t_data *data)
 {
-	char	*str;
+	char	*word;
+	t_token	*new_node;
 
 	if (state->start != state->i)
 	{
-		str = ft_substr(state->str, state->start, state->i - state->start);
-		if (!str)
+		word = ft_substr(state->str, state->start, state->i - state->start);
+		if (!word)
 			return (error_token_int(data, I_SUBSTR, LIBFT_ERR, 1));
-		state->current = new_node(data, str, T_COMMAND);
-		ft_free((void **)&str);
-		if (!state->current)
+		new_node = new_token_node(data, word, T_COMMAND);
+		ft_free((void **)&word);
+		if (!new_node)
 			return (1);
-		add_node(state->current, state);
+		add_token(data, new_node);
 		state->start = state->i;
 	}
 	return (0);

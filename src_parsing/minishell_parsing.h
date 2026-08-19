@@ -6,7 +6,6 @@ int	main(int argc, char **argv, char **envp);
 int	print_env(t_env	*env);
 int	print_tokens(t_token *token);
 int	print_lines(t_line *lines);
-void	free_token_ll(t_token *token);
 
 // create_env.c
 t_env	*create_env(char **envp);
@@ -15,25 +14,31 @@ t_env	*new_node_env(char *line);
 char	*ft_strndup(const char *s, size_t n);
 
 // node_utils.c
-t_token	*new_node(t_data *data, char *value, t_type type);
-void	add_node(t_token *current, t_state *state);
+t_token	*new_token_node(t_data *data, char *value, t_type type);
+void	add_token(t_data *data, t_token *current);
 
 // parse_utils.c
 t_line	*new_line(t_data *data, t_type type, int cmd_nb, char *content);
-void	add_line(t_line *current, t_line **head);
+void	add_line(t_data *data, t_line *current);
 
 // to_parse.c
-t_line *fusion_commands(t_data *data, t_line *head);
-t_line	*to_parse(t_data *data, t_token *head);
-int	handle_command(t_data *data, t_token *token, t_line **head, int cmd_nb);
-int	handle_pipe(t_data *data, int *cmd_nb, t_line **head);
-int	handle_redir(t_data *data, t_token *token, int cmd_nb, t_line **head);
+int	handle_token_line(t_data *data);
+int	to_parse(t_data *data);
+int	handle_command(t_data *data, t_token *current, int cmd_nb);
+int	handle_pipe(t_data *data, int *cmd_nb);
+int	handle_redir(t_data *data, t_token *token, int cmd_nb);
+
+//to_parse_fusion_cmd.c
+int	join_all_cmd_content(t_data *data, t_line *current, t_line *to_fusion);
+int	move_skip(t_data *data, t_line *current);
+int fusion_commands(t_data *data);
 
 // to_token.c
-int		to_token(char *line, t_data *data);
-int		handle_quote(t_state *state, t_data *data);
-int		handle_operator(t_state *state, t_data *data);
-int		handle_word(t_state *state, t_data *data);
+void	state_init(t_state *state, char *line);
+int	to_token(char *line, t_data *data);
+int	handle_quote(t_state *state, t_data *data);
+int	handle_operator(t_state *state, t_data *data);
+int	handle_word(t_state *state, t_data *data);
 
 // to_token_utils.c
 int	is_operator(char c);

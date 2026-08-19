@@ -1,22 +1,22 @@
 #include "../minishell_general.h"
 
-void	free_token_ll(t_token *token)
+void	free_token_ll(t_token **token)
 {
 	t_token	*current;
+	t_token	*next;
 
-	if (!token)
+	if (token == NULL || *token == NULL)
 		return ;
-	current = token;
-	while (current->next != NULL)
+	current = *token;
+	while (current != NULL)
 	{
+		next = current->next;
 		if (current->value != NULL)
 			ft_free((void **)&current->value);
-		current = current->next;
-		ft_free((void **)&current->prev);
+		ft_free((void **)&current);
+		current = next;
 	}
-	if (current->value != NULL)
-		ft_free((void **)&current->value);
-	ft_free((void **)&current);
+	*token = NULL;
 }
 
 void	free_cmd_args(t_data *data)
