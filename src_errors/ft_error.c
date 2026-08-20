@@ -12,7 +12,7 @@ int	error_no_data(char *item, char *message, int code)
 
 t_token	*error_token(t_data *data, char *item, char *message, int code)
 {
- 	if (data->token_head != NULL)
+	if (data->token_head != NULL)
 		free_token_ll(&data->token_head);
 	error_int(data, item, message, code);
 	return (NULL);
@@ -20,7 +20,6 @@ t_token	*error_token(t_data *data, char *item, char *message, int code)
 
 int	error_token_int(t_data *data, char *item, char *message, int code)
 {
-
 	if (data->token_head != NULL)
 		free_token_ll(&data->token_head);
 	error_int(data, item, message, code);

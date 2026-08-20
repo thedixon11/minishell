@@ -6,7 +6,7 @@ char	*error_char(t_data *data, char *item, char *message, int code);
 int		error_int(t_data *data, char *item, char *message, int code);
 int		error_no_data(char *item, char *message, int code);
 t_token	*error_token(t_data *data, char *item, char *message, int code);
-int	error_token_int(t_data *data, char *item, char *message, int code);
+int		error_token_int(t_data *data, char *item, char *message, int code);
 
 //ft_free
 void	free_line_cmd(t_line **line_cmd);
