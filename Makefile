@@ -59,6 +59,7 @@ BUILTIN = ft_export.c \
 		  builtin_exec.c
 
 PARSING = minishell.c \
+		  signals.c \
 		  node_utils.c \
 		  parse_utils.c \
 		  to_parse.c \

@@ -24,6 +24,7 @@ void	wait_all_children(t_data *data)
 	int	status;
 	int	pid;
 
+	//signal(SIGINT, handle_sigint_exec(130));	// BUG: signal
 	pid = waitpid(-1, &status, 0);
 	while (pid > 0)
 	{
@@ -31,11 +32,12 @@ void	wait_all_children(t_data *data)
 		{
 			if (WIFEXITED(status))
 				data->code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				data->code = 128 + WTERMSIG(status);
 		}
-		else if (WIFSIGNALED(status))
-			data->code = 128 + WTERMSIG(status);
 		pid = waitpid(-1, &status, 0);
 	}
+	// signal(SIGINT, handle_sigint);	// BUG: signal
 }
 
 int	reset_redir_patch(t_data *data)

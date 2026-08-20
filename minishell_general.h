@@ -39,6 +39,7 @@
 # define I_UNSET "unset"
 # define I_STAT "stat"
 # define I_GETCWD "getcwd"
+# define I_READLINE "readline"
 # define I_MINISHELL "minishell"
 
 // List of error messages
@@ -61,5 +62,7 @@
 # define STAX_HDOC "syntax error near unexpected token '<<'"
 # define STAX_OUT_TRNC "syntax error near unexpected token '>'"
 # define STAX_OUT_APP "syntax error near unexpected token '>>'"
+
+extern int	g_signal;	// BUG: SIGNAL
 
 #endif /*MINISHELL_GENERAL_H*/

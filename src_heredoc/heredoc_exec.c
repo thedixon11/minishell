@@ -10,11 +10,15 @@
 
 int	create_heredoc_fd(t_data *data, t_line *heredoc)
 {
-	char	*temp;
+	//char	*temp;	// NOTE: in comment because using readline
 
 	if (pipe(data->heredoc_pipe_fds) == -1)
 		return (error_int(data, I_PIPE, strerror(errno), 1));
 	heredoc->fd = data->heredoc_pipe_fds[0];
+
+	// NOTE: in comment, because with readline in heredoc, I dont have token
+	// add the '/' at the end
+	/*
 	temp = ft_strdup(heredoc->content);
 	ft_free((void **)&heredoc->content);
 	if (!temp)
@@ -22,7 +26,7 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 	heredoc->content = ft_strjoin(temp, "\n");
 	ft_free((void **)&temp);
 	if (!heredoc->content)
-		return (error_int(data, I_STRJOIN, LIBFT_ERR, 1));
+		return (error_int(data, I_STRJOIN, LIBFT_ERR, 1));*/
 	return (0);
 }
 

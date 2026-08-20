@@ -1,5 +1,7 @@
 #include "../minishell_general.h"
 
+int    g_signal;
+
 t_data	*data_init(void)
 {
 	t_data	*data;
@@ -21,8 +23,10 @@ void	line_reader_and_exec(t_data *data)
 {
 	char	*line;
 
+	//setup_signals();	// BUG: signals
 	while (1)
 	{
+		//g_signal = 0;	// BUG: signals
 		line = readline("minishell$ ");
 		if (!line)
 			break ;
