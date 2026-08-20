@@ -36,7 +36,7 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	char	*line;
 	char	*line_xpanded;
 
-	line = readline("> "); // WARNING: readline instead of gnl
+	line = readline("> ");
 	if (g_signal == SIGINT)
 		return (ft_free((void **)&line), NULL);
 	if (line == NULL)
@@ -64,15 +64,17 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	char	*line;
 	int		len_of_line;
 
-	data->limiter_len = ft_strlen(heredoc->content) + 1;	//WARNING: a voir si correct le +1
-	line = create_line(data, heredoc, xpand_or_not);
-	if (!line && g_signal == SIGINT)
+	data->limiter_len = ft_strlen(heredoc->content) + 1;
+	while (1)
 	{
-		ft_close_fd(&data->heredoc_pipe_fds[1]);
-		return (1);
-	}
-	while (line != NULL && ft_strncmp(line, heredoc->content, data->limiter_len) != 0)
-	{
+		line = create_line(data, heredoc, xpand_or_not);
+		if (!line && g_signal == SIGINT)
+		{
+			ft_close_fd(&data->heredoc_pipe_fds[1]);
+			return (1);
+		}
+		if (!line || ft_strncmp(line, heredoc->content, data->limiter_len) == 0)
+			break ;
 		len_of_line = ft_strlen(line);
 		if (write(data->heredoc_pipe_fds[1], line, len_of_line) == -1)
 		{
@@ -80,12 +82,6 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 			return (ft_free((void **)&line), 1);
 		}
 		ft_free((void **)&line);
-		line = create_line(data, heredoc, xpand_or_not);
-		if (!line && g_signal == SIGINT)
-		{
-			ft_close_fd(&data->heredoc_pipe_fds[1]);
-			return (1);
-		}
 	}
 	ft_free((void **)&line);
 	ft_close_fd(&data->heredoc_pipe_fds[1]);

@@ -38,6 +38,21 @@ int	delimiter_manager_n_write_hdoc(t_data *data, t_line *current)
 	return (0);
 }
 
+int	heredoc_loop(t_data *data, t_line *current)
+{
+	int	error;
+
+	error = 0;
+	if (create_heredoc_fd(data, current) == 1)
+		return (1);
+	if ((ft_strchr(current->content, '\'') != NULL)
+		|| (ft_strchr(current->content, '\"') != NULL))
+		error = delimiter_manager_n_write_hdoc(data, current);
+	else
+		error = write_on_fd(data, current, B_TRUE);
+	return (error);
+}
+
 // NOTE: Here starts the heredocs executions. There is two steps per heredoc :
 // 1) create a pipe for each heredoc(that creates fds);
 // 2) if the delimiter has quotes, have to manage them;
@@ -52,20 +67,13 @@ int	heredoc_exec(t_data *data)
 	current = data->line_cmd;
 	init_signal_heredoc();
 	rl_event_hook = heredoc_event_hook;
-	while (current != NULL && data->error == 0)
+	while (current != NULL && error == 0)
 	{
 		if (current->type == T_HEREDOC && error == 0)
-		{
-			if (create_heredoc_fd(data, current) == 1)
-				return (1);
-			if ((ft_strchr(current->content, '\'') != NULL)
-				|| (ft_strchr(current->content, '\"') != NULL))
-				error = delimiter_manager_n_write_hdoc(data, current);
-			else
-				error = write_on_fd(data, current, B_TRUE);
-		}
+			error = heredoc_loop(data, current);
 		current = current->next;
-	}	if (error != 0 && g_signal == SIGINT)
+	}
+	if (error != 0 && g_signal == SIGINT)
 	{
 		handle_ctrl_c(data);
 		init_signal_prompt();
