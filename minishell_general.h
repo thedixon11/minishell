@@ -55,9 +55,11 @@
 # define DIR_ERR "Is a directory"
 # define MINI_ARGS "too many arguments"
 # define STAX_QUOTES "syntax error: quotes unclosed"
-# define STAX_REDIR "syntax error near unexpected token newline"
-# define STAX_PIPE "syntax error near unexpected token |"
-# define STAX_REDIR_OUT "syntax error near unexpected token >"
-# define STAX "syntax error near unexpected token "
+# define STAX_NEWL "syntax error near unexpected token 'newline'"
+# define STAX_PIPE "syntax error near unexpected token '|'"
+# define STAX_IN "syntax error near unexpected token '<'"
+# define STAX_HDOC "syntax error near unexpected token '<<'"
+# define STAX_OUT_TRNC "syntax error near unexpected token '>'"
+# define STAX_OUT_APP "syntax error near unexpected token '>>'"
 
 #endif /*MINISHELL_GENERAL_H*/

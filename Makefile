@@ -65,6 +65,7 @@ PARSING = minishell.c \
 		  to_parse_fusion_cmd.c \
 		  to_token.c \
 		  to_token_utils.c \
+		  to_token_control.c \
 		  create_env.c \
 		  is_there_env.c \
 		  is_there_env_utils.c

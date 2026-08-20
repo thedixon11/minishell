@@ -39,6 +39,8 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (to_token(line, data) == 1)
 				continue ;
+			if (control_token_line(data) == 1)
+				continue ;
 			if (to_parse(data) == 1)
 				continue ;
 			free_token_ll(&data->token_head);

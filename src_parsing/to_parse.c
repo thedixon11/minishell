@@ -79,7 +79,7 @@ int	handle_redir(t_data *data, t_token *token, int cmd_nb)
 	if (token->next == NULL)
 	{
 		data->do_i_exit = B_FALSE;
-		error_token_int(data, NULL, STAX_REDIR, 2);
+		error_token_int(data, NULL, STAX_NEWL, 2);
 		data->do_i_exit = B_TRUE;
 		return (1);
 	}

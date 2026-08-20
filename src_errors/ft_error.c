@@ -1,5 +1,4 @@
 #include "../minishell_general.h"
-#include "minishell_errors.h"
 
 int	error_no_data(char *item, char *message, int code)
 {

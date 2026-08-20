@@ -44,6 +44,13 @@ int		handle_word(t_state *state, t_data *data);
 int		is_operator(char c);
 t_type	get_type(t_state *state);
 
+// to_token_control
+int	control_token_line(t_data *data);
+t_bool	operator_or_not(t_token *current);
+int	control_the_operator(t_data *data, t_token *current);
+int	control_classic_redir(t_data *data, t_token *current);
+int	control_pipe_redir(t_data *data, t_token *current);
+
 // is_there_env
 int		initialize_env(t_data *data, char **envp);
 t_bool	check_if_value_exist(t_data *data, char *value);
