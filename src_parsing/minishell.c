@@ -17,18 +17,10 @@ t_data	*data_init(void)
 	return (data);
 }
 
-int	main(int argc, char **argv, char **envp)
+void	line_reader_and_exec(t_data *data)
 {
 	char	*line;
-	t_data	*data;
-	int		code;
 
-	(void)argv;
-	if (argc > 1)
-		return (error_no_data(I_MINISHELL, MINI_ARGS, 1));
-	code = 0;
-	data = data_init();
-	initialize_env(data, envp);
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -47,6 +39,20 @@ int	main(int argc, char **argv, char **envp)
 			execution_start(data);
 		}
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	*data;
+	int		code;
+
+	(void)argv;
+	if (argc > 1)
+		return (error_no_data(I_MINISHELL, MINI_ARGS, 1));
+	code = 0;
+	data = data_init();
+	initialize_env(data, envp);
+	line_reader_and_exec(data);
 	data->do_i_exit = B_TRUE;
 	code = data->code;
 	free_and_close_life(data);

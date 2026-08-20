@@ -35,7 +35,9 @@ int	control_the_operator(t_data *data, t_token *current)
 {
 	if (current->type == T_HEREDOC || current->type == T_INPUT)
 		return (control_classic_redir(data, current));
-	else if (current->type == T_OUTPUT_APPEND || current->type == T_OUTPUT_TRUNC)
+	else if (current->type == T_OUTPUT_APPEND)
+		return (control_classic_redir(data, current));
+	else if (current->type == T_OUTPUT_TRUNC)
 		return (control_classic_redir(data, current));
 	else
 		return (control_pipe_redir(data, current));
