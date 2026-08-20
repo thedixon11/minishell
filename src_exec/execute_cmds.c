@@ -24,7 +24,6 @@ void	wait_all_children(t_data *data)
 	int	status;
 	int	pid;
 
-	//signal(SIGINT, handle_sigint_exec(130));	// BUG: signal
 	pid = waitpid(-1, &status, 0);
 	while (pid > 0)
 	{
@@ -37,7 +36,6 @@ void	wait_all_children(t_data *data)
 		}
 		pid = waitpid(-1, &status, 0);
 	}
-	// signal(SIGINT, handle_sigint);	// BUG: signal
 }
 
 int	reset_redir_patch(t_data *data)
@@ -66,5 +64,6 @@ int	execute_cmds(t_data *data)
 		data->current_cmd_nb++;
 	}
 	wait_all_children(data);
+	handle_ctrl_c(data);
 	return (0);
 }

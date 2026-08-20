@@ -7,6 +7,7 @@ BUILTIN_DIR = src_builtin
 TEST_DIR = src_test
 HEREDOC_DIR = src_heredoc
 ERRORS_DIR = src_errors
+SIGNAL_DIR = src_signal
 PARSING_OBJ_DIR = obj_parsing
 XPAND_OBJ_DIR = obj_xpand
 EXEC_OBJ_DIR = obj_exec
@@ -14,6 +15,7 @@ BUILTIN_OBJ_DIR = obj_builtin
 TEST_OBJ_DIR = obj_test
 HEREDOC_OBJ_DIR = obj_heredoc
 ERRORS_OBJ_DIR = obj_errors
+SIGNAL_OBJ_DIR = obj_signal
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -59,7 +61,6 @@ BUILTIN = ft_export.c \
 		  builtin_exec.c
 
 PARSING = minishell.c \
-		  signals.c \
 		  node_utils.c \
 		  parse_utils.c \
 		  to_parse.c \
@@ -71,6 +72,9 @@ PARSING = minishell.c \
 		  is_there_env.c \
 		  is_there_env_utils.c
 
+SIGNAL = signal.c \
+		 init_signal.c
+
 PARSING := $(addprefix $(PARSING_DIR)/,$(PARSING))
 XPAND := $(addprefix $(XPAND_DIR)/,$(XPAND))
 EXEC := $(addprefix $(EXEC_DIR)/,$(EXEC))
@@ -78,6 +82,7 @@ BUILTIN := $(addprefix $(BUILTIN_DIR)/,$(BUILTIN))
 TEST := $(addprefix $(TEST_DIR)/,$(TEST))
 HEREDOC := $(addprefix $(HEREDOC_DIR)/,$(HEREDOC))
 ERRORS := $(addprefix $(ERRORS_DIR)/,$(ERRORS))
+SIGNAL := $(addprefix $(SIGNAL_DIR)/,$(SIGNAL))
 
 OBJS_PARSING := $(patsubst $(PARSING_DIR)/%.c,$(PARSING_OBJ_DIR)/%.o,$(PARSING))
 OBJS_XPAND := $(patsubst $(XPAND_DIR)/%.c,$(XPAND_OBJ_DIR)/%.o,$(XPAND))
@@ -86,20 +91,25 @@ OBJS_BUILTIN := $(patsubst $(BUILTIN_DIR)/%.c,$(BUILTIN_OBJ_DIR)/%.o,$(BUILTIN))
 OBJS_TEST := $(patsubst $(TEST_DIR)/%.c,$(TEST_OBJ_DIR)/%.o,$(TEST))
 OBJS_HEREDOC := $(patsubst $(HEREDOC_DIR)/%.c,$(HEREDOC_OBJ_DIR)/%.o,$(HEREDOC))
 OBJS_ERRORS := $(patsubst $(ERRORS_DIR)/%.c,$(ERRORS_OBJ_DIR)/%.o,$(ERRORS))
+OBJS_SIGNAL := $(patsubst $(SIGNAL_DIR)/%.c,$(SIGNAL_OBJ_DIR)/%.o,$(SIGNAL))
 
 CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -g
 VFLAGS = --trace-children=yes --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp
-INCLUDE = -I$(PARSING_DIR)/include -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(BUILTIN_DIR)/include -I$(HEREDOC_DIR)/include -I$(ERRORS_DIR)/include -I$(LIBFT_DIR)/include
+INCLUDE = -I$(PARSING_DIR)/include -I$(EXEC_DIR)/include -I$(XPAND_DIR)/include -I$(BUILTIN_DIR)/include -I$(HEREDOC_DIR)/include -I$(ERRORS_DIR)/include -I$(SIGNAL_DIR)/include -I$(LIBFT_DIR)/include
 
 all: $(NAME)
 
-$(NAME): $(OBJS_PARSING) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(OBJS_HEREDOC) $(OBJS_ERRORS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_PARSING) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(OBJS_HEREDOC) $(OBJS_ERRORS) $(LIBFT) -o $(NAME) -lreadline
+$(NAME): $(OBJS_PARSING) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(OBJS_HEREDOC) $(OBJS_ERRORS) $(OBJS_SIGNAL) $(LIBFT)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS_PARSING) $(OBJS_TEST) $(OBJS_EXEC) $(OBJS_XPAND) $(OBJS_BUILTIN) $(OBJS_HEREDOC) $(OBJS_ERRORS) $(OBJS_SIGNAL) $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
+
+$(SIGNAL_OBJ_DIR)/%.o: $(SIGNAL_DIR)/%.c
+	@mkdir -p $(SIGNAL_OBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(EXEC_OBJ_DIR)/%.o: $(EXEC_DIR)/%.c
 	@mkdir -p $(EXEC_OBJ_DIR)
@@ -130,7 +140,7 @@ $(PARSING_OBJ_DIR)/%.o: $(PARSING_DIR)/%.c
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
-	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR) $(BUILTIN_OBJ_DIR) $(HEREDOC_OBJ_DIR) $(ERRORS_OBJ_DIR) $(PARSING_OBJ_DIR)
+	$(RM) -r $(TEST_OBJ_DIR) $(EXEC_OBJ_DIR) $(XPAND_OBJ_DIR) $(BUILTIN_OBJ_DIR) $(HEREDOC_OBJ_DIR) $(ERRORS_OBJ_DIR) $(PARSING_OBJ_DIR) $(SIGNAL_OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean

@@ -23,13 +23,12 @@ void	line_reader_and_exec(t_data *data)
 {
 	char	*line;
 
-	//setup_signals();	// BUG: signals
 	while (1)
 	{
-		//g_signal = 0;	// BUG: signals
 		line = readline("minishell$ ");
 		if (!line)
 			break ;
+		handle_ctrl_c(data);
 		add_history(line);
 		if (line[0] != 0)
 		{
@@ -41,6 +40,8 @@ void	line_reader_and_exec(t_data *data)
 				continue ;
 			free_token_ll(&data->token_head);
 			execution_start(data);
+			handle_ctrl_c(data);
+			init_signal_prompt();
 		}
 	}
 }
@@ -54,6 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc > 1)
 		return (error_no_data(I_MINISHELL, MINI_ARGS, 1));
 	code = 0;
+	init_signal_prompt();
 	data = data_init();
 	initialize_env(data, envp);
 	line_reader_and_exec(data);

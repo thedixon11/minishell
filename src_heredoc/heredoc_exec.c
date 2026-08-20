@@ -10,23 +10,9 @@
 
 int	create_heredoc_fd(t_data *data, t_line *heredoc)
 {
-	//char	*temp;	// NOTE: in comment because using readline
-
 	if (pipe(data->heredoc_pipe_fds) == -1)
 		return (error_int(data, I_PIPE, strerror(errno), 1));
 	heredoc->fd = data->heredoc_pipe_fds[0];
-
-	// NOTE: in comment, because with readline in heredoc, I dont have token
-	// add the '/' at the end
-	/*
-	temp = ft_strdup(heredoc->content);
-	ft_free((void **)&heredoc->content);
-	if (!temp)
-		return (error_int(data, I_STRDUP, LIBFT_ERR, 1));
-	heredoc->content = ft_strjoin(temp, "\n");
-	ft_free((void **)&temp);
-	if (!heredoc->content)
-		return (error_int(data, I_STRJOIN, LIBFT_ERR, 1));*/
 	return (0);
 }
 
@@ -64,6 +50,8 @@ int	heredoc_exec(t_data *data)
 
 	error = 0;
 	current = data->line_cmd;
+	init_signal_heredoc();
+	rl_event_hook = heredoc_event_hook;
 	while (current != NULL && data->error == 0)
 	{
 		if (current->type == T_HEREDOC && error == 0)
@@ -77,7 +65,13 @@ int	heredoc_exec(t_data *data)
 				error = write_on_fd(data, current, B_TRUE);
 		}
 		current = current->next;
+	}	if (error != 0 && g_signal == SIGINT)
+	{
+		handle_ctrl_c(data);
+		init_signal_prompt();
+		return (1);
 	}
+	init_signal_prompt();
 	if (error != 0)
 		return (1);
 	return (0);

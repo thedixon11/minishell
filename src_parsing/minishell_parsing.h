@@ -7,13 +7,6 @@ int		print_env(t_env *env);
 int		print_tokens(t_token *token);
 int		print_lines(t_line *lines);
 
-// signal.c
-int		end_heredoc(char *line);
-void    setup_signals(void);
-void    handle_sigint(int sig);
-void    handle_sigint_heredoc(int sig);
-void	handle_sigint_exec(int sig);
-
 // create_env.c
 t_env	*create_env(char **envp);
 void	add_node_env(t_env *current, t_env **head);

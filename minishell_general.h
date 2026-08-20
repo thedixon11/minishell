@@ -10,6 +10,7 @@
 # include "./src_builtin/minishell_builtin.h"
 # include "./src_heredoc/minishell_heredoc.h"
 # include "./src_errors/minishell_errors.h"
+# include "./src_signal/minishell_signal.h"
 
 // List of items
 # define I_CALLOC "ft_calloc"
