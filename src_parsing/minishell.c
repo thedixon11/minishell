@@ -27,7 +27,6 @@ void	line_reader_and_exec(t_data *data)
 	{
 		init_signal_prompt();
 		line = readline("minishell$ ");
-		printf("--%s--\n",line);
 		if (!line)
 			break ;
 		handle_ctrl_c(data);

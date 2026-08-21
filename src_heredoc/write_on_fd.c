@@ -43,7 +43,6 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		return (write(STDOUT_FILENO, "\n", 1), NULL);
 	if (ft_strncmp(line, heredoc->content, data->limiter_len) == 0)
 		return (line);
-	//printf("line : --%s--\n", line);
 	if (xpand_or_not == B_FALSE)
 		return (line);
 	line_xpanded = expand_line_hdoc(data, line);
