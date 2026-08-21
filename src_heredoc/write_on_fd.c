@@ -40,9 +40,10 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	if (g_signal == SIGINT)
 		return (ft_free((void **)&line), NULL);
 	if (line == NULL)
-		return (NULL);
+		return (write(STDOUT_FILENO, "\n", 1), NULL);
 	if (ft_strncmp(line, heredoc->content, data->limiter_len) == 0)
 		return (line);
+	//printf("line : --%s--\n", line);
 	if (xpand_or_not == B_FALSE)
 		return (line);
 	line_xpanded = expand_line_hdoc(data, line);
@@ -58,7 +59,6 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 //
 // WARNING: We have to put the corrrect gnl in the libft !! The one that
 // can manage a delimiter.
-
 int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 {
 	char	*line;
@@ -81,6 +81,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 			error_int(data, I_WRITE, strerror(errno), 1);
 			return (ft_free((void **)&line), 1);
 		}
+		write(data->heredoc_pipe_fds[1], "\n", 1);
 		ft_free((void **)&line);
 	}
 	ft_free((void **)&line);

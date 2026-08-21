@@ -27,6 +27,7 @@ void	line_reader_and_exec(t_data *data)
 	{
 		init_signal_prompt();
 		line = readline("minishell$ ");
+		printf("--%s--\n",line);
 		if (!line)
 			break ;
 		handle_ctrl_c(data);
@@ -55,6 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc > 1)
 		return (error_no_data(I_MINISHELL, MINI_ARGS, 1));
 	code = 0;
+	rl_variable_bind("enable-bracketed-paste", "off");
 	data = data_init();
 	initialize_env(data, envp);
 	line_reader_and_exec(data);
