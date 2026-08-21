@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include <unistd.h>
 
 void	signal_handler(int signo)
 {
@@ -35,5 +36,6 @@ void	signal_handler_exec(int signo)
 		g_signal = SIGQUIT;
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	write(STDOUT_FILENO, "\n", 1);
+	rl_redisplay();
+	write(1, "\n", 1);
 }

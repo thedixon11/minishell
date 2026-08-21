@@ -11,6 +11,17 @@
 # include "./src_heredoc/minishell_heredoc.h"
 # include "./src_errors/minishell_errors.h"
 # include "./src_signal/minishell_signal.h"
+# include <stdio.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdbool.h>
+# include <stddef.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <errno.h>
+# include <sys/stat.h>
 
 // List of items
 # define I_CALLOC "ft_calloc"
