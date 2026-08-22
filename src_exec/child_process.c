@@ -65,7 +65,7 @@ void	child_process(t_data *data)
 {
 	int	code;
 
-	init_signal_child();
+	init_signal_child();  // BUG: 13
 	code = 0;
 	data->do_i_exit = B_TRUE;
 	ft_close_fd(&data->saved_stdin);

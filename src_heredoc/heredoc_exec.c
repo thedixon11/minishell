@@ -42,9 +42,7 @@ int	heredoc_loop(t_data *data, t_line *current)
 {
 	int	error;
 
-	error = 0;	
-	init_signal_heredoc();
-	rl_event_hook = heredoc_event_hook;
+	error = 0;
 	if (create_heredoc_fd(data, current) == 1)
 		return (1);
 	if ((ft_strchr(current->content, '\'') != NULL)
@@ -52,6 +50,11 @@ int	heredoc_loop(t_data *data, t_line *current)
 		error = delimiter_manager_n_write_hdoc(data, current);
 	else
 		error = write_on_fd(data, current, B_TRUE);
+  if (g_signal == SIGINT)
+  {
+    handle_ctrl_c(data);    // BUG: 8
+    init_signal_prompt();  // BUG: 9
+  }
 	return (error);
 }
 
@@ -67,16 +70,14 @@ int	heredoc_exec(t_data *data)
 
 	error = 0;
 	current = data->line_cmd;
+  init_signal_heredoc();    // BUG:   5
+  rl_event_hook = heredoc_event_hook;   // BUG:   6
 	while (current != NULL && error == 0)
 	{
 		if (current->type == T_HEREDOC && error == 0)
 			error = heredoc_loop(data, current);
 		current = current->next;
 	}
-	if (error != 0 || g_signal == SIGINT)
-	{
-		handle_ctrl_c(data);
-		return (1);
-	}
-	return (0);
+  init_signal_prompt();
+	return (error);
 }

@@ -33,5 +33,7 @@ void	signal_handler_exec(int signo)
 		g_signal = SIGINT;
 	else if (signo == SIGQUIT)
 		g_signal = SIGQUIT;
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	write(STDOUT_FILENO, "\n", 1);
 }

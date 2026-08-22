@@ -49,7 +49,7 @@ int	reset_redir_patch(t_data *data)
 
 int	execute_cmds(t_data *data)
 {
-	init_signal_parent();
+	init_signal_parent();   // BUG:   11
 	while (data->current_cmd_nb <= data->max_cmd_nb)
 	{
 		if (reset_redir_patch(data) == 1)
@@ -65,6 +65,6 @@ int	execute_cmds(t_data *data)
 		data->current_cmd_nb++;
 	}
 	wait_all_children(data);
-	handle_ctrl_c(data);
+	handle_ctrl_c(data);  // BUG: 12
 	return (0);
 }
