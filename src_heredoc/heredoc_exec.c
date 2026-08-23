@@ -42,9 +42,11 @@ int	heredoc_loop(t_data *data, t_line *current)
 {
 	int	error;
 	int	pid;
+	int	code;
 
 	error = 0;
 	pid = 0;
+	code = 0;
 	if (create_heredoc_fd(data, current) == 1)
 		return (1);
 	pid = fork();
@@ -57,14 +59,17 @@ int	heredoc_loop(t_data *data, t_line *current)
 			error = delimiter_manager_n_write_hdoc(data, current);
 		else
 			error = write_on_fd(data, current, B_TRUE);
+		code = data->code;
 		free_and_close_life(data);
+		exit (code);
 	}
 	ft_close_fd(&data->heredoc_pipe_fds[1]);
 	wait_all_children(data);
 	if (g_signal == SIGINT)
 	{
+		error = -1;
 		handle_ctrl_c(data);    // BUG: 8
-		init_signal_prompt();  // BUG: 9
+		//init_signal_prompt();  // BUG: 9
 	}
 	return (error);
 }
@@ -87,6 +92,6 @@ int	heredoc_exec(t_data *data)
 			error = heredoc_loop(data, current);
 		current = current->next;
 	}
-	init_signal_prompt();
+	//init_signal_prompt();
 	return (error);
 }

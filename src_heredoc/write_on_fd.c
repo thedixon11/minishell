@@ -45,7 +45,7 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not, int *error
 	if ((!line) || (ft_strncmp(line, heredoc->content, data->limiter_len) == 0))
 	{
 		//write(data->heredoc_pipe_fds[1], "\n", 1);
-		return (NULL); // WARNING: a confirmer
+		return (ft_free((void **)&line), NULL); // WARNING: a confirmer
 	}
 	if (xpand_or_not == B_FALSE)
 		return (line);

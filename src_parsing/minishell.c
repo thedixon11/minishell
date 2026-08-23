@@ -27,10 +27,11 @@ void	line_reader_and_exec(t_data *data)
 	{
 		line = readline("minishell$ ");
 		if (!line)
-    {
-      init_signal_prompt();
+		{
+			handle_ctrl_c(data);      // BUG:   3
+			init_signal_prompt();     // BUG:   1
 			continue ;
-    }
+		}
 		add_history(line);    // WARNING: simon a sa mais dans le tokenizer
 		if (line[0] != 0)
 		{
@@ -41,7 +42,7 @@ void	line_reader_and_exec(t_data *data)
 			if (to_parse(data) == 1)
 				continue ;
 			handle_ctrl_c(data);      // BUG:   3
-      init_signal_prompt();     // BUG:   4
+			//init_signal_prompt();     // BUG:   4
 			free_token_ll(&data->token_head);
 			execution_start(data);
 		}
@@ -56,7 +57,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	if (argc > 1)
 		return (error_no_data(I_MINISHELL, MINI_ARGS, 1));
-  init_signal_prompt();     // BUG:   1
 	code = 0;
 	//rl_variable_bind("enable-bracketed-paste", "off");
 	data = data_init();

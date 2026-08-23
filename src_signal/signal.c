@@ -16,6 +16,7 @@ void	signal_handler_heredoc(int signo)
 {
 	(void)signo;
 	g_signal = SIGINT;
+	write(STDOUT_FILENO, "\n", 1);
 }
 
 void	handle_ctrl_c(t_data *data)
@@ -35,5 +36,6 @@ void	signal_handler_exec(int signo)
 		g_signal = SIGQUIT;
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	//rl_redisplay();
 	write(STDOUT_FILENO, "\n", 1);
 }
