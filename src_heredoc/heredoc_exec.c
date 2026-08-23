@@ -67,6 +67,7 @@ int	heredoc_loop(t_data *data, t_line *current)
   wait_all_children(data);
   if (g_signal == SIGINT)
   {
+	error = -1;
     handle_ctrl_c(data);    // BUG: 8
     init_signal_prompt();  // BUG: 9
   }
