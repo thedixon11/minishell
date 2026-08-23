@@ -67,8 +67,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 
   error = 0;
 	data->limiter_len = ft_strlen(heredoc->content) + 1;
-  init_signal_heredoc();    // BUG:   5
-  rl_event_hook = heredoc_event_hook;   // BUG:   6
+
 	while (1)
 	{
 		line = create_line(data, heredoc, xpand_or_not, &error);
@@ -86,7 +85,7 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 	}
 	ft_free((void **)&line);
 	ft_close_fd(&data->heredoc_pipe_fds[1]);
-  if (error == -1 || g_signal == SIGINT)
+	if (error == -1 || g_signal == SIGINT)
     return (1);
 	return (0);
 }
