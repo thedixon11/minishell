@@ -38,15 +38,15 @@ char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not, int *error
 
 	line = readline("> ");
 	if (g_signal == SIGINT)
-  {
+	{
     //write(data->heredoc_pipe_fds[1], "\n", 1);
 		return (ft_free((void **)&line), *error = -1, NULL);  // WARNING: voir si il faut que je backslash ou pas
-  }
+	}
 	if ((!line) || (ft_strncmp(line, heredoc->content, data->limiter_len) == 0))
-  {
-    //write(data->heredoc_pipe_fds[1], "\n", 1);
+	{
+		//write(data->heredoc_pipe_fds[1], "\n", 1);
 		return (NULL); // WARNING: a confirmer
-  }
+	}
 	if (xpand_or_not == B_FALSE)
 		return (line);
 	line_xpanded = expand_line_hdoc(data, line);
@@ -63,9 +63,11 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 {
 	char	*line;
 	int		len_of_line;
-  int error;
+	int error;
 
-  error = 0;
+	error = 0;
+	init_signal_heredoc();    // BUG:   5
+	rl_event_hook = heredoc_event_hook;   // BUG:   6
 	data->limiter_len = ft_strlen(heredoc->content) + 1;
 	while (1)
 	{
@@ -73,18 +75,18 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not)
 		if (!line || error == -1)    // BUG: 10
 			break ;
 		len_of_line = ft_strlen(line);
-    error = write(data->heredoc_pipe_fds[1], line, len_of_line);
-    if (error != -1)
-      error = write(data->heredoc_pipe_fds[1], "\n", 1);
-    if (error == -1)
-    {
+		error = write(data->heredoc_pipe_fds[1], line, len_of_line);
+		if (error != -1)
+		error = write(data->heredoc_pipe_fds[1], "\n", 1);
+		if (error == -1)
+		{
 			error_int(data, I_WRITE, strerror(errno), 1);
-      break ;
-    }
+			break ;
+		}
 	}
 	ft_free((void **)&line);
 	ft_close_fd(&data->heredoc_pipe_fds[1]);
-  if (error == -1 || g_signal == SIGINT)
-    return (1);
+	if (error == -1 || g_signal == SIGINT)
+		return (1);
 	return (0);
 }
