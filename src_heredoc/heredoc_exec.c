@@ -41,15 +41,30 @@ int	delimiter_manager_n_write_hdoc(t_data *data, t_line *current)
 int	heredoc_loop(t_data *data, t_line *current)
 {
 	int	error;
+  int pid;
+  int code;
 
 	error = 0;
+  pid = 0;
+  code = 0;
 	if (create_heredoc_fd(data, current) == 1)
 		return (1);
-	if ((ft_strchr(current->content, '\'') != NULL)
-		|| (ft_strchr(current->content, '\"') != NULL))
-		error = delimiter_manager_n_write_hdoc(data, current);
-	else
-		error = write_on_fd(data, current, B_TRUE);
+  pid = fork();
+  if (pid == 0)
+  {
+    ft_close_fd(&data->heredoc_pipe_fds[0]);
+    data->do_i_exit = B_TRUE;
+	  if ((ft_strchr(current->content, '\'') != NULL)
+	  	|| (ft_strchr(current->content, '\"') != NULL))
+	  	error = delimiter_manager_n_write_hdoc(data, current);
+	  else
+	  	error = write_on_fd(data, current, B_TRUE);
+    code = data->code;
+    free_and_close_life(data);
+    exit (code);
+  }
+  ft_close_fd(&data->heredoc_pipe_fds[1]);
+  wait_all_children(data);
   if (g_signal == SIGINT)
   {
     handle_ctrl_c(data);    // BUG: 8
@@ -70,8 +85,6 @@ int	heredoc_exec(t_data *data)
 
 	error = 0;
 	current = data->line_cmd;
-  init_signal_heredoc();    // BUG:   5
-  rl_event_hook = heredoc_event_hook;   // BUG:   6
 	while (current != NULL && error == 0)
 	{
 		if (current->type == T_HEREDOC && error == 0)
