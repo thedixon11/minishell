@@ -4,6 +4,7 @@ void	init_signal_prompt(void)
 {
 	rl_done = 0;
 	g_signal = 0;
+	rl_catch_signals = 0;
 	rl_event_hook = NULL;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);

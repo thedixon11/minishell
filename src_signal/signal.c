@@ -5,9 +5,9 @@ void	signal_handler(int signo)
 {
 	(void)signo;
 	g_signal = SIGINT;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
+	write(STDOUT_FILENO, "^C\n", 3);
 	rl_replace_line("", 0);
+	rl_on_new_line();
 	rl_redisplay();
 }
 
@@ -16,6 +16,7 @@ void	signal_handler_heredoc(int signo)
 {
 	(void)signo;
 	g_signal = SIGINT;
+	write(STDOUT_FILENO, "^C", 2);
 }
 
 void	handle_ctrl_c(t_data *data)
@@ -36,4 +37,17 @@ void	signal_handler_exec(int signo)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	write(STDOUT_FILENO, "\n", 1);
+}
+
+//INFO: Ctrl-D (EOF) : readline renvoie NULL. Comme bash, on affiche
+//INFO: "exit" et on quitte avec le code de la derniere commande.
+void	handle_ctrl_d(t_data *data)
+{
+	int	code;
+
+	code = data->code;
+	write(STDERR_FILENO, "exit\n", 5);
+	data->do_i_exit = B_TRUE;
+	free_and_close_life(data);
+	exit(code);
 }
