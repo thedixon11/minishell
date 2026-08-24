@@ -18,6 +18,7 @@ char	*fusion_first_second_block(t_data *data, char *first, char *second);
 int		write_on_fd(t_data *data, t_line *heredoc, t_bool xpand);
 char	*create_line(t_data *data, t_line *hdoc, t_bool xpand, int *error);
 char	*expand_line_hdoc(t_data *data, char *line);
+char	*read_heredoc_line(t_data *data);
 
 // delimiter_manager
 char	*expand_off_quote_hdoc(t_data *data, char *content);

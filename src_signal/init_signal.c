@@ -2,27 +2,22 @@
 
 void	init_signal_prompt(void)
 {
-	rl_done = 0;
 	g_signal = 0;
-	rl_catch_signals = 0;
-	rl_event_hook = NULL;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
+// NOTE: Le heredoc est lu avec read(), pas readline. Il faut sigaction.
 void	init_signal_heredoc(void)
 {
-	signal(SIGINT, signal_handler_heredoc);
-}
+	struct sigaction	sa;
 
-int	heredoc_event_hook(void)
-{
-	if (g_signal == SIGINT)
-	{
-		rl_done = 1;
-		return (1);
-	}
-	return (0);
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = signal_handler_heredoc;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	init_signal_parent(void)

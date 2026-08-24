@@ -71,7 +71,6 @@ int	heredoc_exec(t_data *data)
 	error = 0;
 	current = data->line_cmd;
 	init_signal_heredoc();
-	rl_event_hook = heredoc_event_hook;
 	while (current != NULL && error == 0)
 	{
 		if (current->type == T_HEREDOC && error == 0)
