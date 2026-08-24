@@ -64,6 +64,7 @@ int	execute_cmds(t_data *data)
 		save_pipe_rd_to_old_read_fd(data);
 		data->current_cmd_nb++;
 	}
+	reset_redir_patch(data);
 	wait_all_children(data);
 	handle_ctrl_c(data);
 	return (0);
