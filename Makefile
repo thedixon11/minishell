@@ -21,6 +21,7 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 EXEC =	child_process.c \
+		child_process_utils.c \
 		classic_execution.c \
 		env_converter_ll_to_array.c \
 		execute_cmds.c \

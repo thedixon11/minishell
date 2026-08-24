@@ -19,6 +19,9 @@ void	child_no_builtin(t_data *data);
 void	create_args_tab(t_data *data, t_cmd *cmd_data);
 void	check_cmd_is_not_empty(t_data *data, t_line *current);
 
+// child_process_utils
+void    exec_script(char *sh_cmd, char **env);
+
 // no_command_process
 t_bool	is_there_command(t_data *data);
 void	no_command_process(t_data *data);
