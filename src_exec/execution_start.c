@@ -48,10 +48,10 @@ void	execution_start(t_data *data)
 		error = val_manager(data);
 	if (error == 0)
 		error = heredoc_exec(data);
-	init_signal_prompt(); // BUG:  7
+	init_signal_prompt();
 	if (error == 0)
 		execute_cmds(data);
 	reset_redir_patch(data);
 	free_and_close_life(data);
-  init_signal_prompt();
+	init_signal_prompt();
 }

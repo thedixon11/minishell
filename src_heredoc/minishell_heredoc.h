@@ -15,8 +15,8 @@ char	*extract_quote_hdoc(t_data *data, char *old_del, int *start,
 char	*fusion_first_second_block(t_data *data, char *first, char *second);
 
 // write_on_fd
-int		write_on_fd(t_data *data, t_line *heredoc, t_bool xpand_or_not);
-char	*create_line(t_data *data, t_line *heredoc, t_bool xpand_or_not, int *error);
+int		write_on_fd(t_data *data, t_line *heredoc, t_bool xpand);
+char	*create_line(t_data *data, t_line *hdoc, t_bool xpand, int *error);
 char	*expand_line_hdoc(t_data *data, char *line);
 
 // delimiter_manager
