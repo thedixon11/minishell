@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include "minishell_xecution.h"
 
 void	check_cmd_is_not_empty(t_data *data, t_line *current)
 {
@@ -53,6 +54,7 @@ void	child_no_builtin(t_data *data)
 	if (cmd_data->args_tab != NULL)
 		prog_name_prep(data, cmd_data);
 	is_directory(data, cmd_data);
+	is_prog_existing_and_executable(data, cmd_data);
 	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
 	if (errno == EACCES)
 		error_int(data, cmd_data->prog_fullname, strerror(errno), 126);
