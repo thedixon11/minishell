@@ -41,6 +41,7 @@ XPAND = val_manager.c \
 
 HEREDOC = heredoc_exec.c \
 		  heredoc_exec_utils.c \
+		  heredoc_child_parent.c \
 		  write_on_fd.c \
 			delimiter_manager.c
 
