@@ -1,31 +1,28 @@
 #include "../minishell_general.h"
 
-t_env	*create_env(char **envp)
+void	create_env(char **envp, t_data *data)
 {
 	int		x;
-	t_env	*head;
 	t_env	*node;
 
 	x = 0;
-	head = NULL;
 	while (envp[x] != NULL)
 	{
-		node = new_node_env(envp[x]);
-		add_node_env(node, &head);
+		node = new_node_env(envp[x], data);
+		add_node_env(node, data);
 		x++;
 	}
-	return (head);
 }
 
-void	add_node_env(t_env *current, t_env **head)
+void	add_node_env(t_env *current, t_data *data)
 {
 	t_env	*temp;
 
-	if (*head == NULL)
-		*head = current;
+	if (data->env == NULL)
+		data->env = current;
 	else
 	{
-		temp = *head;
+		temp = data->env;
 		while (temp->next != NULL)
 			temp = temp->next;
 		current->next = NULL;
@@ -34,27 +31,27 @@ void	add_node_env(t_env *current, t_env **head)
 	}
 }
 
-t_env	*new_node_env(char *line)
+t_env	*new_node_env(char *line, t_data *data)
 {
 	t_env	*node;
 	char	*equal;
 
 	node = ft_calloc(1, sizeof(t_env));
 	if (!node)
-		return (NULL);
+		error_int(data, I_CALLOC, LIBFT_ERR, 1);
 	equal = ft_strchr(line, '=');
-	node->name = ft_strndup(line, equal - line);
+	node->name = ft_substr(line, 0, equal - line);
+	if (!node->name)
+	{
+		ft_free((void **)&node);
+		error_int(data, I_SUBSTR, LIBFT_ERR, 1);
+	}
 	node->content = strdup(equal + 1);
+	if (!node->content)
+	{
+		ft_free((void **)&node->name);
+		ft_free((void **)&node);
+		error_int(data, I_STRDUP, LIBFT_ERR, 1);
+	}
 	return (node);
-}
-
-char	*ft_strndup(const char *s, size_t n)
-{
-	char	*str;
-
-	str = malloc(n + 1);
-	if (!str)
-		return (NULL);
-	ft_strlcpy(str, s, n + 1);
-	return (str);
 }

@@ -8,10 +8,9 @@ int		print_tokens(t_token *token);
 int		print_lines(t_line *lines);
 
 // create_env.c
-t_env	*create_env(char **envp);
-void	add_node_env(t_env *current, t_env **head);
-t_env	*new_node_env(char *line);
-char	*ft_strndup(const char *s, size_t n);
+void	create_env(char **envp, t_data *data);
+void	add_node_env(t_env *current, t_data *data);
+t_env	*new_node_env(char *line, t_data *data);
 
 // node_utils.c
 t_token	*new_token_node(t_data *data, char *value, t_type type);

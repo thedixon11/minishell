@@ -29,7 +29,7 @@ int	initialize_env(t_data *data, char **envp)
 		return (create_new_env(data));
 	else
 	{
-		data->env = create_env(envp);
+		create_env(envp, data);
 		if (check_if_value_exist(data, "PWD") == B_FALSE)
 			create_pwd_value(data);
 		else

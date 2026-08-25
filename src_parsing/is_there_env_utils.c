@@ -47,8 +47,8 @@ int	create_shlvl_value(t_data *data)
 {
 	t_env	*new_shlvl;
 
-	new_shlvl = new_node_env("SHLVL=1");
-	add_node_env(new_shlvl, &data->env);
+	new_shlvl = new_node_env("SHLVL=1", data);
+	add_node_env(new_shlvl, data);
 	return (0);
 }
 
@@ -65,8 +65,8 @@ int	create_pwd_value(t_data *data)
 	ft_free((void **)&temp);
 	if (!new_pwd_line)
 		error_int(data, I_STRJOIN, LIBFT_ERR, 1);
-	new_pwd = new_node_env(new_pwd_line);
+	new_pwd = new_node_env(new_pwd_line, data);
 	ft_free((void **)&new_pwd_line);
-	add_node_env(new_pwd, &data->env);
+	add_node_env(new_pwd, data);
 	return (0);
 }
