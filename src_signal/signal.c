@@ -37,3 +37,14 @@ void	signal_handler_exec(int signo)
 	rl_replace_line("", 0);
 	write(STDOUT_FILENO, "\n", 1);
 }
+
+void	handle_ctrl_d(t_data *data)
+{
+	int	code;
+
+	code = data->code;
+	write(STDERR_FILENO, "exit\n", 5);
+	data->do_i_exit = B_TRUE;
+	free_and_close_life(data);
+	exit(code);
+}

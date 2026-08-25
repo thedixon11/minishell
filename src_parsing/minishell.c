@@ -27,7 +27,7 @@ void	line_reader_and_exec(t_data *data)
 	{
 		line = readline("minishell$ ");
 		if (!line)
-			break ;
+			handle_ctrl_d(data);
 		add_history(line);
 		if (line[0] != 0)
 		{
