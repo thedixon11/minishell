@@ -29,7 +29,7 @@ t_env	*create_new_node_env(t_data *data, char *name, char *content);
 
 // ft_export_print
 void	swap_values(char ***env, int *i, int j);
-void	print_environment(char **env);
+void	print_environment(t_data *data, char **env);
 int		export_no_args(t_data *data);
 
 // ft_echo

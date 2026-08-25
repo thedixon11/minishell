@@ -1,4 +1,5 @@
 #include "../minishell_general.h"
+#include <unistd.h>
 
 void	swap_values(char ***env, int *i, int j)
 {
@@ -10,13 +11,18 @@ void	swap_values(char ***env, int *i, int j)
 	*i = 0;
 }
 
-void	print_environment(char **env)
+void	print_environment(t_data *data, char **env)
 {
 	int	y;
 
 	y = 0;
 	while (env[y] != NULL)
 	{
+		if (write(1, "declare -x ", 11) == -1)
+		{
+			ft_free_tab(&env);
+			error_int(data, I_WRITE, LIBFT_ERR, 1);
+		}
 		ft_putendl_fd(env[y], 1);
 		y++;
 	}
@@ -56,7 +62,7 @@ int	export_no_args(t_data *data)
 	if (add_quotes_content(data, &c_env) == 1)
 		return (ft_free_tab(&c_env), 1);
 	sort_env_tab(&c_env);
-	print_environment(c_env);
+	print_environment(data, c_env);
 	ft_free_tab(&c_env);
 	return (0);
 }

@@ -48,6 +48,8 @@ int	heredoc_loop(t_data *data, t_line *current)
 	if (create_heredoc_fd(data, current) == 1)
 		return (1);
 	pid = fork();
+	if (pid == -1)
+		return (error_int(data, I_FORK, strerror(errno), 1));
 	if (pid == 0)
 		heredoc_child(data, current);
 	heredoc_parent(data, &error);
