@@ -15,8 +15,6 @@ typedef enum e_bool
 	B_TRUE
 }					t_bool;
 
-// NOTE: cet enum enumere les differents types de nodes possible dans la liste chainee de la cmd
-
 typedef enum e_type
 {
 	T_INPUT,
@@ -29,9 +27,6 @@ typedef enum e_type
 	T_PIPE
 }					t_type;
 
-// NOTE: la struct t_line est utilisee pour la liste chainee de la cmd.
-// chaque node est un element de la cmd (soit cmd, pipe in, pipe out, heredoc,
-//	...)
 typedef struct s_line
 {
 	t_type			type;
@@ -44,8 +39,6 @@ typedef struct s_line
 	struct s_line	*next;
 }					t_line;
 
-// NOTE: la struct s_env est creer au tout debut du programme par Alex.
-//
 typedef struct s_env
 {
 	char			*name;
@@ -54,8 +47,6 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-// NOTE: la struct t_cmd est creer uniquement dans l'execve preparation
-//
 typedef struct s_cmd
 {
 	char			*prog_fullname;
@@ -63,10 +54,6 @@ typedef struct s_cmd
 	char			**path_tab;
 	char			**env;
 }					t_cmd;
-
-// NOTE: liste chainee pour les tokens avec 
-// value = caractere(s) du token
-// type = enum type du token
 
 typedef struct s_token
 {
@@ -76,14 +63,6 @@ typedef struct s_token
 	struct s_token	*prev;
 }					t_token;
 
-// NOTE: memoire de l'avancee pendant la tokensitaion
-// start : handle space
-// str : string transmis dans le prompt
-// i : place dans la string
-// quote : quote = \0 si simple = ' si double = "
-// current : token en cours
-// head : tete de la liste
-
 typedef struct s_state
 {
 	int				start;
@@ -91,9 +70,6 @@ typedef struct s_state
 	int				i;
 	char			quote;
 }					t_state;
-
-// NOTE: la struct t_data est creer au tout debut du programme.
-// elle va contenir des donnees utilisees globalement dans le prog.
 
 typedef struct s_data
 {
@@ -114,11 +90,11 @@ typedef struct s_data
 	int				limiter_len;
 	int				saved_stdin;
 	int				saved_stdout;
-  t_bool			do_i_exit;
+	t_bool			do_i_exit;
 	char			*old_cwd;
 	char			*cwd;
 	int				last_pid;
 	t_token			*token_head;
 }					t_data;
 
-#endif /*MINISHELL_STRUCT_H*/
+#endif
