@@ -94,23 +94,10 @@ Press `Ctrl-D` on an empty line, or run `exit`, to leave the shell.
 - The 42 Minishell subject PDF itself, used throughout as the primary
   specification, with `bash` as the reference implementation for any
   unspecified edge case.
-- Our dear friends that were very helpful : Simon Weinber
+- Our dear friends that were very helpful : Simon Weinber, Frédéric Ducrot, Lucas Debarnot, Léo Granger, Shadya Jolliet, Juliette Turrel, 
+  Domenico Giuseppe Cresce and Capibara !
 
 ### AI usage
 
-> _Fill this in honestly and specifically before submitting — evaluators will
-> ask you to justify anything AI touched. Replace the placeholder text below
-> with what you actually did._
-
-AI tools (e.g. [tool name]) were used during this project for:
-- *[task, e.g. "clarifying how `dup2` and pipe file descriptors interact
-  across a multi-command pipeline"]*
-- *[task, e.g. "reviewing my parser's handling of nested quotes for edge
-  cases I hadn't considered"]*
-- *[task, e.g. "explaining the difference between `waitpid` and `wait3`"]*
-
-All AI-assisted explanations were cross-checked against the `bash`/`readline`
-documentation and discussed with peers before being implemented; no code was
-copy-pasted directly from AI output into the project without being fully
-understood and rewritten where necessary, per the project's AI Instructions
-(Chapter III of the subject).
+The AI was used for learning new concepts like the different functions we need to use.
+Also it was used for testing the execution at the beggining of the project.
