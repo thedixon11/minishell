@@ -1,12 +1,16 @@
-#include "../minishell_general.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_exec.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:13:12 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:19:27 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// NOTE: To create an heredoc, we cannot use functions like open, because we
-// don't have a file to open. We need to do it by creating a pipe, which
-// we'll write on it and creates us also a READ FD.
-//
-// NOTE: We have to store the fds in two places :
-// 1) the WR_FD and RD_FD in data to use it in write_on_fd;
-// 2) the RD_FD in the corresponding heredoc node;
+#include "../minishell_general.h"
 
 int	create_heredoc_fd(t_data *data, t_line *heredoc)
 {
@@ -55,11 +59,6 @@ int	heredoc_loop(t_data *data, t_line *current)
 	heredoc_parent(data, &error);
 	return (error);
 }
-
-// NOTE: Here starts the heredocs executions. There is two steps per heredoc :
-// 1) create a pipe for each heredoc(that creates fds);
-// 2) if the delimiter has quotes, have to manage them;
-// 2) write on that buffer, and store the read fd;
 
 int	heredoc_exec(t_data *data)
 {

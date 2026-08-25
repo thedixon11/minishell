@@ -1,7 +1,16 @@
-#include "../minishell_general.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execve_preparation.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:12:22 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:20:59 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// NOTE: here we check if the programm exists and is executable
-// with the function access
+#include "../minishell_general.h"
 
 int	is_prog_existing_and_executable(t_data *data, t_cmd *cmd_data)
 {
@@ -18,10 +27,6 @@ int	is_prog_existing_and_executable(t_data *data, t_cmd *cmd_data)
 		error_int(data, path_to_check, strerror(errno), 126);
 	return (0);
 }
-
-// NOTE: the function create_path_tab will split the PATH string that
-// is in the environment, with ':' as separators and removing the
-// "PATH=" at the beginning.
 
 void	create_path_tab(t_data *data, t_cmd *cmd_data, char *path_to_split)
 {

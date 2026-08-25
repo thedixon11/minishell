@@ -1,8 +1,16 @@
-#include "../minishell_general.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   write_on_fd.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:13:20 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:20:07 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// NOTE: expand_line_hdoc will expand the STDIN_FILENO input content
-// before writing it in the READ FD if xpand_or_not is TRUE. Otherwise, it
-// will just strdup the line.
+#include "../minishell_general.h"
 
 char	*expand_line_hdoc(t_data *data, char *line)
 {
@@ -50,9 +58,6 @@ char	*create_line(t_data *data, t_line *hdoc, t_bool xpand, int *error)
 	return (line_xpanded);
 }
 
-// NOTE: The write_on_fd will write the STDIN_FILENO input in the pipe by
-// using the WRITING FD of the heredoc pipe. Before writing on the fd, we have
-// to expend the content inside.
 int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand)
 {
 	char	*line;

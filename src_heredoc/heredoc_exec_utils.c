@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_exec_utils.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:13:15 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:19:53 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell_general.h"
 
 char	*fusion_first_second_block(t_data *data, char *first, char *second)
@@ -12,8 +24,6 @@ char	*fusion_first_second_block(t_data *data, char *first, char *second)
 		return (error_char(data, I_STRJOIN, LIBFT_ERR, 1));
 	return (first);
 }
-
-// NOTE: will extract inside the quote
 
 char	*extract_quote_hdoc(t_data *data, char *old_del, int *start, char quote)
 {
@@ -31,8 +41,6 @@ char	*extract_quote_hdoc(t_data *data, char *old_del, int *start, char quote)
 	return (inside_quote);
 }
 
-// NOTE: will extract before quote entry;
-
 char	*go_until_quote_hdoc(t_data *data, char *old_del, int *start)
 {
 	int		end;
@@ -48,9 +56,6 @@ char	*go_until_quote_hdoc(t_data *data, char *old_del, int *start)
 	return (second_block);
 }
 
-// NOTE: go_until_dollar_hdoc will create a block until the
-// next dollar. It's an util of expand_line_hdoc.
-
 char	*go_until_dollar_hdoc(t_data *data, char *line, int *start)
 {
 	int		end;
@@ -65,9 +70,6 @@ char	*go_until_dollar_hdoc(t_data *data, char *line, int *start)
 	*start = end;
 	return (second_block);
 }
-
-// NOTE: delimiter manager will treat the quotes of the delimiter and
-// removed them
 
 char	*remove_n_xtract_quotes_hdoc(t_data *data, char *old_del)
 {

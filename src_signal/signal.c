@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:15:18 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:17:30 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell_general.h"
-#include <unistd.h>
 
 void	signal_handler(int signo)
 {
@@ -11,7 +22,6 @@ void	signal_handler(int signo)
 	rl_redisplay();
 }
 
-//INFO: rl_done = 1, set the end of readline process
 void	signal_handler_heredoc(int signo)
 {
 	(void)signo;

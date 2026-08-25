@@ -1,21 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollar_manager.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:15:32 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:17:22 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell_general.h"
-
-// NOTE: It's the entry point to deal with dollars. Managing the dollars depends
-//	on which value is right after it. There is 5 possiblities :
-//	1) a quote (single or double), and we are treating out of quotes (Q_NONE);
-//		>> dollar and quote are deleted;
-//	2) a digit;
-//		>> dollar and digit are deleted;
-//	3) an '?';
-//		>> have to expand the last number error;
-//	4) an alpha or an underscore;
-//		>> possibly an env_val -> go to env_var_manager;
-//	5) everything else (can also be a quote, if we're treating inside quote)
-//
-// NOTE: the value i can be either i_content or i_quote depending situation.
-//	the value str can be either content or inside_quote depending situation.
-
-// TODO: have to create the function to get the code number error
 
 char	*dollar_manager(t_data *data, char *str, int *i, t_quote q_mode)
 {

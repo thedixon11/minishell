@@ -1,8 +1,16 @@
-#include "../minishell_general.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   val_manager_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:15:56 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:16:07 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// NOTE: the function go_until_dollar will create a block from start until
-// next dollar. It is an util of expand_off_quote. If there is quotes, it
-// will skip the dollars inside and no expansions will be done inside quotes.
+#include "../minishell_general.h"
 
 void	jump_quoted_content(char *content, int *end)
 {
@@ -36,9 +44,6 @@ char	*go_until_dollar(t_data *data, char *content, int *start)
 	*start = end;
 	return (second);
 }
-
-// NOTE: the fonction go_until_quote will create a block from start
-// until the next quote. It's an util of expand_in_quote function.
 
 char	*go_until_quote(t_data *data, char *content, int *start)
 {

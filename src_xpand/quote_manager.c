@@ -1,12 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote_manager.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:15:50 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:16:54 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell_general.h"
 
-// NOTE: second_block_not_dollar_or_quote will create a block from i until
-// the next dollar or quote (single or double). It's an utils for function
-// quote_expansion.
-//
-// NOTE: str may be either value or inside_quote
-// i may be either i_value or i_quote
-//
 char	*second_block_not_dollar(t_data *data, char *str, int *start)
 {
 	int		end;
@@ -25,12 +30,6 @@ char	*second_block_not_dollar(t_data *data, char *str, int *start)
 	*start = end;
 	return (second_block);
 }
-
-// NOTE: In a double quote situation, we'll expand inside quotes with
-// the function quote_expansion. We work in a system of first and second
-// block. The idea is to manage the second block, either it is or not a dollar
-// situation, and then to join the first block (already treated) with second
-// block. This fusion becomes the new first block and we repeat the process.
 
 char	*quote_expansion(t_data *data, char *in_quote)
 {
@@ -58,9 +57,6 @@ char	*quote_expansion(t_data *data, char *in_quote)
 	return (first);
 }
 
-// NOTE: with extract_quote, we'll extract from right after the entry quote,
-// until the closing quote.
-
 char	*extract_quote(t_data *data, char *value, int *i_value, char quote)
 {
 	char	*inside_quote;
@@ -79,17 +75,6 @@ char	*extract_quote(t_data *data, char *value, int *i_value, char quote)
 		return (error_char(data, I_SUBSTR, LIBFT_ERR, 1));
 	return (inside_quote);
 }
-
-// NOTE: quote_manager is the beginning to deal with what is inside quotes
-// There is two steps:
-//	1) we extract what's inside the quote;
-//	2) if we are in double quotes situation, we'll expand the content.
-//		Otherwise, we'll return the extracted inside quote content.
-//
-// NOTE: the value of *i is the location of the entry quote.
-//
-// WARNING: have to check if the else return NULL condition is useful
-// or not
 
 char	*quote_manager(t_data *data, char *value, int *i_value, char quote)
 {

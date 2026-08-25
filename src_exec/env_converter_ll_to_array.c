@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_converter_ll_to_array.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 15:11:52 by jvasconc          #+#    #+#             */
+/*   Updated: 2026/08/25 15:20:41 by jvasconc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell_general.h"
 
 char	**initialize_converted_env(t_data *data, t_env *env)
@@ -18,9 +30,6 @@ char	**initialize_converted_env(t_data *data, t_env *env)
 		error_int(data, I_CALLOC, LIBFT_ERR, 1);
 	return (converted_env);
 }
-
-// NOTE: rebuld_value have the mission to fusion name of all env_var with their
-// respective content and '=' between them.
 
 char	*rebuild_value(t_data *data, t_env *current)
 {
@@ -45,14 +54,6 @@ char	*rebuild_value(t_data *data, t_env *current)
 		return (error_char(data, I_STRJOIN, LIBFT_ERR, 1));
 	return (rebuild_value);
 }
-
-// NOTE: before executing the command, it's necessary to convert the
-// environment from linked list to array, because execve need it in this
-// format. That's the job of env_converter_ll_to_array. To do that,
-// we need:
-// 1) count how many env_var exists in the environment;
-// 2) have to rebuild the values
-// (we have to join name, '=' and content together)
 
 char	**env_converter_ll_to_array(t_data *data, t_env *env)
 {
