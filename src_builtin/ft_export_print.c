@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell_general.h"
+#include <unistd.h>
 
 void	swap_values(char ***env, int *i, int j)
 {

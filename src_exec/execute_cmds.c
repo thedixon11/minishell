@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell_general.h"
+#include "minishell_xecution.h"
 
 t_bool	do_i_parent(t_data *data)
 {
