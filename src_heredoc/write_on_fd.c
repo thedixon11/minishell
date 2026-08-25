@@ -58,10 +58,21 @@ char	*create_line(t_data *data, t_line *hdoc, t_bool xpand, int *error)
 	return (line_xpanded);
 }
 
+int	write_process_hdoc(t_data *data, char *line)
+{
+	int	len_of_line;
+	int	error;
+
+	len_of_line = ft_strlen(line);
+	error = write(data->heredoc_pipe_fds[1], line, len_of_line);
+	if (error != -1)
+		error = write(data->heredoc_pipe_fds[1], "\n", 1);
+	return (error);
+}
+
 int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand)
 {
 	char	*line;
-	int		len_of_line;
 	int		error;
 
 	error = 0;
@@ -71,15 +82,13 @@ int	write_on_fd(t_data *data, t_line *heredoc, t_bool xpand)
 		line = create_line(data, heredoc, xpand, &error);
 		if (!line || error == -1)
 			break ;
-		len_of_line = ft_strlen(line);
-		error = write(data->heredoc_pipe_fds[1], line, len_of_line);
-		if (error != -1)
-			error = write(data->heredoc_pipe_fds[1], "\n", 1);
+		error = write_process_hdoc(data, line);
 		if (error == -1)
 		{
 			error_int(data, I_WRITE, strerror(errno), 1);
 			break ;
 		}
+		ft_free((void **)&line);
 	}
 	ft_close_fd(&data->heredoc_pipe_fds[1]);
 	if (error == -1 || g_signal == SIGINT)
