@@ -27,9 +27,9 @@ t_bool	skip_option_n(t_data *data, char **args_cmd, int *y)
 	while (args_cmd[*y] != NULL)
 	{
 		x = 2;
-		if (args_cmd[*y][0] != '-' && args_cmd[*y][1] != 'n')
+		if (args_cmd[*y][0] != '-' || args_cmd[*y][1] != 'n')
 			return (B_FALSE);
-		while (args_cmd[*y][x] != 0 && args_cmd[*y][x] == 'n')
+		while (args_cmd[*y][x] != 0 || args_cmd[*y][x] == 'n')
 			x++;
 		if (args_cmd[*y][x] != 0)
 			return (B_FALSE);
