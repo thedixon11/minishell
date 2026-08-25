@@ -26,6 +26,7 @@ void	heredoc_child(t_data *data, t_line *current)
 	else
 		write_on_fd(data, current, B_TRUE);
 	code = data->code;
+	data->do_i_exit = B_TRUE;
 	free_and_close_life(data);
 	exit (code);
 }
