@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../minishell_general.h"
-#include <unistd.h>
 
 void	swap_values(char ***env, int *i, int j)
 {
@@ -32,8 +31,10 @@ void	print_environment(t_data *data, char **env)
 	{
 		if (write(1, "declare -x ", 11) == -1)
 		{
+      data->error = errno;
 			ft_free_tab(&env);
-			error_int(data, I_WRITE, LIBFT_ERR, 1);
+      errno = data->error;
+			error_int(data, I_WRITE, strerror(errno), 1);
 		}
 		ft_putendl_fd(env[y], 1);
 		y++;
