@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_print.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: fducrot <fducrot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/25 15:09:45 by jvasconc          #+#    #+#             */
-/*   Updated: 2026/08/25 15:09:52 by jvasconc         ###   ########.fr       */
+/*   Created: 2026/08/26 20:44:55 by fducrot           #+#    #+#             */
+/*   Updated: 2026/08/26 20:45:01 by fducrot          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	print_environment(t_data *data, char **env)
 	{
 		if (write(1, "declare -x ", 11) == -1)
 		{
-      data->error = errno;
+			data->error = errno;
 			ft_free_tab(&env);
-      errno = data->error;
+			errno = data->error;
 			error_int(data, I_WRITE, strerror(errno), 1);
 		}
 		ft_putendl_fd(env[y], 1);

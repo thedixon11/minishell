@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: fducrot <fducrot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/25 15:11:38 by jvasconc          #+#    #+#             */
-/*   Updated: 2026/08/25 15:11:40 by jvasconc         ###   ########.fr       */
+/*   Created: 2026/08/26 20:22:20 by fducrot           #+#    #+#             */
+/*   Updated: 2026/08/26 20:32:07 by fducrot          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,18 @@ void	child_process(t_data *data)
 	data->do_i_exit = B_TRUE;
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
+	if (manage_redirections(data) == 1)
+	{
+		free_and_close_life(data);
+		exit(1);
+	}
 	close_line_cmd_fds(data);
 	close_line_cmd_fds_full(data);
 	close_data_fds(data);
 	if (is_it_builtin(data) == B_FALSE)
 		child_no_builtin(data);
 	else
-  {
-    signal(SIGPIPE, SIG_IGN);
 		code = execute_builtin(data);
-  }
 	free_and_close_life(data);
 	exit(code);
 }

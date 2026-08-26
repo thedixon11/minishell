@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: fducrot <fducrot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/25 15:12:12 by jvasconc          #+#    #+#             */
-/*   Updated: 2026/08/25 15:12:14 by jvasconc         ###   ########.fr       */
+/*   Created: 2026/08/26 20:37:36 by fducrot           #+#    #+#             */
+/*   Updated: 2026/08/26 20:38:28 by fducrot          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	wait_all_children(t_data *data)
 			if (WIFEXITED(status))
 				data->code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				data->code = 128 + WTERMSIG(status);
+				report_signaled_child(data, status);
 		}
 		pid = waitpid(-1, &status, 0);
 	}
@@ -65,8 +65,6 @@ int	execute_cmds(t_data *data)
 	init_signal_parent();
 	while (data->current_cmd_nb <= data->max_cmd_nb)
 	{
-		if (reset_redir_patch(data) == 1)
-			return (1);
 		if (is_there_command(data) == B_FALSE)
 			no_command_process(data);
 		else if (do_i_parent(data) == B_TRUE)
@@ -77,8 +75,6 @@ int	execute_cmds(t_data *data)
 		save_pipe_rd_to_old_read_fd(data);
 		data->current_cmd_nb++;
 	}
-	reset_redir_patch(data);
 	wait_all_children(data);
-	handle_ctrl_c(data);
 	return (0);
 }

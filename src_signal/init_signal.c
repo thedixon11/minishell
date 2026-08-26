@@ -38,12 +38,12 @@ int	heredoc_event_hook(void)
 
 void	init_signal_parent(void)
 {
-	signal(SIGINT, signal_handler_exec);
-	signal(SIGQUIT, signal_handler_exec);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	init_signal_child(void)
 {
-	signal(SIGINT, signal_handler_exec);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }

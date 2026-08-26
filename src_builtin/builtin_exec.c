@@ -98,7 +98,12 @@ int	execute_builtin_parent(t_data *data)
 
 	code = 0;
 	if (manage_redirections(data) == 1)
+	{
+		reset_redir_patch(data);
 		return (1);
+	}
 	code = execute_builtin(data);
+	if (reset_redir_patch(data) == 1)
+		return (1);
 	return (code);
 }

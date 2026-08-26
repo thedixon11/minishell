@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   no_command_process.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: fducrot <fducrot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/25 15:12:39 by jvasconc          #+#    #+#             */
-/*   Updated: 2026/08/25 15:12:40 by jvasconc         ###   ########.fr       */
+/*   Created: 2026/08/26 19:53:48 by fducrot           #+#    #+#             */
+/*   Updated: 2026/08/26 19:53:58 by fducrot          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	no_command_process(t_data *data)
 {
 	if (data->current_cmd_nb < data->max_cmd_nb && time_to_pipe(data) == 1)
 		return ;
-	if (manage_redirections(data) == 1)
+	if (open_fd_in_line_cmd(data) == 1)
 		return ;
 }
 

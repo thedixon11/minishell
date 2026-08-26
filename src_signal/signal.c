@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: fducrot <fducrot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/25 15:15:18 by jvasconc          #+#    #+#             */
-/*   Updated: 2026/08/25 15:17:30 by jvasconc         ###   ########.fr       */
+/*   Created: 2026/08/26 20:17:09 by fducrot           #+#    #+#             */
+/*   Updated: 2026/08/26 20:18:54 by fducrot          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_general.h"
+#include <unistd.h>
 
 void	signal_handler(int signo)
 {
@@ -37,15 +38,16 @@ void	handle_ctrl_c(t_data *data)
 	}
 }
 
-void	signal_handler_exec(int signo)
+void	report_signaled_child(t_data *data, int status)
 {
-	if (signo == SIGINT)
-		g_signal = SIGINT;
-	else if (signo == SIGQUIT)
-		g_signal = SIGQUIT;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	write(STDOUT_FILENO, "\n", 1);
+	int	signal;
+
+	signal = WTERMSIG(status);
+	if (signal == SIGINT)
+		write(STDERR_FILENO, "\n", 1);
+	else if (signal == SIGQUIT)
+		write(STDERR_FILENO, "Quit (core dumped)\n", 19),
+	data->code = 128 + signal;
 }
 
 void	handle_ctrl_d(t_data *data)

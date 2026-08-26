@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_start.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvasconc <jvasconc@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: fducrot <fducrot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/25 15:12:16 by jvasconc          #+#    #+#             */
-/*   Updated: 2026/08/25 15:12:17 by jvasconc         ###   ########.fr       */
+/*   Created: 2026/08/26 19:55:20 by fducrot           #+#    #+#             */
+/*   Updated: 2026/08/26 19:55:20 by fducrot          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	execution_start(t_data *data)
 	init_signal_prompt();
 	if (error == 0)
 		execute_cmds(data);
-	reset_redir_patch(data);
 	free_and_close_life(data);
 	init_signal_prompt();
 }
