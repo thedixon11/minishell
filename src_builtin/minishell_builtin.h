@@ -46,8 +46,9 @@ int		export_no_args(t_data *data);
 
 // ft_echo
 int		ft_echo(t_data *data, char **args_cmd);
-t_bool	skip_option_n(t_data *data, char **args_cmd, int *y);
-void	echo_no_args(t_data *data);
+t_bool	skip_option_n(char **args_cmd, int *y);
+int	echo_no_args(t_data *data);
+int	print_between_args(t_data *data, char **args_cmd, int y, t_bool do_i_return);
 
 // ft_cd
 int		update_env_wd(t_data *data);
