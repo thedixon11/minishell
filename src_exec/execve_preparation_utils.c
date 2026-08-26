@@ -48,8 +48,8 @@ void	prog_name_prep(t_data *data, t_cmd *cmd_data)
 	t_line	*current;
 
 	current = move_current_to_cmd(data);
-	if (ft_strchr(cmd_data->args_tab[0], '/') == 0 &&
-			data->cmd_data->path_tab != NULL)
+	if (ft_strchr(cmd_data->args_tab[0], '/') == 0
+		&& data->cmd_data->path_tab != NULL)
 		check_prog_in_path(data, cmd_data, current->content_xpand[0]);
 	else
 	{

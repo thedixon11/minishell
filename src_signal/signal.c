@@ -46,7 +46,7 @@ void	report_signaled_child(t_data *data, int status)
 	if (signal == SIGINT)
 		write(STDERR_FILENO, "\n", 1);
 	else if (signal == SIGQUIT)
-		write(STDERR_FILENO, "Quit (core dumped)\n", 19),
+		write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 	data->code = 128 + signal;
 }
 
