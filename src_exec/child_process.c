@@ -20,7 +20,8 @@ void	check_cmd_is_not_empty(t_data *data, t_line *current)
 		free_and_close_life(data);
 		exit(0);
 	}
-	if (current->content_xpand[0][0] == 0)
+	if (current->content_xpand[0][0] == 0 &&
+			data->cmd_data->path_tab != NULL)
 	{
 		if (ft_strchr(current->content, '"') != 0)
 			error_int(data, "", CMD_ERR, 127);
@@ -59,9 +60,9 @@ void	child_no_builtin(t_data *data)
 	if (!cmd_data)
 		error_int(data, I_CALLOC, LIBFT_ERR, 1);
 	data->cmd_data = cmd_data;
-	create_args_tab(data, cmd_data);
 	cmd_data->env = env_converter_ll_to_array(data, data->env);
 	find_path_tab(data, cmd_data);
+	create_args_tab(data, cmd_data);
 	if (cmd_data->args_tab != NULL)
 		prog_name_prep(data, cmd_data);
 	is_directory(data, cmd_data);
