@@ -20,7 +20,7 @@ int	ft_pwd(t_data *data)
 	if (!cwd_to_print)
 	{
 		if (ft_printf("%s\n", data->cwd) == -1)
-		 return (error_int(data, I_PRINTF, LIBFT_ERR, 1));
+			return (error_int(data, I_PRINTF, LIBFT_ERR, 1));
 	}
 	else
 	{
