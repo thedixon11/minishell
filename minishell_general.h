@@ -70,7 +70,7 @@
 # define LIBFT_ERR "Libft function execution failed"
 # define NOFILE_ERR "No such file or directory"
 # define CMD_ERR "command not found"
-# define AMB_REDIR_ERR "amgiguous redirect"
+# define AMB_REDIR_ERR "ambiguous redirect"
 # define CD_ARGS_ERR "too many arguments"
 # define CD_NO_HOME "HOME not set"
 # define ENV_ARGS_ERR "too many arguments"
