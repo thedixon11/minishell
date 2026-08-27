@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell_general.h"
+#include <string.h>
 
 int	g_signal;
 
@@ -28,6 +29,12 @@ t_data	*data_init(void)
 	data->max_cmd_nb = 0;
 	data->line_cmd = NULL;
 	data->do_i_exit = B_TRUE;
+	data->cwd = getcwd(NULL, 0);
+	if (!data->cwd)
+		error_int(data, I_GETCWD, strerror(errno), 1);
+	data->old_cwd = ft_strdup(data->cwd);
+	if (!data->old_cwd)
+		error_int(data, I_STRDUP, LIBFT_ERR, 1);
 	return (data);
 }
 
