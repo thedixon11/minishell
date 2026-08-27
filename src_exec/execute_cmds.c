@@ -70,6 +70,7 @@ int	execute_cmds(t_data *data)
 			data->code = execute_builtin_parent(data);
 		else
 			classic_execution(data);
+		close_line_cmd_fds(data);
 		save_pipe_rd_to_old_read_fd(data);
 		data->current_cmd_nb++;
 	}
