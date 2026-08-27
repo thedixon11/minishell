@@ -97,7 +97,10 @@ void	child_process(t_data *data)
 	if (is_it_builtin(data) == B_FALSE)
 		child_no_builtin(data);
 	else
+	{
+		signal(SIGPIPE, SIG_IGN);
 		code = execute_builtin(data);
+	}
 	free_and_close_life(data);
 	exit(code);
 }
