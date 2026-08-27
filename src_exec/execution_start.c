@@ -20,10 +20,7 @@ void	set_fd_pipe_zero(t_data *data)
 	while (current != NULL)
 	{
 		if (current->type == T_PIPE_IN || current->type == T_PIPE_OUT)
-		{
 			current->fd = 0;
-			current->fd_of_pipe = NULL;
-		}
 		current = current->next;
 	}
 }

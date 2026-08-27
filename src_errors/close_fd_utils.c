@@ -28,8 +28,6 @@ void	close_line_cmd_fds_full(t_data *data)
 	{
 		if (current->type != T_PIPE_IN && current->type != T_PIPE_OUT)
 			ft_close_fd(&current->fd);
-		else
-			ft_close_fd(current->fd_of_pipe);
 		current = current->next;
 	}
 }
@@ -44,8 +42,6 @@ void	close_line_cmd_fds(t_data *data)
 	{
 		if (current->type != T_PIPE_IN && current->type != T_PIPE_OUT)
 			ft_close_fd(&current->fd);
-		else
-			ft_close_fd(current->fd_of_pipe);
 		current = current->next;
 	}
 }

@@ -50,9 +50,9 @@ int	first_patch_pipes_redir(t_data *data)
 		&& current->cmd_nb == data->current_cmd_nb)
 	{
 		if (error != 1 && current->type == T_PIPE_IN)
-			error = dup2_process(data, current->fd_of_pipe, STDIN_FILENO);
+			error = dup2_process(data, &data->old_read_fd, STDIN_FILENO);
 		else if (error != 1 && current->type == T_PIPE_OUT)
-			error = dup2_process(data, current->fd_of_pipe, STDOUT_FILENO);
+			error = dup2_process(data, &data->pipe_fd[1], STDOUT_FILENO);
 		current = current->next;
 	}
 	if (error == 1)
@@ -69,8 +69,6 @@ int	open_fd_in_line_cmd(t_data *data)
 	{
 		if (check_ambiguous_redir(data, current) == 1)
 			return (1);
-		if (current->type == T_PIPE_IN)
-			current->fd_of_pipe = &data->old_read_fd;
 		else if (current->type == T_INPUT)
 			current->fd = open(current->content_xpand[0], O_RDONLY);
 		else if (current->type == T_OUTPUT_APPEND)
@@ -79,8 +77,6 @@ int	open_fd_in_line_cmd(t_data *data)
 		else if (current->type == T_OUTPUT_TRUNC)
 			current->fd = open(current->content_xpand[0],
 					O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (current->type == T_PIPE_OUT)
-			current->fd_of_pipe = &data->pipe_fd[1];
 		if (current->fd < 0 && current->type != T_COMMAND)
 			return (error_int(data, current->content_xpand[0], strerror(errno),
 					1));

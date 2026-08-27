@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../minishell_general.h"
-#include "minishell_xecution.h"
 
 t_bool	do_i_parent(t_data *data)
 {
@@ -71,7 +70,6 @@ int	execute_cmds(t_data *data)
 			data->code = execute_builtin_parent(data);
 		else
 			classic_execution(data);
-		close_used_fd(data);
 		save_pipe_rd_to_old_read_fd(data);
 		data->current_cmd_nb++;
 	}
