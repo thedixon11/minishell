@@ -67,6 +67,9 @@ void	child_no_builtin(t_data *data)
 		prog_name_prep(data, cmd_data);
 	is_directory(data, cmd_data);
 	is_prog_existing_and_executable(data, cmd_data);
+	close_line_cmd_fds(data);
+	close_line_cmd_fds_full(data);
+	close_data_fds(data);
 	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
 	if (errno == EACCES)
 		error_int(data, cmd_data->prog_fullname, strerror(errno), 126);
@@ -91,16 +94,13 @@ void	child_process(t_data *data)
 		free_and_close_life(data);
 		exit(1);
 	}
-	close_line_cmd_fds(data);
-	close_line_cmd_fds_full(data);
-	close_data_fds(data);
 	if (is_it_builtin(data) == B_FALSE)
 		child_no_builtin(data);
 	else
-	{
-		signal(SIGPIPE, SIG_IGN);
 		code = execute_builtin(data);
-	}
+	close_line_cmd_fds(data);
+	close_line_cmd_fds_full(data);
+	close_data_fds(data);
 	free_and_close_life(data);
 	exit(code);
 }
