@@ -17,6 +17,7 @@ int	create_heredoc_fd(t_data *data, t_line *heredoc)
 	if (pipe(data->heredoc_pipe_fds) == -1)
 		return (error_int(data, I_PIPE, strerror(errno), 1));
 	heredoc->fd = data->heredoc_pipe_fds[0];
+	data->heredoc_pipe_fds[0] = -1;
 	return (0);
 }
 
@@ -64,15 +65,23 @@ int	heredoc_exec(t_data *data)
 {
 	int		error;
 	t_line	*current;
+	//int	number;
 
 	error = 0;
+	//number = 0;
 	current = data->line_cmd;
 	init_signal_heredoc();
 	rl_event_hook = heredoc_event_hook;
 	while (current != NULL && error == 0)
 	{
+
 		if (current->type == T_HEREDOC && error == 0)
+		{
+			// ft_printf("before heredoc n %d", number);
+			// super_printer(data);
 			error = heredoc_loop(data, current);
+			//number++;
+		}
 		current = current->next;
 	}
 	init_signal_prompt();

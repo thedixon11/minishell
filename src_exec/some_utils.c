@@ -46,11 +46,12 @@ void	free_and_close_life(t_data *data)
 	ft_close_fd(&data->saved_stdin);
 	ft_close_fd(&data->saved_stdout);
 	close_data_fds(data);
-	free_line_cmd(&data->line_cmd);
 	free_cmd_args(data);
 	ft_free((void **)&data->failed_content);
 	if (data->do_i_exit == B_TRUE)
 	{
+		close_line_cmd_fds_full(data);
+		free_line_cmd(&data->line_cmd);
 		ft_free((void **)&data->cwd);
 		ft_free((void **)&data->old_cwd);
 		free_env(&data->env);

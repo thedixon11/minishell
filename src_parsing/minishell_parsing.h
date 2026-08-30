@@ -18,6 +18,7 @@ int		main(int argc, char **argv, char **envp);
 int		print_env(t_env *env);
 int		print_tokens(t_token *token);
 int		print_lines(t_line *lines);
+void	super_printer(t_data *data);
 
 // create_env.c
 void	create_env(char **envp, t_data *data);

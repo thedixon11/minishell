@@ -61,5 +61,7 @@ void	execution_start(t_data *data)
 	if (error == 0)
 		execute_cmds(data);
 	free_and_close_life(data);
+	close_line_cmd_fds_full(data);
+	free_line_cmd(&data->line_cmd);
 	init_signal_prompt();
 }

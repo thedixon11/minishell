@@ -82,3 +82,26 @@ int	main(int argc, char **argv, char **envp)
 	free_and_close_life(data);
 	return (code);
 }
+
+
+void	super_printer(t_data *data)
+{
+	t_line	*current;
+
+	current = data->line_cmd;
+	ft_printf("\n\n");
+	ft_printf("cmd_line data:\n");
+	while (current != NULL)
+	{
+		ft_printf("content : %s", current->content);
+		ft_printf(" -> ");
+		ft_printf("fd : %d", current->fd);
+		ft_printf("\n");
+		current = current->next;
+	}
+	ft_printf("\n");
+	ft_printf("fd of data : \n");
+	ft_printf("heredoc_pipe[0] = %d\n", data->heredoc_pipe_fds[0]);
+	ft_printf("heredoc_pipe[1] = %d\n", data->heredoc_pipe_fds[1]);
+	ft_printf("\n\n");
+}
