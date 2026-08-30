@@ -65,23 +65,15 @@ int	heredoc_exec(t_data *data)
 {
 	int		error;
 	t_line	*current;
-	//int	number;
 
 	error = 0;
-	//number = 0;
 	current = data->line_cmd;
 	init_signal_heredoc();
 	rl_event_hook = heredoc_event_hook;
 	while (current != NULL && error == 0)
 	{
-
 		if (current->type == T_HEREDOC && error == 0)
-		{
-			// ft_printf("before heredoc n %d", number);
-			// super_printer(data);
 			error = heredoc_loop(data, current);
-			//number++;
-		}
 		current = current->next;
 	}
 	init_signal_prompt();

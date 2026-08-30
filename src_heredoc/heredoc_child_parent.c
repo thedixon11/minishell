@@ -29,8 +29,6 @@ void	heredoc_child(t_data *data, t_line *current)
 	int	code;
 
 	code = 0;
-	// ft_printf("in the child heredoc\n");
-	// super_printer(data);
 	init_signal_heredoc();
 	rl_event_hook = heredoc_event_hook;
 	ft_close_fd(&data->heredoc_pipe_fds[0]);
