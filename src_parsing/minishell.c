@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell_general.h"
+#include <readline/readline.h>
 #include <string.h>
 
 int	g_signal;
@@ -80,5 +81,6 @@ int	main(int argc, char **argv, char **envp)
 	data->do_i_exit = B_TRUE;
 	code = data->code;
 	free_and_close_life(data);
+	rl_clear_history();
 	return (code);
 }

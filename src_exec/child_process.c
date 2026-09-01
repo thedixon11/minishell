@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell_general.h"
+#include <readline/readline.h>
 
 void	check_cmd_is_not_empty(t_data *data, t_line *current)
 {
@@ -70,6 +71,7 @@ void	child_no_builtin(t_data *data)
 	close_line_cmd_fds(data);
 	close_line_cmd_fds_full(data);
 	close_data_fds(data);
+	rl_clear_history();
 	execve(cmd_data->prog_fullname, cmd_data->args_tab, cmd_data->env);
 	if (errno == EACCES)
 		error_int(data, cmd_data->prog_fullname, strerror(errno), 126);
